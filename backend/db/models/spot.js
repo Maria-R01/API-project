@@ -11,6 +11,28 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Spot.belongsTo(models.User, {
+        foreignKey: 'ownerId'
+      })
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: 'spotId',
+        onDelete: 'CASCADE',
+        hooks: true
+      })
+      Spot.belongsToMany(
+        models.User, {
+          through: models.Booking,
+          foreignKey: 'spotId',
+          otherKey: 'userId'
+        }
+      )
+      Spot.belongsToMany(
+        models.User, {
+          through: models.Review,
+          foreignKey: 'spotId',
+          otherKey: 'userId'
+        }
+      )
     }
   }
   Spot.init({
@@ -23,36 +45,53 @@ module.exports = (sequelize, DataTypes) => {
     address: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlphanumeric: true,
+        len: [9, 40],
+      }
     },
     city: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlpha: true,
+        len: [4, 13],
+      },
     },
     state: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlpha: true,
+        len: [2, 30],
+      },
     },
     country: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        isAlpha: true,
+        len: [4, 35]
+      }
     },
     lat: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        
+        isNumeric: true,
       },
     },
     lng: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        
+        isNumeric: true,
       },
     },
     name: {
       type: DataTypes.STRING,
       validate: {
+        isAlpha: true,
         len: [4, 49]
       }
     },
@@ -63,6 +102,9 @@ module.exports = (sequelize, DataTypes) => {
     price: {
       type: DataTypes.DECIMAL,
       allowNull: false,
+      validate: {
+        min: 1,
+      }
     },
   }, {
     sequelize,
