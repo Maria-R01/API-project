@@ -47,7 +47,6 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: true,
       validate: {
-        isAlphanumeric: true,
         len: [9, 40],
       }
     },
@@ -55,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlpha: true,
+        // isAlpha: true,
         len: [4, 13],
       },
     },
@@ -63,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlpha: true,
+        // isAlpha: true,
         len: [2, 30],
       },
     },
@@ -71,7 +70,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        isAlpha: true,
+        // isAlpha: true,
         len: [4, 35]
       }
     },
@@ -79,20 +78,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        isNumeric: true,
+        // isNumeric: true,
       },
     },
     lng: {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        isNumeric: true,
+        // isNumeric: true,
       },
     },
     name: {
       type: DataTypes.STRING,
       validate: {
-        isAlpha: true,
+        // isAlpha: true,
         len: [4, 49]
       }
     },
@@ -105,7 +104,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         min: 1,
-        isNumeric: true
+        // isNumeric: true
       }
     },
   }, {

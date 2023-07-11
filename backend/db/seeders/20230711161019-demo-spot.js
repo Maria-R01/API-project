@@ -30,7 +30,7 @@ module.exports = {
         lat: 34.162004,
         lng: -118.137649,
         name: 'Picture Perfect Pasadena',
-        description: 'Great location access point to the city of Los Angeles, beaches and mountains',
+        description: 'Great location',
         price: 489.54
       },
       {
