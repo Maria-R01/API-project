@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         model: 'Review'
       }
     },
-    url: DataTypes.STRING
+    url: {
+      type: DataTypes.STRING,
+      unique: true,
+    },
   }, {
     sequelize,
     modelName: 'ReviewImage',

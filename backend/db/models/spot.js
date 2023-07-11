@@ -45,6 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     address: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         isAlphanumeric: true,
         len: [9, 40],
@@ -104,6 +105,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         min: 1,
+        isNumeric: true
       }
     },
   }, {

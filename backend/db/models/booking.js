@@ -26,8 +26,18 @@ module.exports = (sequelize, DataTypes) => {
         model: 'User'
       },
     },
-    startDate: DataTypes.DATE,
-    endDate: DataTypes.DATE
+    startDate: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        isDate: true,
+      }
+    },
+    endDate: {
+      type: DataTypes.DATEONLY,
+      validate: {
+        isDate: true,
+      }
+    },
   }, {
     sequelize,
     modelName: 'Booking',
