@@ -71,17 +71,17 @@ router.post('/', requireAuth, async (req, res) => {
   res.json(newSpot); 
 }, handleValidationErrors)
 
-//DELETE A POT 
+//DELETE A SPOT 
 router.delete('/:spotId', requireAuth, async(req, res) => {
   const spotById = await Spot.findByPk(req.params.spotId);
-  if(spotById) {
+  if(!spotById) {
+    res.status(404).json({
+      message: "Spot couldn't be found"
+    })
+  } else {
     await spotById.destroy();
     res.json({
       message: "Successfully deleted"
-    })
-  } else {
-    res.status(404).json({
-      message: "Spot couldn't be found"
     })
   }
 })
