@@ -10,25 +10,6 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
-//creates a new spot
-router.post('/', requireAuth, async (req, res) => {
-    const { address, city, state, country, lat, lng, name, description, price } = req.body;
-    const owner = await User.findOne()
-    const newSpot = await Spot.create({
-    ownerId: owner.id,
-    address,
-    city, 
-    state,
-    country, 
-    lat, 
-    lng, 
-    name, 
-    description, 
-    price  
-    })
-
-    res.json(newSpot); 
-}, handleValidationErrors)
 
 //get all spots
 router.get('/', async (req, res) => {
@@ -69,5 +50,40 @@ router.get('/', async (req, res) => {
 });
   
 
+//creates a new spot
+router.post('/', requireAuth, async (req, res) => {
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+  // const owner = await User.findOne()
+  const { user } = req;
+  const newSpot = await Spot.create({
+  ownerId: user.id,
+  address,
+  city, 
+  state,
+  country, 
+  lat, 
+  lng, 
+  name, 
+  description, 
+  price  
+  })
+
+  res.json(newSpot); 
+}, handleValidationErrors)
+
+//DELETE A POT 
+router.delete('/:spotId', requireAuth, async(req, res) => {
+  const spotById = await Spot.findByPk(req.params.spotId);
+  if(spotById) {
+    await spotById.destroy();
+    res.json({
+      message: "Successfully deleted"
+    })
+  } else {
+    res.status(404).json({
+      message: "Spot couldn't be found"
+    })
+  }
+})
 
 module.exports = router;

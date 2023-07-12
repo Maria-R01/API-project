@@ -10,15 +10,15 @@ module.exports = {
     await ReviewImage.bulkCreate([
       {
         reviewId: 1, 
-        url: 'ImageUrl4'
+        url: 'ImageUrl4.com'
       },
       {
         reviewId: 2, 
-        url: 'ImageUrl5'
+        url: 'ImageUrl5.com'
       },
       {
         reviewId: 3, 
-        url: 'ImageUrl6'
+        url: 'ImageUrl6.com'
       }
     ], { validate: true });
   },
@@ -27,7 +27,7 @@ module.exports = {
     options.tableName = 'ReviewImages';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      url: { [Op.in]: ['imageUrl4', 'imageUrl5', 'imageUrl6'] }
+      reviewId: { [Op.in]: [1, 2, 3] }
     }, {});
   }
 };

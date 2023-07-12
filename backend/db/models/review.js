@@ -18,6 +18,9 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'CASCADE',
         hooks: true
       })
+      Review.belongsTo(models.Spot, {
+        foreignKey: 'spotId'
+      })
     }
   }
   Review.init({
@@ -35,7 +38,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     review: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        emptyString(value){
+          if(!value) throw new Error('Review text is required.')
+        }
+      }
     },
     stars: {
       type: DataTypes.INTEGER,
