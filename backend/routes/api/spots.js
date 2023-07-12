@@ -11,15 +11,12 @@ const { handleValidationErrors } = require('../../utils/validation');
 const router = express.Router();
 
 
-//get all spots
+//GET ALL SPOTS:
 router.get('/', async (req, res) => {
-    const avgRating = await Review.findAll({
-      attributes: [[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']],
-  });
-    const Spots = await Spot.findAll({
-      // attributes: {
-      //   include: [[sequelize.fn('AVG', sequelize.col('stars')), 'avgRating']],
-      // },
+  const Spots = [];
+    const allSpots = await Spot.findAll({
+      // include: {
+      //   model: Review,
       //   attributes: {
       //     include: [
       //       [
@@ -27,26 +24,41 @@ router.get('/', async (req, res) => {
       //       ],
       //     ]
       // },
-        //   // attributes: {
-        //   //   include: [
-        //   //       // ['url', 'previewImage'],
-        //   //     [
-        //   //       sequelize.fn('AVG', sequelize.col('stars')), 'avgRating'
-        //   //     ], 
-        //   //   ],
-        //   // },
-        // attributes: [  
-        //     [sequelize.fn('AVG', sequelize.col('stars')), 'avgRating'],
-        // ]
+      // }
     });
+  for(let spotObj of allSpots){
+    let sum = 0;
+    
+    spotObj = spotObj.toJSON();
 
-    // for(let i = 0; i < Spots.length; i++){
-    //   const obj = Spots[i].toJSON();
+    //GETTING THE AVG RATING BASED ON spotId
+    let ratings = await Review.findAll({
+      where: {
+        spotId: spotObj.id
+      }
+    });
+    for(let rating of ratings){
+      rating = rating.toJSON();
+      sum += rating.stars;
+    }
+    let avg = sum / ratings.length;
+    //ADD IN AVGRATING INTO SPOT POJO
+    spotObj.avgRating = avg;
 
-    // }
+    //GET PreviewImg URL 
+    let spotImage = await SpotImage.findOne({
+      where: {
+        preview: true,
+      }
+    });
+    spotImage = spotImage.toJSON();
+    //ADD IN PREVIEW IMAGE INTO SPOT POJO
+    spotObj.previewImage = spotImage.url
+    //PUSH SPOT POJO INTO SPOTS ARRAY
+    Spots.push(spotObj);
+  }
 
-    res.json({Spots});
-    // res.json(avgRating)
+  res.json({Spots});
 });
   
 
