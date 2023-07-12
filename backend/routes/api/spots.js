@@ -62,7 +62,7 @@ router.get('/', async (req, res) => {
 });
 
 //GET ALL SPOTS OWNED BY CURRENT USER
-router.get('/current', async(req, res) =>{
+router.get('/current', requireAuth, async(req, res) =>{
   const { user } = req;
 
   const Spots = [];
@@ -72,10 +72,41 @@ router.get('/current', async(req, res) =>{
     }
   });
   for(let spotObj of allSpots){
+    let sum = 0;
     spotObj = spotObj.toJSON();
+    //GETTING THE AVG RATING BASED ON spotId
+    let ratings = await Review.findAll({
+      where: {
+        spotId: spotObj.id
+      }
+    });
+    for(let rating of ratings){
+      rating = rating.toJSON();
+      sum += rating.stars;
+    }
+    let avg = sum / ratings.length;
+    //ADD IN AVGRATING INTO SPOT POJO
+    spotObj.avgRating = avg;
+
+    //GET PreviewImg URL 
+    let spotImage = await SpotImage.findOne({
+      where: {
+        preview: true,
+      }
+    });
+    spotImage = spotImage.toJSON();
+    //ADD IN PREVIEW IMAGE INTO SPOT POJO
+    spotObj.previewImage = spotImage.url
+    //PUSH SPOT POJO INTO SPOTS ARRAY
     Spots.push(spotObj);
   }
   res.json({Spots})
+});
+
+//GET DETAILS OF SPOT BY ID
+router.get('/:spotId', async(req, res) => {
+  const spotId = req.params.spotId;
+  
 });
 
 //creates a new spot
