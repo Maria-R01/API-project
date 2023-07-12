@@ -10,11 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Review.belongsTo(models.Spot, {
+        foreignKey: 'spotId'
+      })
       Review.hasMany(models.ReviewImage, {
         foreignKey: 'reviewId',
         onDelete: 'CASCADE',
         hooks: true
+      })
+      Review.belongsTo(models.Spot, {
+        foreignKey: 'spotId'
       })
     }
   }
@@ -33,7 +38,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     review: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        emptyString(value){
+          if(!value) throw new Error('Review text is required.')
+        }
+      }
     },
     stars: {
       type: DataTypes.INTEGER,
