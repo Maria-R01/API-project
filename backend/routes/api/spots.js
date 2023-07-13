@@ -10,6 +10,37 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
+const validateSpot = [
+  check('address')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Stree address is required'),
+  check('city')
+    .notEmpty({checkFalsy: true})
+    .withMessage('City is required'),
+  check('state')
+    .notEmpty({checkFalsy: true})
+    .withMessage('State is required'),
+  check('country')
+    .notEmpty({ checkFalsy: true })
+    .withMessage('Country is required'),
+  check('lat')
+    .notEmpty()
+    .withMessage('Latitude is not valid'),
+  check('lng')
+    .notEmpty({ checkFalsy: true })
+    .withMessage('Longitude is not valid'),
+  check('name')
+    .notEmpty({ checkFalsy: true })
+    .withMessage('Name must be less than 50 characters'),
+  check('description')
+    .notEmpty({ checkFalsy: true })
+    .withMessage('Description is required'),
+  check('price')
+    .notEmpty({ checkFalsy: true })
+    .withMessage('Price per day is required'),
+  handleValidationErrors
+];
 
 //GET ALL SPOTS:
 router.get('/', async (req, res) => {
@@ -106,13 +137,47 @@ router.get('/current', requireAuth, async(req, res) =>{
 //GET DETAILS OF SPOT BY ID
 router.get('/:spotId', async(req, res) => {
   const spotId = req.params.spotId;
-  
+  let spotById = await Spot.findByPk(spotId, {
+    include: [{
+      model: SpotImage,
+      attributes: {
+        exclude: ['spotId', 'createdAt', 'updatedAt']
+      }
+    }, {
+      model: User,
+      as: 'Owner',
+      attributes: ['id', 'firstName', 'lastName']
+    }
+  ]
+  });
+  if(!spotById) res.status(404).json({ message: "Spot couldn't be found"})
+  const ratings = await Review.findAll({
+    where: {
+      spotId
+    },
+    attributes: {
+      exclude: ['spotId', 'userId', 'review', 'createdAt', 'updatedAt']
+    }
+  })
+  let sum = 0;
+  let numOfReviews = 0;
+  for(let rating of ratings){
+    rating = rating.toJSON();
+    sum += rating.stars;
+    numOfReviews++;
+  }
+  let avg = sum / ratings.length;
+
+  spotById = spotById.toJSON();
+  spotById.numReviews = numOfReviews;
+  spotById.avgStarRating = avg;
+
+  res.json(spotById);
 });
 
-//creates a new spot
-router.post('/', requireAuth, async (req, res) => {
+//CREATE A NEW SPOT
+router.post('/', requireAuth, validateSpot, async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
-  // const owner = await User.findOne()
   const { user } = req;
   const newSpot = await Spot.create({
   ownerId: user.id,
@@ -126,9 +191,9 @@ router.post('/', requireAuth, async (req, res) => {
   description, 
   price  
   })
-
+  
   res.json(newSpot); 
-}, handleValidationErrors)
+})
 
 //DELETE A SPOT 
 router.delete('/:spotId', requireAuth, async(req, res) => {
