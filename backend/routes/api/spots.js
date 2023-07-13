@@ -1,6 +1,6 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { User, Spot, SpotImage, Review } = require('../../db/models');
+const { User, Spot, SpotImage, Review, ReviewImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
@@ -259,6 +259,43 @@ router.delete('/:spotId', requireAuth, async(req, res) => {
     res.status(403).json({ message: 'Forbidden'})
   }
   }
+})
+
+//GET ALL REVIEWS BY SPOT ID
+router.get('/:spotId/reviews', async(req, res) =>{
+  const reviewsArr = [];
+  const reviews = await Review.findAll({
+    attributes: {
+      include: ['id']
+    },
+    where: {
+      spotId: req.params.spotId
+    },
+    include: [{
+      model: User,
+    }]
+  })
+  if(!reviews.length) return res.status(404).json({message: "Spot couldn't be found"});
+  for(let review of reviews) {
+    review = review.toJSON();
+    delete review.User.username
+    const reviewImagesArr = [];
+    const reviewImages = await ReviewImage.findAll({
+      where: {
+        reviewId: review.id
+      },
+      attributes: {
+        exclude: ['reviewId', 'createdAt', 'updatedAt']
+      }
+    })
+    for(let reviewImage of reviewImages){
+      reviewImage = reviewImage.toJSON();
+      reviewImagesArr.push(reviewImage)
+    }
+    review.ReviewImages = reviewImagesArr;
+    reviewsArr.push(review);
+  }
+  res.json({Reviews: reviewsArr})
 })
 
 module.exports = router;
