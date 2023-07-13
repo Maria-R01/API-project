@@ -195,18 +195,49 @@ router.post('/', requireAuth, validateSpot, async (req, res) => {
   res.json(newSpot); 
 })
 
+//EDIT A SPOT
+router.put('/:spotId', requireAuth, validateSpot, async(req, res) => {
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+  const { user } = req;
+  let editedSpot = await Spot.findByPk(req.params.spotId);
+  if(!editedSpot) res.status(404).json({ message: "Spot couldn't be found"});
+  editedSpot.toJSON();
+  if(user.id === editedSpot.ownerId){
+    await editedSpot.update({
+      ownerId: user.id,
+      address,
+      city, 
+      state,
+      country, 
+      lat, 
+      lng, 
+      name, 
+      description, 
+      price  
+    });
+    res.json(editedSpot)
+  } else res.status(403).json({ message: 'Forbidden.'})
+  
+})
+
+
 //DELETE A SPOT 
 router.delete('/:spotId', requireAuth, async(req, res) => {
-  const spotById = await Spot.findByPk(req.params.spotId);
+  const { user } = req;
+  let spotById = await Spot.findByPk(req.params.spotId);
   if(!spotById) {
     res.status(404).json({
       message: "Spot couldn't be found"
     })
   } else {
+    if(user.id === spotById.ownerId){
     await spotById.destroy();
     res.json({
       message: "Successfully deleted"
     })
+  } else {
+    res.status(403).json({ message: 'Forbidden.'})
+  }
   }
 })
 
