@@ -1,10 +1,6 @@
 const express = require('express');
-
-const { Op } = require('sequelize');
-const bcrypt = require('bcryptjs');
-
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Spot, sequelize, SpotImage, Review } = require('../../db/models');
+const { requireAuth } = require('../../utils/auth');
+const { User, Spot, SpotImage, Review } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
@@ -14,7 +10,7 @@ const validateSpot = [
   check('address')
     .exists({ checkFalsy: true })
     .notEmpty()
-    .withMessage('Stree address is required'),
+    .withMessage('Street address is required'),
   check('city')
     .notEmpty({checkFalsy: true})
     .withMessage('City is required'),
@@ -134,6 +130,27 @@ router.get('/current', requireAuth, async(req, res) =>{
   res.json({Spots})
 });
 
+//CREATE A NEW SPOT
+router.post('/', requireAuth, validateSpot, async (req, res) => {
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+  const { user } = req;
+  const newSpot = await Spot.create({
+  ownerId: user.id,
+  address,
+  city, 
+  state,
+  country, 
+  lat, 
+  lng, 
+  name, 
+  description, 
+  price  
+  })
+  
+  res.json(newSpot); 
+})
+
+
 //GET DETAILS OF SPOT BY ID
 router.get('/:spotId', async(req, res) => {
   const spotId = req.params.spotId;
@@ -175,26 +192,6 @@ router.get('/:spotId', async(req, res) => {
   res.json(spotById);
 });
 
-//CREATE A NEW SPOT
-router.post('/', requireAuth, validateSpot, async (req, res) => {
-  const { address, city, state, country, lat, lng, name, description, price } = req.body;
-  const { user } = req;
-  const newSpot = await Spot.create({
-  ownerId: user.id,
-  address,
-  city, 
-  state,
-  country, 
-  lat, 
-  lng, 
-  name, 
-  description, 
-  price  
-  })
-  
-  res.json(newSpot); 
-})
-
 //EDIT A SPOT
 router.put('/:spotId', requireAuth, validateSpot, async(req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
@@ -216,7 +213,7 @@ router.put('/:spotId', requireAuth, validateSpot, async(req, res) => {
       price  
     });
     res.json(editedSpot)
-  } else res.status(403).json({ message: 'Forbidden.'})
+  } else res.status(403).json({ message: 'Forbidden'})
   
 })
 
@@ -236,7 +233,7 @@ router.delete('/:spotId', requireAuth, async(req, res) => {
       message: "Successfully deleted"
     })
   } else {
-    res.status(403).json({ message: 'Forbidden.'})
+    res.status(403).json({ message: 'Forbidden'})
   }
   }
 })
