@@ -197,23 +197,22 @@ router.post('/:spotId/images', requireAuth, async(req, res) => {
   const spotId = req.params.spotId;
   const { user } = req;
   const { url, preview } = req.body;
+  const newImageRes = {}
   let spotById = await Spot.findByPk(spotId);
+  if(!spotById) return res.status(404).json({message: "Spot couldn't be found"}); 
   spotById = spotById.toJSON();
-  console.log(user.id)
-  if(!spotById) {
-    if(user.id !== spotById.id) {
-      res.status(404).json({message: "Spot couldn't be found"})
-    } else {
-      const newImage = await SpotImage.create({
-        spotId: spotById.id,
-        url, 
-        preview,
-      });
-      //????include default scope to exclude the spotId from SpotImage???
-      res.status(201).json(newImage)
-    }
-  } else {
+  if(user.id !== spotById.ownerId) {
     res.status(403).json({message: 'Forbidden'})
+  } else {
+    const newImage = await SpotImage.create({
+      spotId: spotById.id,
+      url, 
+      preview,
+    });
+    newImageRes.id = newImage.id
+    newImageRes.url = newImage.url;
+    newImageRes.preview = newImage.preview;
+    res.json(newImageRes)
   }
 })
 
