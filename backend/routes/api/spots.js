@@ -192,6 +192,31 @@ router.get('/:spotId', async(req, res) => {
   res.json(spotById);
 });
 
+//ADD IMAGE TO SPOT BASED ON SPOT'S ID
+router.post('/:spotId/images', requireAuth, async(req, res) => {
+  const spotId = req.params.spotId;
+  const { user } = req;
+  const { url, preview } = req.body;
+  let spotById = await Spot.findByPk(spotId);
+  spotById = spotById.toJSON();
+  console.log(user.id)
+  if(!spotById) {
+    if(user.id !== spotById.id) {
+      res.status(404).json({message: "Spot couldn't be found"})
+    } else {
+      const newImage = await SpotImage.create({
+        spotId: spotById.id,
+        url, 
+        preview,
+      });
+      //????include default scope to exclude the spotId from SpotImage???
+      res.status(201).json(newImage)
+    }
+  } else {
+    res.status(403).json({message: 'Forbidden'})
+  }
+})
+
 //EDIT A SPOT
 router.put('/:spotId', requireAuth, validateSpot, async(req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
