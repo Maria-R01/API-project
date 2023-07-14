@@ -85,6 +85,7 @@ router.delete('/:bookingId', requireAuth, async(req, res)=>{
     } else {
         if(user.id === bookingToDelete.userId){
         bookingToDelete = bookingToDelete.toJSON();
+        console.log(typeof bookingToDelete.startDate)
         if(bookingToDelete.startDate.slice(0, 10) <= new Date().toISOString().slice(0, 10)) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
         await bookingToDelete.destroy();
         res.json({
