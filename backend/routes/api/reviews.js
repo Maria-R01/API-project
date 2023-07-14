@@ -92,7 +92,7 @@ router.post('/:reviewId/images', requireAuth, async(req, res)=> {
             exclude: ['reviewId', 'createdAt', 'updatedAt']
         }
     })
-    res.json(newImageRes)
+    res.status(201).json(newImageRes)
 })
 
 

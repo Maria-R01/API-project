@@ -1,8 +1,8 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { Spot, SpotImage, Booking } = require('../../db/models');
+// const { check } = require('express-validator');
+// const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -39,12 +39,38 @@ router.get('/current', requireAuth, async(req, res) => {
 
 //EDIT A BOOKING
 router.put('/:bookingId', requireAuth, async(req, res)=>{
-    res.send('success')
+    const { startDate, endDate } = req.body;
+    const { user } = req;
+    let editedBooking = await Booking.findByPk(req.params.bookingId);
+    if(!editedBooking) res.status(404).json({ message: "Spot couldn't be found"});
+    editedBooking.toJSON();
+    if(user.id === editedBooking.userId){
+        await editedBooking.update({
+        startDate, 
+        endDate
+        });
+        res.json(editedBooking)
+    } else res.status(403).json({ message: 'Forbidden'})
 });
 
 //DELETE A BOOKING
 router.delete('/:bookingId', requireAuth, async(req, res)=>{
-    res.send('success')
+    const { user } = req;
+    const bookingToDelete = await Booking.findByPk(req.params.bookingId);
+    if(!bookingToDelete) {
+        res.status(404).json({
+        message: "Spot couldn't be found"
+        })
+    } else {
+        if(user.id === bookingToDelete.userId){
+        await bookingToDelete.destroy();
+        res.json({
+        message: "Successfully deleted"
+        })
+    } else {
+        res.status(403).json({ message: 'Forbidden'})
+    }
+    }
 });
 
 module.exports = router;

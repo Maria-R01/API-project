@@ -223,7 +223,7 @@ router.post('/:spotId/images', requireAuth, async(req, res) => {
     newImageRes.id = newImage.id
     newImageRes.url = newImage.url;
     newImageRes.preview = newImage.preview;
-    res.json(newImageRes)
+    res.status(201).json(newImageRes)
   }
 })
 
@@ -255,7 +255,7 @@ router.put('/:spotId', requireAuth, validateSpot, async(req, res) => {
 //DELETE A SPOT 
 router.delete('/:spotId', requireAuth, async(req, res) => {
   const { user } = req;
-  let spotById = await Spot.findByPk(req.params.spotId);
+  const spotById = await Spot.findByPk(req.params.spotId);
   if(!spotById) {
     res.status(404).json({
       message: "Spot couldn't be found"
@@ -382,7 +382,7 @@ router.post('/:spotId/bookings', requireAuth, async(req, res)=>{
   spotById = spotById.toJSON();
   if(user.id === spotById.id) return res.status(403).json({message: 'Forbidden'});
   const { Op } = require('sequelize');
-  const bookingDatesCheck = await Booking.findOne({
+  let bookingDatesCheck = await Booking.findOne({
     where: {
       userId: user.id,
       [Op.or]: [{
@@ -408,8 +408,8 @@ router.post('/:spotId/bookings', requireAuth, async(req, res)=>{
     startDate,
     endDate
   })
-  // console.log( startDate.toString().slice(0,10))
-  res.json(newBooking);
+
+  res.status(201).json(newBooking);
 })
 
 
