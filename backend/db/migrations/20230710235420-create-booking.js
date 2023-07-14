@@ -31,10 +31,23 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       startDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY,
+        allowNull: false,
+        validate: {
+          isDate: true,
+        }
       },
       endDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY,
+        allowNull: false,
+        validate: {
+          isDate: true,
+          checkBookingDates() {
+            if (this.startDate >= this.endDate) {
+              throw new Error('End date cannot be on or before start date');
+            }
+          }
+        }
       },
       createdAt: {
         allowNull: false,
