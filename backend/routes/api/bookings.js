@@ -1,6 +1,7 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, SpotImage, Booking } = require('../../db/models');
+const booking = require('../../db/models/booking');
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation');
 
@@ -83,7 +84,9 @@ router.delete('/:bookingId', requireAuth, async(req, res)=>{
         })
     } else {
         if(user.id === bookingToDelete.userId){
-        if(bookingToDelete.startDate <= new Date().toISOString()) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
+        console.log(bookingToDelete.startDate.slice(0, 10))
+        console.log(bookingToDelete.startDate.slice(0, 10) <= new Date().toISOString().slice(0, 10))
+        if(bookingToDelete.startDate.slice(0, 10) <= new Date().toISOString().slice(0, 10)) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
         await bookingToDelete.destroy();
         res.json({
         message: "Successfully deleted"
