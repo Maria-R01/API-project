@@ -1,9 +1,9 @@
 const express = require('express');
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { User, Review, Spot, ReviewImage, SpotImage } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const review = require('../../db/models/review');
+// const review = require('../../db/models/review');
 const router = express.Router();
 
 const validateReview = [
@@ -82,7 +82,7 @@ router.post('/:reviewId/images', requireAuth, async(req, res)=> {
     if(!reviewById) return res.status(404).json({message: "Review couldn't be found"})
     reviewById = reviewById.toJSON();
     if(user.id !== reviewById.userId) return res.status(403).json({message: 'Forbidden'});
-    if(reviewById.ReviewImages.length >= 10) return res.status(403).json({message: "Maximum number of images for this resource was reached"})
+    if(reviewById.ReviewImages.length > 10) return res.status(403).json({message: "Maximum number of images for this resource was reached"})
     let newImage = await ReviewImage.create({
         url,
         reviewId: reviewById.id
