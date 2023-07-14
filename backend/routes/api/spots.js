@@ -51,17 +51,24 @@ handleValidationErrors
 
 //GET ALL SPOTS:
 router.get('/', async (req, res) => {
-    const { page, size } = req.query;
-    const pagination = {}
+    let { page, size } = req.query;
     const errors = {};
     const Spots = [];
-    console.log(page, 'sze: ', size)
-    if(!page || page < 1) {
-      errors.page = "Page must be greater than or equal to 1";
-    } else pagination.page = 1;
-    if(!size || size < 1){
-      errors.size = "Size must be greater than or equal to 1";
-    } else pagination.size = 20;
+    if(!page) {
+      page = 1;
+    }
+    page = parseInt(page);
+    if(page < 1 || page > 10) {
+      errors.page = "Page must be greater than 0 and no more than 10";
+    }
+    if(!size) {
+      size = 20;
+    }
+    size = parseInt(size);
+    if(size < 1 || size > 20) {
+      errors.size = "Size must be greater than 0 and no more than 20";
+    }
+    if(Object.values(errors).length) return res.status(400).json({message: 'bad request', errors: errors})
     const allSpots = await Spot.findAll({
       // include: {
       //   model: Review,
@@ -105,9 +112,10 @@ router.get('/', async (req, res) => {
     //PUSH SPOT POJO INTO SPOTS ARRAY
     Spots.push(spotObj);
   }
-  // console.log({...Spots, ...pagination})
-  res.json({Spots});
+  const pagination = { page, size }
+  res.json({Spots, ...pagination});
 });
+
 
 //GET ALL SPOTS OWNED BY CURRENT USER
 router.get('/current', requireAuth, async(req, res) =>{
