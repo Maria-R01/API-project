@@ -84,8 +84,7 @@ router.delete('/:bookingId', requireAuth, async(req, res)=>{
         })
     } else {
         if(user.id === bookingToDelete.userId){
-        console.log(bookingToDelete.startDate.slice(0, 10))
-        console.log(bookingToDelete.startDate.slice(0, 10) <= new Date().toISOString().slice(0, 10))
+        bookingToDelete = bookingToDelete.toJSON();
         if(bookingToDelete.startDate.slice(0, 10) <= new Date().toISOString().slice(0, 10)) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
         await bookingToDelete.destroy();
         res.json({
@@ -94,7 +93,7 @@ router.delete('/:bookingId', requireAuth, async(req, res)=>{
     } else {
         res.status(403).json({ message: 'Forbidden'})
     }
-    }
+    } 
 });
 
 module.exports = router;
