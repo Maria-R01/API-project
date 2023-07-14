@@ -31,10 +31,15 @@ module.exports = {
         onDelete: 'CASCADE',
       },
       startDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY,
+        allowNull: false,
+        validate: {
+          isDate: true,
+        }
       },
       endDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

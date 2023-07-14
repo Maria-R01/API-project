@@ -1,6 +1,6 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { User, Spot, SpotImage, Review, ReviewImage } = require('../../db/models');
+const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
@@ -223,7 +223,7 @@ router.post('/:spotId/images', requireAuth, async(req, res) => {
     newImageRes.id = newImage.id
     newImageRes.url = newImage.url;
     newImageRes.preview = newImage.preview;
-    res.json(newImageRes)
+    res.status(201).json(newImageRes)
   }
 })
 
@@ -255,7 +255,7 @@ router.put('/:spotId', requireAuth, validateSpot, async(req, res) => {
 //DELETE A SPOT 
 router.delete('/:spotId', requireAuth, async(req, res) => {
   const { user } = req;
-  let spotById = await Spot.findByPk(req.params.spotId);
+  const spotById = await Spot.findByPk(req.params.spotId);
   if(!spotById) {
     res.status(404).json({
       message: "Spot couldn't be found"
@@ -331,5 +331,89 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async(req, res) =>{
   }
   
 })
+
+//GET BOOKINGS FOR SPOT BASED ON SPOT ID
+router.get('/:spotId/bookings', requireAuth, async(req, res)=> {
+  const { user } = req;
+  const spotId = req.params.spotId;
+  let bookings = await Booking.findAll({
+    where: {
+      id: spotId
+    }
+  });
+  if(!bookings.length) return res.status(404).json({message: "Spot couldn't be found"});
+  for(let booking of bookings){
+    booking = booking.toJSON();
+    const bookingsArr = [];
+    const bookingObj = {};
+    if(user.id !== booking.userId){
+      bookingObj.spotId = booking.spotId;
+      bookingObj.startDate = booking.startDate;
+      bookingObj.endDate = booking.endDate;
+      bookingsArr.push(bookingObj);
+      res.json({Bookings: bookingsArr});
+    } else {
+      let userObj = await User.findByPk(booking.userId);
+      userObj = userObj.toJSON();
+      delete userObj.username;
+      bookingObj.id = booking.id;
+      bookingObj.spotId = booking.spotId;
+      bookingObj.userId = booking.userId;
+      bookingObj.startDate = booking.startDate;
+      bookingObj.endDate = booking.endDate;
+      bookingObj.createdAt = booking.createdAt;
+      bookingObj.updatedAt = booking.updatedAt;
+      bookingObj.User = userObj;
+      bookingsArr.push(bookingObj);
+      res.json({Bookings: bookingsArr});
+    }
+  }
+})
+
+//CREATE BOOKING FROM A SPOT'S ID
+router.post('/:spotId/bookings', requireAuth, async(req, res)=>{
+  const { user } = req;
+  const spotId = req.params.spotId;
+  const { startDate, endDate } = req.body;
+  let spotById = await Spot.findByPk(spotId);
+  if(!spotById) return res.status(404).json({
+    "message": "Spot couldn't be found"
+  });
+  spotById = spotById.toJSON();
+  if(user.id === spotById.id) return res.status(403).json({message: 'Forbidden'});
+  const { Op } = require('sequelize');
+  let bookingDatesCheck = await Booking.findOne({
+    where: {
+      spotId: spotId,
+      [Op.or]: [{
+        startDate: {
+          [Op.between]: [startDate, endDate]
+        },
+        endDate: {
+          [Op.between]: [startDate, endDate]
+        }
+      }]
+    }
+  });
+  // bookingDatesCheck = bookingDatesCheck.toJSON();
+  // console.log(bookingDatesCheck);
+  if(bookingDatesCheck) return res.status(403).json({
+    message: "Sorry, this spot is already booked for the specified dates",
+    errors: {
+      startDate: "Start date conflicts with an existing booking",
+      endDate: "End date conflicts with an existing booking"
+    }
+  })
+  const newBooking = await Booking.create({
+    spotId: spotById.id,
+    userId: user.id,
+    startDate,
+    endDate
+  })
+
+  res.status(201).json(newBooking);
+  // res.send('')
+})
+
 
 module.exports = router;

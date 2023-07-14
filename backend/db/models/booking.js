@@ -20,6 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Booking.init({
+    id: {
+      type: DataTypes.INTEGER, 
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     spotId: {
       type: DataTypes.INTEGER,
       references: {
@@ -34,14 +40,26 @@ module.exports = (sequelize, DataTypes) => {
     },
     startDate: {
       type: DataTypes.DATEONLY,
+      allowNull: false,
       validate: {
         isDate: true,
       }
     },
     endDate: {
       type: DataTypes.DATEONLY,
+      allowNull: false,
       validate: {
         isDate: true,
+        checkBookingDates() {
+          if (this.startDate >= this.endDate) {
+            throw new Error("endDate cannot be on or before startDate", { statusCode: 404 });
+          }
+        },
+        endDateInPast() {
+          if(this.endDate < new Date().toISOString().slice(0, 10)) {
+            throw new Error("Past bookings can't be modified", { statusCode: 404 })
+          }
+        }
       }
     },
   }, {
