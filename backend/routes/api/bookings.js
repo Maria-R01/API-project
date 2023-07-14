@@ -77,7 +77,7 @@ router.put('/:bookingId', requireAuth, async(req, res)=>{
 //DELETE A BOOKING
 router.delete('/:bookingId', requireAuth, async(req, res)=>{
     const { user } = req;
-    const bookingToDelete = await Booking.findByPk(req.params.bookingId);
+    let bookingToDelete = await Booking.findByPk(req.params.bookingId);
     if(!bookingToDelete) {
         res.status(404).json({
         message: "Spot couldn't be found"
