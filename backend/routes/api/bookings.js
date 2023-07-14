@@ -91,7 +91,7 @@ router.delete('/:bookingId', requireAuth, async(req, res)=>{
     } else {
         res.status(403).json({ message: 'Forbidden'})
     }
-    } 
+    }
 });
 
 module.exports = router;
