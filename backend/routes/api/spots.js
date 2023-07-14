@@ -51,7 +51,17 @@ handleValidationErrors
 
 //GET ALL SPOTS:
 router.get('/', async (req, res) => {
-  const Spots = [];
+    const { page, size } = req.query;
+    const pagination = {}
+    const errors = {};
+    const Spots = [];
+    console.log(page, 'sze: ', size)
+    if(!page || page < 1) {
+      errors.page = "Page must be greater than or equal to 1";
+    } else pagination.page = 1;
+    if(!size || size < 1){
+      errors.size = "Size must be greater than or equal to 1";
+    } else pagination.size = 20;
     const allSpots = await Spot.findAll({
       // include: {
       //   model: Review,
@@ -95,7 +105,7 @@ router.get('/', async (req, res) => {
     //PUSH SPOT POJO INTO SPOTS ARRAY
     Spots.push(spotObj);
   }
-
+  // console.log({...Spots, ...pagination})
   res.json({Spots});
 });
 
