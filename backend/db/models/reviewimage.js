@@ -39,6 +39,13 @@ module.exports = (sequelize, DataTypes) => {
     //     exclude: ['reviewId']
     //   }
     // },
+    // scopes: {
+    //   urlIdAttributes: {
+    //     attributes: {
+    //       exclude: ['reviewId', 'createAt', 'updatedAt']
+    //     }
+      // }
+    // }
   });
   return ReviewImage;
 };
