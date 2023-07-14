@@ -44,7 +44,7 @@ check('review')
   .withMessage('Review Text is required'),
 check('stars')
   .notEmpty({ checkFalsy: true })
-  .isInt({ checkFalsy: true })
+  .isNumeric({ checkFalsy: true })
   .withMessage('Stars must be an integer from 1 to 5'),
 handleValidationErrors
 ];
@@ -276,9 +276,6 @@ router.delete('/:spotId', requireAuth, async(req, res) => {
 router.get('/:spotId/reviews', async(req, res) =>{
   const reviewsArr = [];
   const reviews = await Review.findAll({
-    attributes: {
-      include: ['id']
-    },
     where: {
       spotId: req.params.spotId
     },
@@ -316,24 +313,23 @@ router.post('/:spotId/reviews', requireAuth, validateReview, async(req, res) =>{
   const spotId = req.params.spotId;
   const spot = await Spot.findByPk(spotId);
   if(!spot) return res.status(404).json({message: "Spot couldn't be found"})
-  const reviewUserChecker = await Review.findOne({
+  const reviewChecker = await Review.findOne({
     where: {
       userId: user.id,
     }
   })
-  const reviewSpotChecker = await Review.findOne({
-    where: {
-      spotId
-    }
-  })
-  if(reviewUserChecker && reviewSpotChecker) return res.status(500).json({message: "User already has a review for this spot"})
-  let newReview = await Review.create({
-    review,
-    stars
-  })
-  newReview.userId = spot.ownerId;
-  newReview.spotId = spot.id;
-  res.json(newReview);
+  if(reviewChecker) {
+    return res.status(500).json({message: "User already has a review for this spot"})
+  } else {
+    let newReview = await Review.create({
+      review,
+      stars,
+      userId: user.id,
+      spotId: spotId
+    })
+    res.status(201).json(newReview);
+  }
+  
 })
 
 module.exports = router;
