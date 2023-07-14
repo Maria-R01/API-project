@@ -384,7 +384,7 @@ router.post('/:spotId/bookings', requireAuth, async(req, res)=>{
   const { Op } = require('sequelize');
   let bookingDatesCheck = await Booking.findOne({
     where: {
-      userId: user.id,
+      spotId: spotId,
       [Op.or]: [{
         startDate: {
           [Op.between]: [startDate, endDate]
@@ -395,21 +395,24 @@ router.post('/:spotId/bookings', requireAuth, async(req, res)=>{
       }]
     }
   });
+  // bookingDatesCheck = bookingDatesCheck.toJSON();
+  // console.log(bookingDatesCheck);
   if(bookingDatesCheck) return res.status(403).json({
-    "message": "Sorry, this spot is already booked for the specified dates",
-    "errors": {
-      "startDate": "Start date conflicts with an existing booking",
-      "endDate": "End date conflicts with an existing booking"
+    message: "Sorry, this spot is already booked for the specified dates",
+    errors: {
+      startDate: "Start date conflicts with an existing booking",
+      endDate: "End date conflicts with an existing booking"
     }
   })
   const newBooking = await Booking.create({
     spotId: spotById.id,
-    userId: spotById.ownerId,
+    userId: user.id,
     startDate,
     endDate
   })
 
   res.status(201).json(newBooking);
+  // res.send('')
 })
 
 

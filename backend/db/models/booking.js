@@ -50,6 +50,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isDate: true,
+        checkBookingDates() {
+          if (this.startDate >= this.endDate) {
+            throw new Error("endDate cannot be on or before startDate", { statusCode: 404 });
+          }
+        },
+        endDateInPast() {
+          if(this.endDate < new Date().toISOString().slice(0, 10)) {
+            throw new Error("Past bookings can't be modified", { statusCode: 404 })
+          }
+        }
       }
     },
   }, {

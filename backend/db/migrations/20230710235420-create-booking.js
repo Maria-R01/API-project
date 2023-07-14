@@ -40,14 +40,6 @@ module.exports = {
       endDate: {
         type: Sequelize.DATEONLY,
         allowNull: false,
-        validate: {
-          isDate: true,
-          checkBookingDates() {
-            if (this.startDate >= this.endDate) {
-              throw new Error('End date cannot be on or before start date');
-            }
-          }
-        }
       },
       createdAt: {
         allowNull: false,

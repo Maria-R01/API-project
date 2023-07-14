@@ -43,6 +43,26 @@ router.put('/:bookingId', requireAuth, async(req, res)=>{
     const { user } = req;
     let editedBooking = await Booking.findByPk(req.params.bookingId);
     if(!editedBooking) res.status(404).json({ message: "Spot couldn't be found"});
+    const { Op } = require('sequelize');
+    const bookingDatesCheck = await Booking.findOne({
+            where: {
+                [Op.or]: [{
+                  startDate: {
+                    [Op.between]: [startDate, endDate]
+                  },
+                  endDate: {
+                    [Op.between]: [startDate, endDate]
+                  }
+                }]
+              }
+      });
+    if(bookingDatesCheck) return res.status(403).json({
+        message: "Sorry, this spot is already booked for the specified dates",
+        errors: {
+          startDate: "Start date conflicts with an existing booking",
+          endDate: "End date conflicts with an existing booking"
+        }
+    });
     editedBooking.toJSON();
     if(user.id === editedBooking.userId){
         await editedBooking.update({
@@ -63,6 +83,7 @@ router.delete('/:bookingId', requireAuth, async(req, res)=>{
         })
     } else {
         if(user.id === bookingToDelete.userId){
+        if(bookingToDelete.startDate <= new Date().toISOString().slice(0, 10)) return res.status(403).json({message: "Bookings that have been started can't be deleted"})
         await bookingToDelete.destroy();
         res.json({
         message: "Successfully deleted"
