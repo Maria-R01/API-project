@@ -91,6 +91,7 @@ router.delete("/:bookingId", requireAuth, async (req, res) => {
       bookingToDelete = bookingToDelete.toJSON();
       console.log(typeof bookingToDelete.startDate);
       console.log('Booking obj start date ', bookingToDelete.startDate)
+      console.log('new Date(): ', new Date())
       if (
         bookingToDelete.startDate.slice(0, 10) <= new Date().toISOString().slice(0, 10)) {
         return res
