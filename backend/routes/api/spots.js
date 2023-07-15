@@ -52,6 +52,7 @@ handleValidationErrors
 //GET ALL SPOTS:
 router.get('/', async (req, res) => {
     let { page, size } = req.query;
+    const pagination = {};
     const errors = {};
     const Spots = [];
     if(!page) {
@@ -69,6 +70,8 @@ router.get('/', async (req, res) => {
       errors.size = "Size must be greater than 0 and no more than 20";
     }
     if(Object.values(errors).length) return res.status(400).json({message: 'bad request', errors: errors})
+    pagination.limit = size
+    pagination.offset = (page - 1) * size
     const allSpots = await Spot.findAll({
       // include: {
       //   model: Review,
@@ -80,12 +83,15 @@ router.get('/', async (req, res) => {
       //     ]
       // },
       // }
+      include: [{
+        model: SpotImage,
+        attributes: ['url']
+      }],
+      ...pagination
     });
   for(let spotObj of allSpots){
     let sum = 0;
-    
     spotObj = spotObj.toJSON();
-
     //GETTING THE AVG RATING BASED ON spotId
     let ratings = await Review.findAll({
       where: {
@@ -97,23 +103,15 @@ router.get('/', async (req, res) => {
       sum += rating.stars;
     }
     let avg = sum / ratings.length;
-    //ADD IN AVGRATING INTO SPOT POJO
     spotObj.avgRating = avg;
-
-    //GET PreviewImg URL 
-    let spotImage = await SpotImage.findOne({
-      where: {
-        preview: true,
-      }
-    });
-    spotImage = spotImage.toJSON();
-    //ADD IN PREVIEW IMAGE INTO SPOT POJO
-    spotObj.previewImage = spotImage.url
-    //PUSH SPOT POJO INTO SPOTS ARRAY
+    if(spotObj.SpotImages.length){
+      spotObj.previewImage = spotObj.SpotImages[0].url
+    }
+    // spotObj.previewImage = spotImage.url
+    delete spotObj.SpotImages;
     Spots.push(spotObj);
   }
-  const pagination = { page, size }
-  res.json({Spots, ...pagination});
+  res.json({Spots, page, size});
 });
 
 
