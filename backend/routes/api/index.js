@@ -31,7 +31,7 @@ router.delete('/spot-images/:imageId', requireAuth, async(req, res)=> {
   });
   if(!imageToDelete) {
       res.status(404).json({
-      message: "Spot couldn't be found"
+      message: "Spot Image couldn't be found"
       })
   } else {
       if(user.id === imageToDelete.Spot.ownerId){
@@ -55,7 +55,7 @@ router.delete('/review-images/:imageId', requireAuth, async(req, res)=> {
   });
   if(!imageToDelete) {
       res.status(404).json({
-      message: "Spot couldn't be found"
+      message: "Review Image couldn't be found"
       })
   } else {
       if(user.id === imageToDelete.Review.userId){
