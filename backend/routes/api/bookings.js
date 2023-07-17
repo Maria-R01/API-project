@@ -46,35 +46,41 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
   if (!editedBooking)
     res.status(404).json({ message: "Booking couldn't be found" });
   const { Op } = require("sequelize");
-  const bookingDatesCheck = await Booking.findOne({
-    where: {
-      [Op.or]: [
-        {
-          startDate: {
-            [Op.between]: [startDate, endDate],
-          },
-          endDate: {
-            [Op.between]: [startDate, endDate],
-          },
-        },
-      ],
-    },
-  });
-  if (bookingDatesCheck)
-    return res.status(403).json({
-      message: "Sorry, this spot is already booked for the specified dates",
-      errors: {
-        startDate: "Start date conflicts with an existing booking",
-        endDate: "End date conflicts with an existing booking",
-      },
-    });
-  editedBooking.toJSON();
+  // const bookingDatesCheck = await Booking.findOne({
+  //   where: {
+  //     [Op.or]: [
+  //       {
+  //         startDate: {
+  //           [Op.between]: [startDate, endDate],
+  //         },
+  //         endDate: {
+  //           [Op.between]: [startDate, endDate],
+  //         },
+  //       },
+  //     ],
+  //   },
+  // });
+  // if (bookingDatesCheck)
+  //   return res.status(403).json({
+  //     message: "Sorry, this spot is already booked for the specified dates",
+  //     errors: {
+  //       startDate: "Start date conflicts with an existing booking",
+  //       endDate: "End date conflicts with an existing booking",
+  //     },
+  //   });
+  // editedBooking.toJSON();
+  // if(endDate <= new Date())
+  
   if (user.id === editedBooking.userId) {
-    await editedBooking.update({
-      startDate,
-      endDate,
-    });
-    res.json(editedBooking);
+    if(editedBooking.endDate > new Date()){
+      await editedBooking.update({
+        startDate,
+        endDate,
+      });
+      return res.json(editedBooking);
+    } else res.status(400).json({
+      message: "Past bookings can't be modified"
+    })
   } else res.status(403).json({ message: "Forbidden" });
 });
 
