@@ -95,7 +95,7 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
 
   res.status(200)
   res.json(booking)
-})
+
 
   /*
 const { startDate, endDate } = req.body;
