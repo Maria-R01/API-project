@@ -72,6 +72,8 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
   // if(endDate <= new Date())
   
   if (user.id === editedBooking.userId) {
+    console.log(typeof editedBooking.endDate);
+    console.log('newDate: ', typeof new Date())
     if(editedBooking.endDate > new Date()){
       await editedBooking.update({
         startDate,
@@ -82,6 +84,44 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
       message: "Past bookings can't be modified"
     })
   } else res.status(403).json({ message: "Forbidden" });
+  /*
+const { startDate, endDate } = req.body;
+  const { user } = req;
+  let editedBooking = await Booking.findByPk(req.params.bookingId);
+  if (!editedBooking)
+    res.status(404).json({ message: "Booking couldn't be found" });
+  const { Op } = require("sequelize");
+  const bookingDatesCheck = await Booking.findOne({
+    where: {
+      [Op.or]: [
+        {
+          startDate: {
+            [Op.between]: [startDate, endDate],
+          },
+          endDate: {
+            [Op.between]: [startDate, endDate],
+          },
+        },
+      ],
+    },
+  });
+  if (bookingDatesCheck)
+    return res.status(403).json({
+      message: "Sorry, this spot is already booked for the specified dates",
+      errors: {
+        startDate: "Start date conflicts with an existing booking",
+        endDate: "End date conflicts with an existing booking",
+      },
+    });
+  editedBooking.toJSON();
+  if (user.id === editedBooking.userId) {
+    await editedBooking.update({
+      startDate,
+      endDate,
+    });
+    res.json(editedBooking);
+  } else res.status(403).json({ message: "Forbidden" });
+  */
 });
 
 //DELETE A BOOKING
