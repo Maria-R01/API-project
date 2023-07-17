@@ -70,7 +70,22 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
   //   });
   // editedBooking.toJSON();
   // if(endDate <= new Date())
-  
+  const bookingDatesCheck = await Booking.findOne({
+    where: {
+      spotId: editedBooking.spotId,
+      [Op.or]: [
+              {
+                startDate: {
+                  [Op.between]: [editedBooking.startDate, editedBooking.endDate],
+                },
+                endDate: {
+                  [Op.between]: [editedBooking.startDate, editedBooking.endDate],
+                },
+            }
+      ],
+    }
+  })
+  console.log(bookingDatesCheck);
   if (user.id === editedBooking.userId) {
     console.log(typeof editedBooking.endDate);
     console.log('newDate: ', typeof new Date())
