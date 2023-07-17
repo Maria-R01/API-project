@@ -366,17 +366,47 @@ router.get('/:spotId/bookings', requireAuth, async(req, res)=> {
     include: [{
       model: User,
       attributes: ['id', 'firstName', 'lastName']
+    }, {
+      model: Spot,
+      attributes: ['ownerId']
     }],
     where: {
       spotId: spotId
     }
   });
-  if(!bookings.length) return res.status(404).json({message: "Spot couldn't be found"});
-  // for(let booking of bookings){
+  if(!bookings.length) {
+    return res.status(404).json({message: "Spot couldn't be found"});
+  } else {
+    const bookingsArr = [];
+    for(let booking of bookings){
+        if(user.id !== booking.Spot.ownerId){
+          const nonOwnerObj = {
+            spotId: booking.spotId,
+            startDate: booking.startDate,
+            endDate: booking.endDate,
+          }
+          bookingsArr.push(nonOwnerObj);
+       } else {
+          const ownerObj = {
+            User: {
+              id: booking.User.id,
+              firstName: booking.User.firstName,
+              lastName: booking.User.lastName
+            },
+            id: booking.id,
+            spotId: booking.spotId,
+            userId: booking.userId,
+            startDate: booking.startDate,
+            endDate: booking.endDate,
+            createdAt: booking.createdAt,
+            updatedAt: booking.updatedAt
+          }
+          bookingsArr.push(ownerObj);
+       }
+  }
+  res.json({Bookings: bookingsArr})
   //   booking = booking.toJSON();
-  //   const bookingsArr = [];
   //   const bookingObj = {};
-  //   if(user.id !== booking.userId){
   //     bookingObj.spotId = booking.spotId;
   //     bookingObj.startDate = booking.startDate;
   //     bookingObj.endDate = booking.endDate;
@@ -397,8 +427,7 @@ router.get('/:spotId/bookings', requireAuth, async(req, res)=> {
   //     bookingsArr.push(bookingObj);
   //     res.json({Bookings: bookingsArr});
   //   }
-  // }
-  res.json({Bookings: bookings})
+  }
 })
 
 //CREATE BOOKING FROM A SPOT'S ID
