@@ -53,7 +53,7 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
       return res.status(403).json({ message: "Forbidden" })
   }
 
-  const checkAvailability = await Booking.findOne({
+  const spotAvailability = await Booking.findOne({
       where: {
           [Op.or]: [
               {
@@ -70,7 +70,7 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
       }
   })
 
-  if (checkAvailability) {
+  if (spotAvailability) {
       return res.status(403).json({
           message: "Sorry, this spot is already booked for the specified dates",
           errors: {
