@@ -86,23 +86,29 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
       ],
     }
   })
-  if((bookingDatesCheck.startDate >= editedBooking.startDate) && (bookingDatesCheck.startDate <= editedBooking.startDate)) errors.startDate = "Start date conflicts with an existing booking";
-  if((bookingDatesCheck.endDate >= editedBooking.endDate) && (bookingDatesCheck.endDate <= editedBooking.endDate)) errors.endDate = "End date conflicts with an existing booking";
-  if(errors) return res.status(403).json({
-    message: "Sorry, this spot is already booked for the specified dates",
-    errors: errors
-  })
-  if (user.id === editedBooking.userId) {
-    if(editedBooking.endDate > new Date()){
-      await editedBooking.update({
-        startDate,
-        endDate,
-      });
-      return res.json(editedBooking);
-    } else res.status(400).json({
-      message: "Past bookings can't be modified"
+  if(bookingDatesCheck.userId !== user.id){
+    if((bookingDatesCheck.startDate >= editedBooking.startDate) && (bookingDatesCheck.startDate <= editedBooking.startDate)) errors.startDate = "Start date conflicts with an existing booking";
+    if((bookingDatesCheck.endDate >= editedBooking.endDate) && (bookingDatesCheck.endDate <= editedBooking.endDate)) errors.endDate = "End date conflicts with an existing booking";
+    if(errors) {
+      return res.status(403).json({
+      message: "Sorry, this spot is already booked for the specified dates",
+      errors: errors
     })
-  } else res.status(403).json({ message: "Forbidden" });
+    } else {
+      if (user.id === editedBooking.userId) {
+        if(editedBooking.endDate > new Date()){
+          await editedBooking.update({
+            startDate,
+            endDate,
+          });
+          return res.json(editedBooking);
+        } else res.status(400).json({
+          message: "Past bookings can't be modified"
+        })
+      } else res.status(403).json({ message: "Forbidden" });
+    }
+  }
+
   /*
 const { startDate, endDate } = req.body;
   const { user } = req;
