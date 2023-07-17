@@ -40,6 +40,7 @@ router.get("/current", requireAuth, async (req, res) => {
 
 //EDIT A BOOKING
 router.put("/:bookingId", requireAuth, async (req, res) => {
+  const { Op } = require('sequelize');
   const booking = await Booking.findByPk(req.params.bookingId)
 
   if (!booking) {
