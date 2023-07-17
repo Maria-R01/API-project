@@ -44,7 +44,7 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
   const { user } = req;
   let editedBooking = await Booking.findByPk(req.params.bookingId);
   if (!editedBooking)
-    res.status(404).json({ message: "Spot couldn't be found" });
+    res.status(404).json({ message: "Booking couldn't be found" });
   const { Op } = require("sequelize");
   const bookingDatesCheck = await Booking.findOne({
     where: {
