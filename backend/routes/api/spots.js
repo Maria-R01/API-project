@@ -411,7 +411,7 @@ router.post('/:spotId/bookings', requireAuth, async(req, res)=>{
     "message": "Spot couldn't be found"
   });
   spotById = spotById.toJSON();
-  if(user.id === spotById.id) return res.status(403).json({message: 'Forbidden'});
+  if(user.id === spotById.ownerId) return res.status(403).json({message: 'Forbidden'});
   const { Op } = require('sequelize');
   let bookingDatesCheck = await Booking.findOne({
     where: {
