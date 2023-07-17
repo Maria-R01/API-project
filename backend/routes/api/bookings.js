@@ -41,17 +41,17 @@ router.get("/current", requireAuth, async (req, res) => {
 //EDIT A BOOKING
 router.put("/:bookingId", requireAuth, async (req, res) => {
   const { Op } = require('sequelize');
+  const { user } = req;
+  const { startDate, endDate } = req.body
   const booking = await Booking.findByPk(req.params.bookingId)
 
   if (!booking) {
       return res.status(404).json({ message: "Booking couldn't be found" })
   }
 
-  if (booking.userId !== req.user.id) {
+  if (booking.userId !== user.id) {
       return res.status(403).json({ message: "Forbidden" })
   }
-
-  const { startDate, endDate } = req.body
 
   const checkAvailability = await Booking.findOne({
       where: {
@@ -66,7 +66,7 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
       }
   })
 
-  if (checkAvailability) {
+  if (!checkAvailability) {
       return res.status(403).json({
           message: "Sorry, this spot is already booked for the specified dates",
           errors: {
@@ -76,13 +76,11 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
       })
   }
 
-  let currentDate = new Date().toJSON().slice(0, 10)
-
-  if (startDate < currentDate) {
+  if (endDate <= new Date()) {
       return res.status(403).json({ message: "Past bookings can't be modified" })
   }
 
-  let setObj = {}
+  const setObj = {}
 
   if (startDate) {
       setObj.startDate = startDate
@@ -94,7 +92,6 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
   booking.set(setObj)
   await booking.save()
 
-  res.status(200)
   res.json(booking)
 
 
