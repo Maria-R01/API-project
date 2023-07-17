@@ -52,9 +52,9 @@ router.get('/current', requireAuth, async(req, res)=> {
         review.Spot = spot;
 
         let reviewImages = await ReviewImage.findAll({
-            // where: {
-            //     id: review.id
-            // },
+            where: {
+                reviewId: review.id
+            },
             attributes: {
                 exclude: ['reviewId', 'createdAt', 'updatedAt']
             }
