@@ -94,7 +94,8 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
       message: "Sorry, this spot is already booked for the specified dates",
       errors: errors
     })
-    } else {
+    }
+  } else {
       if (user.id === editedBooking.userId) {
         if(editedBooking.endDate > new Date()){
           await editedBooking.update({
@@ -106,7 +107,6 @@ router.put("/:bookingId", requireAuth, async (req, res) => {
           message: "Past bookings can't be modified"
         })
       } else res.status(403).json({ message: "Forbidden" });
-    }
   }
 
   /*
