@@ -106,6 +106,8 @@ router.get('/', async (req, res) => {
     spotObj.avgRating = avg;
     if(spotObj.SpotImages.length){
       spotObj.previewImage = spotObj.SpotImages[0].url
+    } else {
+      spotObj.previewImage = 'No preview available yet'
     }
     // spotObj.previewImage = spotImage.url
     delete spotObj.SpotImages;
@@ -146,11 +148,17 @@ router.get('/current', requireAuth, async(req, res) =>{
     let spotImage = await SpotImage.findOne({
       where: {
         preview: true,
+        spotId: spotObj.id,
       }
     });
-    spotImage = spotImage.toJSON();
+    if(spotImage === null) {
+      spotObj.previewImage = 'No preview available yet'
+    } else {
+      spotImage = spotImage.toJSON();
+      // console.log(spotImage)
     //ADD IN PREVIEW IMAGE INTO SPOT POJO
     spotObj.previewImage = spotImage.url
+    }
     //PUSH SPOT POJO INTO SPOTS ARRAY
     Spots.push(spotObj);
   }
@@ -355,37 +363,42 @@ router.get('/:spotId/bookings', requireAuth, async(req, res)=> {
   const { user } = req;
   const spotId = req.params.spotId;
   let bookings = await Booking.findAll({
+    include: [{
+      model: User,
+      attributes: ['id', 'firstName', 'lastName']
+    }],
     where: {
-      id: spotId
+      spotId: spotId
     }
   });
   if(!bookings.length) return res.status(404).json({message: "Spot couldn't be found"});
-  for(let booking of bookings){
-    booking = booking.toJSON();
-    const bookingsArr = [];
-    const bookingObj = {};
-    if(user.id !== booking.userId){
-      bookingObj.spotId = booking.spotId;
-      bookingObj.startDate = booking.startDate;
-      bookingObj.endDate = booking.endDate;
-      bookingsArr.push(bookingObj);
-      res.json({Bookings: bookingsArr});
-    } else {
-      let userObj = await User.findByPk(booking.userId);
-      userObj = userObj.toJSON();
-      delete userObj.username;
-      bookingObj.id = booking.id;
-      bookingObj.spotId = booking.spotId;
-      bookingObj.userId = booking.userId;
-      bookingObj.startDate = booking.startDate;
-      bookingObj.endDate = booking.endDate;
-      bookingObj.createdAt = booking.createdAt;
-      bookingObj.updatedAt = booking.updatedAt;
-      bookingObj.User = userObj;
-      bookingsArr.push(bookingObj);
-      res.json({Bookings: bookingsArr});
-    }
-  }
+  // for(let booking of bookings){
+  //   booking = booking.toJSON();
+  //   const bookingsArr = [];
+  //   const bookingObj = {};
+  //   if(user.id !== booking.userId){
+  //     bookingObj.spotId = booking.spotId;
+  //     bookingObj.startDate = booking.startDate;
+  //     bookingObj.endDate = booking.endDate;
+  //     bookingsArr.push(bookingObj);
+  //     res.json({Bookings: bookingsArr});
+  //   } else {
+  //     let userObj = await User.findByPk(booking.userId);
+  //     userObj = userObj.toJSON();
+  //     delete userObj.username;
+  //     bookingObj.id = booking.id;
+  //     bookingObj.spotId = booking.spotId;
+  //     bookingObj.userId = booking.userId;
+  //     bookingObj.startDate = booking.startDate;
+  //     bookingObj.endDate = booking.endDate;
+  //     bookingObj.createdAt = booking.createdAt;
+  //     bookingObj.updatedAt = booking.updatedAt;
+  //     bookingObj.User = userObj;
+  //     bookingsArr.push(bookingObj);
+  //     res.json({Bookings: bookingsArr});
+  //   }
+  // }
+  res.json({Bookings: bookings})
 })
 
 //CREATE BOOKING FROM A SPOT'S ID
