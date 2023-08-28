@@ -13,7 +13,7 @@ const Spots = () => {
     }, [dispatch]);
     const spotsData = useSelector(state => state.spots);
     const spotsDataArr = Object.values(spotsData.allSpots);
-    console.log(spotsDataArr)
+    // console.log(spotsDataArr)
     spotsDataArr.map(spot => allSpots.push(spot));
     // console.log('SpotsData in spots component after useSelector: ', spotsData);
     // console.log('allSpots array: ', allSpots)
@@ -27,20 +27,21 @@ const Spots = () => {
                         <div>
                             <div className='spotTileImage'>
                                 <img alt={`${spot.name}`} src={spot.previewImage}></img>
-                            </div>
+                                {spot.previewImage}
+                        </div>
+                        <div>
                             <div className='spotTileInfo'>
-                                <div>
-                                    <div className='spotLocation'>
-                                        {spot.city}, {spot.state}
-                                        <div className='avgRating'>
-                                            <i className="fa-solid fa-star"></i> {spot.avgRating? spot.avgRating : `New`}
-                                        </div>
-                                    </div>
-                                    <div className='spotPrice'>
-                                        ${spot.price}/night
-                                    </div>
+                                <div className='spotLocation'>
+                                    {spot.city}, {spot.state}
+                                </div>
+                                <div className='spotPrice'>
+                                    ${spot.price} night
+                                </div>
+                                <div className='avgRating'>
+                                        <i className="fa-solid fa-star"></i> {spot.avgRating? spot.avgRating : `New`}
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </NavLink>
                 </div>

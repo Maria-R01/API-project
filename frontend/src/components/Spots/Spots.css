@@ -24,5 +24,18 @@
 
 .spotLocation {
     display: inline-flex;
-    gap: 90px;
+}
+
+
+.avgRating {
+    display: flex;
+    gap: 5px;
+    
+}
+.spotTileInfo {
+    margin-top: 160px;
+}
+
+.spotTileInfo > div {
+    text-decoration: none;
 }
