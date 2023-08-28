@@ -11,17 +11,18 @@ const Spots = () => {
         dispatch(loadSpotsThunk());
     }, [dispatch]);
     const spotsData = useSelector(state => state.spots);
-    const spotsDataArr = Object.values(spotsData);
+    const spotsDataArr = Object.values(spotsData.allSpots);
     spotsDataArr.map(spot => allSpots.push(spot));
     // console.log('SpotsData in spots component after useSelector: ', spotsData);
+    // console.log('allSpots array: ', allSpots)
     return (
         <>
         <h1>HELLO FROM SPOTS COMPONENT</h1>
         <div className='allSpots'>
             {allSpots.map(spot => (
-                <div>
+                <div className='tile'>
                     <NavLink to={`/spots/${spot.id}`} key={spot.id} className='spotTile'>
-                        <div className='tile'>
+                        <div>
                             <div className='spotTileImage'>
                                 <img alt={`${spot.name}`} src={spot.previewImage}></img>
                             </div>
