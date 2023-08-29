@@ -10,7 +10,7 @@ const Spots = () => {
     const spotsData = useSelector(state => state.spots.allSpots);
     // console.log(spotsData)
     // const spotsDataArr = Object.values(spotsData);
-    // spotsDataArr.map(spot => allSpots.push(spot));
+    // spotsDataArr.map(spot => allSpots.push(spot)); 
     Object.values(spotsData)?.map(spot => allSpots.push(spot));
 
 
