@@ -10,15 +10,15 @@ module.exports = {
     await ReviewImage.bulkCreate([
       {
         reviewId: 1, 
-        url: 'ImageUrl4.com'
+        url: 'https://a0.muscache.com/im/pictures/79d1f66a-3281-46bd-823b-16be790c2425.jpg?im_w=1200'
       },
       {
         reviewId: 2, 
-        url: 'ImageUrl5.com'
+        url: 'https://a0.muscache.com/im/pictures/miso/Hosting-748537852797897390/original/dab0ab48-6f5d-44aa-96a4-e7090e7b70dd.jpeg?im_w=1200'
       },
       {
         reviewId: 3, 
-        url: 'ImageUrl6.com'
+        url: 'https://a0.muscache.com/im/pictures/54b4217d-2bbc-4442-aa56-049e83cf23ad.jpg?im_w=1200'
       }
     ], { validate: true });
   },

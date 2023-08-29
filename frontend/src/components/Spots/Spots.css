@@ -1,0 +1,41 @@
+.tile {
+    display: inline-flex;
+    border: 2px solid black;
+    border-radius: 15px;
+    margin: 10px;
+    width: 290px;
+    height: 270px;
+    margin-left: 20px;
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+.spotTile {
+    padding: 10px;
+}
+
+[role="tooltip"] {
+    visibility: visible;
+}
+
+.allSpots {
+    border: 6px solid red;
+}
+
+.spotLocation {
+    display: inline-flex;
+}
+
+
+.avgRating {
+    display: flex;
+    gap: 5px;
+    
+}
+.spotTileInfo {
+    margin-top: 160px;
+}
+
+.spotTileInfo > div {
+    text-decoration: none;
+}
