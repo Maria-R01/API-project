@@ -16,6 +16,7 @@ export const loadSpotsThunk = (data) => async (dispatch, getState) => {
     if(response.ok){
         const spots = await response.json();
         dispatch(actionLoadSpots(spots));
+        return spots;
     } else {
         const errors = response.json();
         return errors;
@@ -24,8 +25,8 @@ export const loadSpotsThunk = (data) => async (dispatch, getState) => {
 
 
 //REDUCER
-// const initializedState = {}
-const spotsReducer = (state = {}, action) => {
+const initialState = {}
+const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case(LOAD_SPOTS):
             const spotsData = {}
