@@ -27,18 +27,19 @@ const Spots = () => {
                         <div>
                             <div className='spotTileImage'>
                                 <img alt={`${spot.name}`} src={spot.previewImage}></img>
-                                {spot.previewImage}
                         </div>
                         <div>
                             <div className='spotTileInfo'>
-                                <div className='spotLocation'>
-                                    {spot.city}, {spot.state}
+                                <div className='locationAndRating'>
+                                    <div className='spotLocation'>
+                                        {spot.city}, {spot.state}
+                                    </div>
+                                    <div className='avgRating'>
+                                        <i className="fa-solid fa-star"></i> {spot.avgRating? spot.avgRating : `New`}
+                                    </div>
                                 </div>
                                 <div className='spotPrice'>
                                     ${spot.price} night
-                                </div>
-                                <div className='avgRating'>
-                                        <i className="fa-solid fa-star"></i> {spot.avgRating? spot.avgRating : `New`}
                                 </div>
                             </div>
                         </div>

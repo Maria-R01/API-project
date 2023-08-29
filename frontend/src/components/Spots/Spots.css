@@ -1,12 +1,15 @@
+#root {
+    max-width: 1024px;
+    margin: auto;
+}
+
 .tile {
     display: inline-flex;
-    border: 2px solid black;
-    border-radius: 15px;
     margin: 10px;
     width: 290px;
-    height: 270px;
-    margin-left: 20px;
-    /* justify-content: center; */
+    height: 350px;
+    margin-left: 25px;
+    justify-content: center;
     /* align-items: center; */
 }
 
@@ -30,12 +33,26 @@
 .avgRating {
     display: flex;
     gap: 5px;
-    
 }
 .spotTileInfo {
-    margin-top: 160px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 6px;    
 }
 
-.spotTileInfo > div {
+/* .spotTileInfo > div {
     text-decoration: none;
+} */
+
+img {
+    display: flex;
+    height: 230px;
+    width: 300px;
+    border-radius: 15px;
+}
+
+.locationAndRating  {
+    display: flex;
+    flex-direction: row;
+    border: 1px dotted blue;
 }
