@@ -8,6 +8,7 @@ function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   return (
+    <>
     <div className='navBar'>
       <div>
         <NavLink exact to="/" className='icon-div-container'>
@@ -21,6 +22,8 @@ function Navigation({ isLoaded }){
         </div>
       )}
     </div>
+    <div className='bottomLine'></div>
+    </>
   );
 }
 

@@ -1,11 +1,19 @@
 //ACTION TYPES
 export const LOAD_SPOTS = 'spots/LOAD_SPOTS';
+export const LOAD_SPECIFIC_SPOT = 'spots/LOAD_SPECIFIC_SPOT';
 
 //ACTIONS
 export const actionLoadSpots = (spots) => {
     return {
         type: LOAD_SPOTS,
         spots
+    }
+};
+
+export const actionLoadSpecificSpot = (spot) => {
+    return {
+        type LOAD_SPECIFIC_SPOT,
+        spot
     }
 };
 
@@ -21,11 +29,16 @@ export const loadSpotsThunk = (data) => async (dispatch, getState) => {
         const errors = response.json();
         return errors;
     }
-}
+};
+
+export const loadSpecificSpotThunk = (data) => (dispatch, getState) => {
+
+    
+};
 
 
 //REDUCER
-const initialState = {}
+const initialState = {allSpots: {}, singleSpot: {}}
 const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case(LOAD_SPOTS):
@@ -35,6 +48,8 @@ const spotsReducer = (state = initialState, action) => {
             // console.log('SpotsDataArr: ', spotsDataArr)
             spotsDataArr.map(spot => spotsData.allSpots[spot.id]= spot);
             return spotsData;
+        case (LOAD_SPECIFIC_SPOT): 
+            return
         default:
             return state;
     }
