@@ -7,9 +7,11 @@ import { NavLink } from 'react-router-dom/cjs/react-router-dom';
 const Spots = () => {
     const allSpots = [];
     const dispatch = useDispatch();
-    const spotsData = useSelector(state => state.spots);
-    const spotsDataArr = Object.values(spotsData.allSpots);
-    spotsDataArr.map(spot => allSpots.push(spot));
+    const spotsData = useSelector(state => state.spots.allSpots);
+    // console.log(spotsData)
+    // const spotsDataArr = Object.values(spotsData);
+    // spotsDataArr.map(spot => allSpots.push(spot));
+    Object.values(spotsData)?.map(spot => allSpots.push(spot));
 
 
     useEffect(() => {
