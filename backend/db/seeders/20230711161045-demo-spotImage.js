@@ -61,27 +61,27 @@ module.exports = {
       {
         spotId: 2,
         url: 'https://a0.muscache.com/im/pictures/miso/Hosting-748537852797897390/original/f82a8df0-9a52-46fb-934e-e49ccbe5ce46.jpeg?im_w=1200',
-        preview: false,
+        preview: true,
       },
       {
         spotId: 2,
         url: 'https://a0.muscache.com/im/pictures/miso/Hosting-748537852797897390/original/00595858-218b-404f-9c6d-8c914520bd8b.jpeg?im_w=1200',
-        preview: false,
+        preview: true,
       },
       {
         spotId: 2,
         url: 'https://a0.muscache.com/im/pictures/miso/Hosting-748537852797897390/original/86729e89-1bc5-45a0-be4c-5520c732255c.jpeg?im_w=1200',
-        preview: false,
+        preview: true,
       },
       {
         spotId: 2,
         url: 'https://a0.muscache.com/im/pictures/miso/Hosting-748537852797897390/original/b2b198f5-9ede-4767-9fa7-820c100c35cc.jpeg?im_w=1200',
-        preview: false,
+        preview: true,
       },
       {
         spotId: 2,
         url: 'https://a0.muscache.com/im/pictures/miso/Hosting-748537852797897390/original/9f87f00e-a912-4479-8e7d-0c4d6b0b831c.jpeg?im_w=1200',
-        preview: false,
+        preview: true,
       },
     ], { validate: true });
   },
