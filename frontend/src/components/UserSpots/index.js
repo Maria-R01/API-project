@@ -10,7 +10,7 @@ const UserSpots = () => {
     const dispatch = useDispatch();
     const userSpotsObj = useSelector(state => state.spots.allSpots);
     Object.values(userSpotsObj)?.map(spot => userSpots.push(spot));
-    console.log('userSpots: ', userSpots)
+    // console.log('userSpots: ', userSpots)
 
 
     useEffect(() => {
