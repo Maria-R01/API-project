@@ -10,6 +10,8 @@
 .navBar {
     display: inline-flex;
     align-items: center;
+    /* border: 1px solid red; */
+    max-width: 1000px;
 }
 
 .icon-div-container {
@@ -22,5 +24,48 @@
 
 .profile-icon {
     margin-left: 700px;
-    
+    display: flex;
+    flex-direction: column;
+}
+
+.profileButtonNav {
+    padding: 7px;
+    border-radius: 50px;
+    background-color: white;
+    width: 70px;
+    display: flex;
+    justify-content: center
+}
+
+.bottomLine {
+    border: 1px solid lightgray;
+}
+
+.buttonDropDown {
+    background-color: white;
+    display: flex;
+    flex-direction: column-reverse;
+    border: 3px solid black;
+    width: 82px;
+    max-width: fit-content;
+    position: relative;
+    top: 2px;
+    right: 79px;
+    padding-right: 70px;
+}
+
+.buttonDropDown > * {
+    /* border: 1px black dashed; */
+    max-width: fit-content;
+    padding-left: 10px;
+}
+
+.buttonDropDown > * > * {
+    background-color: white;
+    color: black;
+    border: 2px solid transparent;
+}
+
+button {
+    cursor: pointer;
 }

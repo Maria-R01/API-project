@@ -20,27 +20,27 @@ const Spots = () => {
 
     return (
         <>
-        <h1>All Spots Component</h1>
+        {/* <h1>All Spots Component</h1> */}
         <div className='allSpots'>
             {allSpots.map(spot => (
-                <div className='tile'>
-                    <NavLink to={`/spots/${spot.id}`} key={spot.id} className='spotTile'>
+                <div className='tile' key={spot.id} title={spot.name}>
+                    <NavLink to={`/spots/${spot.id}`} className='spotTile' data-tip={`${spot.name}`} >
                         <div>
                             <div className='spotTileImage'>
                                 <img alt={`${spot.name}`} src={spot.previewImage}></img>
                         </div>
                         <div>
                             <div className='spotTileInfo'>
-                                <div className='locationAndRating'>
+                                <div className='locationAndPrice'>
                                     <div className='spotLocation'>
                                         {spot.city}, {spot.state}
                                     </div>
-                                    <div className='avgRating'>
-                                        <i className="fa-solid fa-star"></i> {spot.avgRating? spot.avgRating : `New`}
+                                    <div className='spotPrice'>
+                                    ${spot.price} night
                                     </div>
                                 </div>
-                                <div className='spotPrice'>
-                                    ${spot.price} night
+                                <div className='avgRating'>
+                                        <i className="fa-solid fa-star"></i> {spot.avgRating? spot.avgRating.toFixed(1) : `New`}
                                 </div>
                             </div>
                         </div>
