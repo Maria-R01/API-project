@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
+import { NavLink } from 'react-router-dom';
 
 function LoginFormModal() {
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [isDisabled, setIsDisabled] = useState(true);
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
@@ -24,34 +26,43 @@ function LoginFormModal() {
       });
   };
 
+  useEffect(() => {
+    setIsDisabled(credential.length < 4 || password.length < 6 )
+  }, [credential, password])
+
   return (
-    <>
-      <h1>Log In</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="modal">
+      <h1 className="form-title">Log In</h1>
+      <form onSubmit={handleSubmit} className="login-form">
+        {errors.credential && (
+            <p className="errors">{errors.credential}</p>
+          )}
         <label>
-          Username or Email
           <input
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
-            required
+            required 
+            placeholder="Username or Email"
+            className="login-input-fields"
           />
         </label>
         <label>
-          Password
           <input
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            required 
+            placeholder="Password"
+            className="login-input-fields"
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
-        <button type="submit">Log In</button>
+        <button type="submit" disabled={isDisabled} className='login-submit-button'>Log In</button>
       </form>
-    </>
+      <div className="demo-user">
+        <NavLink to='/' onClick={() => alert('Feature Coming Soon...')}>Demo User</NavLink>
+      </div>
+    </div>
   );
 }
 

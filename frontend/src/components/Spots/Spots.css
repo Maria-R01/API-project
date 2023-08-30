@@ -5,6 +5,7 @@
 
 .tile {
     display: inline-flex;
+    /* border: 1px solid green; */
     margin: 10px;
     width: 290px;
     height: 350px;
@@ -15,29 +16,34 @@
 
 .spotTile {
     padding: 10px;
+    text-decoration: none;
 }
 
-[role="tooltip"] {
-    visibility: visible;
-}
 
 .allSpots {
-    border: 6px solid red;
+    /* border: 6px solid red; */
 }
 
 .spotLocation {
     display: inline-flex;
+    font-weight: bold;
+    width: 250px;
 }
 
 
 .avgRating {
     display: flex;
     gap: 5px;
+    justify-content: end;
+    /* border: 1px dashed blue; */
+    width: 150px;
 }
 .spotTileInfo {
     display: flex;
-    flex-direction: column;
-    margin-top: 6px;    
+    /* flex-direction: column; */
+    margin-top: 6px;  
+    /* border: 1px solid pink;  */
+    width: 300px;
 }
 
 /* .spotTileInfo > div {
@@ -51,8 +57,12 @@ img {
     border-radius: 15px;
 }
 
-.locationAndRating  {
+.locationAndPrice  {
     display: flex;
-    flex-direction: row;
-    border: 1px dotted blue;
+    flex-direction: column;
+    /* border: 1px dotted blue; */
+}
+
+.spotPrice {
+    font-weight: bold;
 }

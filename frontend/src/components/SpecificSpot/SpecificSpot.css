@@ -1,0 +1,132 @@
+.root {
+    margin-left: 40px;
+}
+
+.topHeadings > * {
+    font-weight: lighter;
+}
+
+.imagesContainer {
+    /* border: 1px dashed blue; */
+    display: flex;
+    /* margin: 20px; */
+}
+
+.fourImages {
+    /* border: 2px darkgoldenrod solid; */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.fourImages > div > img {
+    border: 1px solid black;
+    width: 218px;
+    height: 229px;
+    border-radius: 0;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.firstImage > img {
+    border: 1px solid black;
+    width: 480px;
+    height: 460px;
+    border-radius: 0;
+}
+
+.bottom {
+    border: 1px black solid;
+    width: 923px;
+}
+
+.details-container {
+    display: flex;
+    gap: 380px
+}
+
+.description-container {
+
+}
+
+.hostInfo {
+    font-weight: lighter;
+
+}
+
+.description {
+
+}
+
+.details-box-container {
+    display: flex;
+    flex-direction: column;
+    width: 233px;
+    border: 1px solid black;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;    
+    position: relative;
+    right: -37px;
+}
+
+.details-box-top {
+    display: flex;
+    /* gap: 15px; */
+    margin-bottom: 10px;
+}
+
+.price {
+    margin-left: 13px;
+}
+
+.ratings-reviews {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    padding-right: 5px;
+    font-size: small;
+    margin-left: 30px;
+}
+
+.night {
+    padding-left: 0;
+    margin-left: 3px;
+    font-size: small;
+    display: flex;
+    align-items: flex-end;
+}
+.numReviews {
+    padding-left: 15px;
+    font-size: small;
+}
+
+.avgStarRating {
+    font-size: small;
+}
+
+.details-box-bottom {
+    display: flex;
+    justify-content: center;
+}
+
+.reserve-button {
+    width: 208px;
+    height: 29px;
+    font-size: small;
+    background-color: #fe5a5e;
+    color: white;
+    box-shadow: 2px 2px 1px black;
+    border: 2px black solid;
+}
+
+.bottom {
+
+}
+
+.reviews-container {
+
+}

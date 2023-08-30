@@ -1,11 +1,44 @@
-h1{
+#modal-content {
+    width: 330px;
+    height: 290px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+}
+
+.form-title {
     display: flex;
     justify-content: center;
 }
 
-form{
+.login-form {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     gap: 10px;
+}
+
+.demo-user {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.errors {
+    color: #fe5a5e;
+
+}
+
+.login-input-fields {
+    width: 250px;
+    background-color: rgb(202, 236, 252)
+}
+
+.login-submit-button {
+    height: 35px;
+    background-color: #fe5a5e;
+    color: white;
+    box-shadow: 2px 2px 1px black;
+    border: 2px black solid;
 }
