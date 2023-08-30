@@ -5,7 +5,11 @@ import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
+import { Link, useHistory } from 'react-router-dom';
+import UserSpots from "../UserSpots";
+
 function ProfileButton({ user }) {
+  const history = useHistory();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -35,6 +39,7 @@ function ProfileButton({ user }) {
     e.preventDefault();
     dispatch(sessionActions.logout());
     closeMenu();
+    history.push('/')
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
@@ -47,11 +52,16 @@ function ProfileButton({ user }) {
       <div className={ulClassName} ref={ulRef}>
         {user ? (
           <>
-            <div>{user.username}</div>
-            <div>{user.firstName} {user.lastName}</div>
+            <div>Hello, {user.username}</div>
+            {/* <div>{user.firstName} {user.lastName}</div> */}
             <div>{user.email}</div>
-            <div>
-              <button onClick={logout}>Log Out</button>
+            <div className="manage-spots-container">
+              <div className="line"></div>
+              <Link to='/spots/current' className='manage-spots-link' >Manage Spots</Link>
+              <div className="line"></div>
+            </div>
+            <div className="logout-user-button-container">
+              <button onClick={logout} className="logout-user-button">Log Out</button>
             </div>
           </>
         ) : (

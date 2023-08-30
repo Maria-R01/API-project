@@ -23,9 +23,12 @@
 }
 
 .profile-icon {
-    margin-left: 700px;
+    margin-left: 570px;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    align-items: center;
+    gap: 15px
 }
 
 .profileButtonNav {
@@ -68,4 +71,61 @@
 
 button {
     cursor: pointer;
+}
+
+.profile-dropdown +  {
+    border: 3px solid black;
+    width: 150px;
+    height: 135px;
+    position: static;
+    /* right: 65px;
+    top: 75px; */
+    /* padding-left: 15px; */
+    margin-top: 5px;
+    padding-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-left: 13px;
+    padding-right: 13px;
+    margin-bottom: 10px;
+}
+
+
+.line {
+    border: 1px solid  black;
+    width: 150px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.logout-user-button-container {
+    display: flex;
+    justify-content: center;
+
+}
+
+.logout-user-button {
+    border-radius: 50px;
+    padding: 11px;
+    background-color: darkgray;
+    color: white;
+    border: 2px solid black;
+}
+
+.manage-spots-link {
+    text-decoration: none;
+    color: black;
+}
+
+.create-spot-link {
+    /* border: 1px solid orange; */
+    display: flex;
+    width: max-content;
+    text-decoration: none;
+    color: rgb(31, 112, 150)
+}
+
+.create-spot-container {
+    display: flex;
 }

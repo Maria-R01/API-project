@@ -6,6 +6,9 @@ import './Navigation.css';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
+  console.log('session User: ', sessionUser)
+
+  const hideCreateSpot = (sessionUser ? 'create-spot-link' : 'hidden')
 
   return (
     <>
@@ -16,10 +19,24 @@ function Navigation({ isLoaded }){
         FauxBnB
         </NavLink>
       </div>
-      {isLoaded && (
-        <div className='profile-icon'>
-          <ProfileButton user={sessionUser} className='profile-button' />
+      {/* {sessionUser && (
+        <div className='create-spot-container'>
+          <div>
+          <NavLink to='/spots/new'>Create a New Spot</NavLink>
+          </div>
         </div>
+      )} */}
+      {isLoaded && (
+        <>
+        <div className='profile-icon'>
+        <div className='create-spot-container'>
+          <NavLink to='/spots/new' className={hideCreateSpot}>Create a New Spot</NavLink>
+        </div>  
+        <div>
+          <ProfileButton user={sessionUser} className='profile-button' />
+        </div>   
+        </div>
+        </>
       )}
     </div>
     <div className='bottomLine'></div>
