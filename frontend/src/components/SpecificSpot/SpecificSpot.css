@@ -1,25 +1,113 @@
+.root {
+    margin-left: 40px;
+}
+
+.topHeadings > * {
+    font-weight: lighter;
+}
 
 .imagesContainer {
-    /* display: grid;
-    grid-template-areas: 
-        "a b c"
-        "f d e"; */
+    /* border: 1px dashed blue; */
+    display: flex;
+    /* margin: 20px; */
+}
+
+.fourImages {
+    /* border: 2px darkgoldenrod solid; */
     display: flex;
     flex-wrap: wrap;
 }
 
-#img1 {
-    /* grid-area: "a"; */
-    display: flex;
-    border: 2px solid green;   
-    width: 500px;
-    height: 400px;
+.fourImages > div > img {
+    border: 1px solid black;
+    width: 218px;
+    height: 227px;
+    border-radius: 0;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+.firstImage > img {
+    border: 1px solid black;
+    width: 480px;
+    height: 460px;
     border-radius: 0;
 }
 
-.image2, .image3, .image4, .image5 {
-    width: 80px;
-    height: 30px;
+.bottom {
+    border: 1px black solid;
+}
+
+.details-container {
+    display: flex;
+    gap: 380px
+}
+
+.description-container {
+
+}
+
+.hostInfo {
+    font-weight: lighter;
+
+}
+
+.description {
+
+}
+
+.details-box-container {
     display: flex;
     flex-direction: column;
+    width: 233px;
+    border: 1px solid black;
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.details-box-top {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 10px;
+}
+
+.price {
+    
+}
+
+.ratings-reviews {
+    display: inline-flex;
+}
+
+.icon {
+    padding-right: 5px;
+}
+
+.numReviews {
+    padding-left: 10px;
+}
+
+.details-box-bottom {
+    display: flex;
+    justify-content: center;
+}
+
+.reserve-button {
+    width: 208px;
+    height: 29px;
+    font-size: small;
+    background-color: #fe5a5e;
+    color: white;
+    box-shadow: 2px 2px 1px black;
+    border: 2px black solid;
+}
+
+.bottom {
+
+}
+
+.reviews-container {
+
 }

@@ -48,22 +48,30 @@ export const loadSpecificSpotThunk = (data) => async (dispatch, getState) => {
 //REDUCER
 const initialState = {
     allSpots: {}, 
-    singleSpot: {}
+    singleSpot: {
+        SpotImages: [],
+        Owner: {}
+    }
 }
 const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
-        case(LOAD_SPOTS):
+        case LOAD_SPOTS:
             const spotsData = {}
             spotsData.allSpots = {}
             const spotsDataArr = Object.values(action.spots.Spots)
-            // console.log('SpotsDataArr: ', spotsDataArr)
             spotsDataArr.map(spot => spotsData.allSpots[spot.id]= spot);
             return spotsData;
-        case (LOAD_SPECIFIC_SPOT): 
-            const storeCopy = {...state, singleSpot: {}};
-            storeCopy.singleSpot = action.spot;
-            // console.log(storeCopy)
-            return storeCopy;
+        case LOAD_SPECIFIC_SPOT: 
+            const newState = {
+                ...state, 
+                singleSpot: {
+                    ...action.spot,
+                    SpotImages: action.spot.SpotImages,
+                    Owner: action.spot.Owner
+                }
+            };
+            console.log('newState: ', newState);
+            return newState;
         default:
             return state;
     }
