@@ -21,7 +21,7 @@
 .fourImages > div > img {
     border: 1px solid black;
     width: 218px;
-    height: 227px;
+    height: 229px;
     border-radius: 0;
     margin-left: 1px;
     margin-right: 1px;
@@ -36,6 +36,7 @@
 
 .bottom {
     border: 1px black solid;
+    width: 923px;
 }
 
 .details-container {
@@ -65,28 +66,45 @@
     padding: 20px;
     border-radius: 10px;
     margin-bottom: 10px;
+    margin-left: 113px;
 }
 
 .details-box-top {
     display: flex;
-    gap: 30px;
+    /* gap: 15px; */
     margin-bottom: 10px;
 }
 
 .price {
-    
+    margin-left: 13px;
 }
 
 .ratings-reviews {
     display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .icon {
     padding-right: 5px;
+    font-size: small;
+    margin-left: 30px;
 }
 
+.night {
+    padding-left: 0;
+    margin-left: 3px;
+    font-size: small;
+    display: flex;
+    align-items: flex-end;
+}
 .numReviews {
-    padding-left: 10px;
+    padding-left: 15px;
+    font-size: small;
+}
+
+.avgStarRating {
+    font-size: small;
 }
 
 .details-box-bottom {

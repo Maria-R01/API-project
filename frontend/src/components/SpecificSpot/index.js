@@ -12,6 +12,8 @@ const SpecificSpot = () => {
     }, [dispatch]);
 
     const spot = useSelector(state => state.spots.singleSpot);
+    if(!spot.SpotImages) return null;
+    console.log(spot.SpotImages);
     const fiveImages = [];
     for(let ele of spot.SpotImages) {
         if(fiveImages.length <= 5) fiveImages.push(ele);
@@ -50,15 +52,17 @@ const SpecificSpot = () => {
                 <div className='details-box-container'>
                     <div className='details-box-top'>
                         <div className='price'>
-                            ${spot.price.toFixed(2)} night
+                            ${spot.price.toFixed(2)}
                         </div>
+                        <span className='night'>night</span>
                         <div className='ratings-reviews'>
-                            <i className="fa-solid fa-star icon"></i> {spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}
+                            <i className="fa-solid fa-star icon"></i> 
+                            <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
                             <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
                         </div>
                     </div>
                     <div className='details-box-bottom'>
-                        <button className='reserve-button'>Reserve</button>
+                        <button className='reserve-button' onClick={() => alert('Feature Coming Soon...')}>Reserve</button>
                     </div>
                 </div>
             </div>

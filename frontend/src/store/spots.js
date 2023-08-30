@@ -70,7 +70,7 @@ const spotsReducer = (state = initialState, action) => {
                     Owner: action.spot.Owner
                 }
             };
-            console.log('newState: ', newState);
+            // console.log('newState: ', newState);
             return newState;
         default:
             return state;
