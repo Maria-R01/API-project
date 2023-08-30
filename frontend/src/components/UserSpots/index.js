@@ -33,7 +33,7 @@ const UserSpots = () => {
                 <div>
                     <button className='manage-spots-buttons'>
                         <NavLink to='/spots/new'>Create a New Spot</NavLink>
-                    </button>
+                    </button> 
                 </div>
             </div>
             {userSpots.map(spot => (
