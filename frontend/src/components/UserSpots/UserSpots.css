@@ -6,6 +6,11 @@
     border: 2px black solid;
 }
 
+.manage-spots-buttons > * {
+    color: white;
+    text-decoration: none;
+}
+
 .buttons-container {
     display: flex;
     gap: 10px;

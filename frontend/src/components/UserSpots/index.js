@@ -10,12 +10,16 @@ const UserSpots = () => {
     const dispatch = useDispatch();
     const userSpotsObj = useSelector(state => state.spots.allSpots);
     Object.values(userSpotsObj)?.map(spot => userSpots.push(spot));
-    console.log('userSpots: ', userSpots)
+    // console.log('userSpots: ', userSpots)
 
 
     useEffect(() => {
         dispatch(loadUserSpotsThunk());
     }, [dispatch])
+
+    const createNewSpot = () => {
+
+    }
     
     return (
         // <>
@@ -27,7 +31,9 @@ const UserSpots = () => {
                     <h2>Manage Your Spots</h2>
                 </div>
                 <div>
-                    <button className='manage-spots-buttons'>Create a New Spot</button>
+                    <button className='manage-spots-buttons'>
+                        <NavLink to='/spots/new'>Create a New Spot</NavLink>
+                    </button>
                 </div>
             </div>
             {userSpots.map(spot => (
@@ -59,7 +65,9 @@ const UserSpots = () => {
                     </NavLink>
                     <div className='buttons-container'>
                         <div>
-                            <button className='manage-spots-buttons'>Update</button>
+                            <button className='manage-spots-buttons'>
+                                <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
+                            </button>
                         </div>
                         <div>
                             <button className='manage-spots-buttons'>Delete</button>
