@@ -4,7 +4,9 @@ const CreateSpot = () => {
 
 
     return (
-        <></>
+        <>
+            <h2>Create Spot Component</h2>
+        </>
     )
 };
 

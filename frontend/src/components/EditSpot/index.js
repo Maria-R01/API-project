@@ -4,7 +4,9 @@ const EditSpot = () => {
 
 
     return (
-        <></>
+        <>
+        <h2>Edit Spot Component</h2>
+    </>
     )
 };
 
