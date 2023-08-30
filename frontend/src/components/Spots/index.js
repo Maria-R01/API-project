@@ -41,7 +41,7 @@ const Spots = () => {
                                     </div>
                                 </div>
                                 <div className='avgRating'>
-                                        <i className="fa-solid fa-star"></i> {spot.avgRating? spot.avgRating : `New`}
+                                        <i className="fa-solid fa-star"></i> {spot.avgRating? spot.avgRating.toFixed(1) : `New`}
                                 </div>
                             </div>
                         </div>

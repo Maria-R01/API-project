@@ -27,18 +27,23 @@
 .spotLocation {
     display: inline-flex;
     font-weight: bold;
+    width: 250px;
 }
 
 
 .avgRating {
     display: flex;
     gap: 5px;
-    justify-content: right;    
+    justify-content: end;
+    /* border: 1px dashed blue; */
+    width: 150px;
 }
 .spotTileInfo {
     display: flex;
-    flex-direction: column;
-    margin-top: 6px;   
+    /* flex-direction: column; */
+    margin-top: 6px;  
+    /* border: 1px solid pink;  */
+    width: 300px;
 }
 
 /* .spotTileInfo > div {

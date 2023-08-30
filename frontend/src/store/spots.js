@@ -12,7 +12,7 @@ export const actionLoadSpots = (spots) => {
 
 export const actionLoadSpecificSpot = (spot) => {
     return {
-        type LOAD_SPECIFIC_SPOT,
+        type: LOAD_SPECIFIC_SPOT,
         spot
     }
 };
@@ -31,14 +31,25 @@ export const loadSpotsThunk = (data) => async (dispatch, getState) => {
     }
 };
 
-export const loadSpecificSpotThunk = (data) => (dispatch, getState) => {
+export const loadSpecificSpotThunk = (data) => async (dispatch, getState) => {
+    const res = await fetch(`/api/spots/${data}`);
+    if(res.ok) {
+        const spot = await res.json();
+        dispatch(actionLoadSpecificSpot(spot));
+        return spot;
+    } else {
+        const errors = res.json();
+        return errors;
+    }
 
-    
 };
 
 
 //REDUCER
-const initialState = {allSpots: {}, singleSpot: {}}
+const initialState = {
+    allSpots: {}, 
+    singleSpot: {}
+}
 const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case(LOAD_SPOTS):
@@ -49,7 +60,10 @@ const spotsReducer = (state = initialState, action) => {
             spotsDataArr.map(spot => spotsData.allSpots[spot.id]= spot);
             return spotsData;
         case (LOAD_SPECIFIC_SPOT): 
-            return
+            const storeCopy = {...state, singleSpot: {}};
+            storeCopy.singleSpot = action.spot;
+            // console.log(storeCopy)
+            return storeCopy;
         default:
             return state;
     }
