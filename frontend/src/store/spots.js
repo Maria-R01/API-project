@@ -56,7 +56,7 @@ const initialState = {
 const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case LOAD_SPOTS:
-            const spotsData = {}
+            const spotsData = {...state}
             spotsData.allSpots = {}
             const spotsDataArr = Object.values(action.spots.Spots)
             spotsDataArr.map(spot => spotsData.allSpots[spot.id]= spot);
@@ -64,11 +64,7 @@ const spotsReducer = (state = initialState, action) => {
         case LOAD_SPECIFIC_SPOT: 
             const newState = {
                 ...state, 
-                singleSpot: {
-                    ...action.spot,
-                    SpotImages: action.spot.SpotImages,
-                    Owner: action.spot.Owner
-                }
+                singleSpot: action.spot
             };
             // console.log('newState: ', newState);
             return newState;

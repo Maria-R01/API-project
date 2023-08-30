@@ -12,8 +12,8 @@ const SpecificSpot = () => {
     }, [dispatch]);
 
     const spot = useSelector(state => state.spots.singleSpot);
-    if(!spot.SpotImages) return null;
-    console.log(spot.SpotImages);
+    // console.log(spot);
+    if(!spot.SpotImages.length) return null;
     const fiveImages = [];
     for(let ele of spot.SpotImages) {
         if(fiveImages.length <= 5) fiveImages.push(ele);

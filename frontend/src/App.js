@@ -19,7 +19,10 @@ function App() {
       {isLoaded && <Switch></Switch>}
       <Switch>
         <Route exact path='/' component={Spots} />
-        <Route path='/spots/:spotId' component={SpecificSpot} />
+        <Route exact path='/spots/new' />
+        <Route exact path='/spots/current'  />
+        <Route exact path='/spots/:spotId' component={SpecificSpot} />
+        <Route exact path='/spots/:spotId/edit' />
       </Switch>
     </>
   );

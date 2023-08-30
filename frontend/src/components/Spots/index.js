@@ -3,7 +3,6 @@ import  { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { loadSpotsThunk } from '../../store/spots';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
-import { Tooltip } from 'react-tooltip'
 
 const Spots = () => {
     const allSpots = [];
@@ -24,7 +23,7 @@ const Spots = () => {
         {/* <h1>All Spots Component</h1> */}
         <div className='allSpots'>
             {allSpots.map(spot => (
-                <div className='tile' key={spot.id}>
+                <div className='tile' key={spot.id} title={spot.name}>
                     <NavLink to={`/spots/${spot.id}`} className='spotTile' data-tip={`${spot.name}`} >
                         <div>
                             <div className='spotTileImage'>

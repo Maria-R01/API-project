@@ -65,8 +65,9 @@
     margin-top: 20px;
     padding: 20px;
     border-radius: 10px;
-    margin-bottom: 10px;
-    margin-left: 113px;
+    margin-bottom: 10px;    
+    position: relative;
+    right: -37px;
 }
 
 .details-box-top {
