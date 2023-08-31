@@ -51,17 +51,15 @@ export const loadSpotsThunk = (data) => async (dispatch, getState) => {
 };
 
 export const createSpotThunk = (data) => async (dispatch, getState) => {
-    console.log('thunk: data: ', data);
-    // const { address, city, state, country, name, description, price, SpotImages, Owner, ownerId } = data;
+    // console.log('thunk: data: ', data);
     const res = await csrfFetch('/api/spots', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data),
     });
-    console.log('res: ', res)
+    // console.log('res: ', res)
     if(res.ok) {
         const spot = await res.json();
-        console.log('spot response from thunk: ', spot);
         dispatch(actionCreateNewSpot(spot));
         return spot;
     } else {
@@ -142,7 +140,7 @@ const spotsReducer = (state = initialState, action) => {
                     ...state.allSpots,
                     [action.spot.id]: action.spot
                 }
-            }
+            };
             // console.log(newSpotState);
             return newSpotState;
         case DELETE_SPOT:

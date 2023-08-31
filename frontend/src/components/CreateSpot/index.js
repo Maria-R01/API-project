@@ -24,6 +24,14 @@ const CreateSpot = () => {
     const owner = useSelector(state => state.session.user);
     // console.log(owner)
     const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
+    const spotImagesArr = [];
+    for(let spotImage of SpotImages) {
+        if(spotImage) spotImagesArr.push({
+            url: spotImage,
+            preview: true 
+        })
+    };
+    // console.log(spotImagesArr)
     // console.log(SpotImages)
     const newSpot = {
         address: streetAddress,
@@ -32,15 +40,15 @@ const CreateSpot = () => {
         country,
         name: title,
         description, 
+        SpotImages: spotImagesArr,
         price,
-        SpotImages,
         Owner: owner,
         ownerId: owner?.id,
-        lat: Math.random(150).toFixed(2),
-        lng: Math.random(150).toFixed(3)
+        lat: (Math.random() * 100).toFixed(2),
+        lng: (Math.random()* 100).toFixed(2)
     }
     
-    const spotSelector = useSelector(state => state.spots.singleSpot);
+    const spotSelector = useSelector(state => state.spots.allSpots);
     // console.log(spotSelector)
     const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,21 +73,7 @@ const CreateSpot = () => {
         const newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
         if(newlyCreatedSpot) history.push(`/spots/${newlyCreatedSpot.id}`);
     }
-
-    // console.log('newlycreatespotid: ',newlyCreatedSpot.id)
-        // .then(history.push('/'))
-    // return spotSelector
-    //     .catch(async res => {
-    //         res = await res.json();
-    //         console.log('res in catch: ', res);
-    //         if(res && res.errors) {
-    //             setErrors(res.errors)
-    //         }
-    //         console.log('errors once set in catch: ', errors)
-    //     })
-    };
-    console.log(errors)
-    const submitButton = "spot-submit-button";
+}
   
 
     return (
@@ -263,7 +257,7 @@ const CreateSpot = () => {
             />
           </label>
           {errors.imageURL4 && <p className='errors' >{errors.imageURL4}</p>}
-          <button type="submit" className={submitButton} >Create Spot</button>
+          <button type="submit" className="spot-submit-button" >Create Spot</button>
         </form>
       </div>
     );
