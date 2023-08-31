@@ -16,3 +16,9 @@
     box-shadow: 2px 2px 1px black;
     border: 2px black solid;
 }
+
+.errors {
+    color: #fe5a5e;
+    font-weight: bold;
+    font-size: smaller;
+}

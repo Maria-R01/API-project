@@ -66,8 +66,8 @@ export const createSpotThunk = (data) => async (dispatch, getState) => {
         return spot;
     } else {
         const errors = res.json();
-        console.log(errors)
-        return errors; 
+        console.log(errors.errors)
+        return errors.errors; 
     }
 
 };

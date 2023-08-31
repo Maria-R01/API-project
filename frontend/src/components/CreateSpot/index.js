@@ -19,10 +19,12 @@ const CreateSpot = () => {
     const [imageURL3, setImageURL3] = useState("");
     const [imageURL4, setImageURL4] = useState("");
     const [errors, setErrors] = useState({});
+    // const [isDisabled, setIsDisabled] = useState(true);
     const history = useHistory();
     const owner = useSelector(state => state.session.user);
     // console.log(owner)
     const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
+    // console.log(SpotImages)
     const newSpot = {
         address: streetAddress,
         city,
@@ -37,20 +39,46 @@ const CreateSpot = () => {
         lat: Math.random(150).toFixed(2),
         lng: Math.random(150).toFixed(3)
     }
-    let newlyCreatedSpot;
-    const create = async () => {
-        newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
-    };
     
-    const spotSelector = useSelector(state => state.spots);
+    const spotSelector = useSelector(state => state.spots.singleSpot);
     // console.log(spotSelector)
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
-    create();
-    console.log(newlyCreatedSpot);
-    // history.push(`/spots/${newlyCreatedSpot?.id}`)
+    const errors = {};
+    if(!streetAddress) errors.streetAddress = 'Address is required';
+    if(!country) errors.country = 'Country is required';
+    if(!city) errors.city = 'City is required';
+    if(!state) errors.state = 'State is required';
+    if(description.length < 30) errors.description = 'Description needs a minimum of 30 characters';
+    if(!title) errors.title = 'Name is required';
+    if(!price) errors.price = 'Price is required';
+    if(!previewImage) errors.previewImage = 'Preview image required';
+    if(previewImage && !previewImage.match(/\.(jpg|jpeg|png)$/i)) errors.previewImage = 'Image URL must end in .png, .jpg or .jpeg';
+    if(imageURL1 && !imageURL1.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL1 = 'Image URL must end in .png, .jpg or .jpeg';
+    if(imageURL2 && !imageURL2.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL2 = 'Image URL must end in .png, .jpg or .jpeg';
+    if(imageURL3 && !imageURL3.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL3 = 'Image URL must end in .png, .jpg or .jpeg';
+    if(imageURL4 && !imageURL4.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL4 = 'Image URL must end in .png, .jpg or .jpeg';
+
+    if(Object.keys(errors).length) {
+        setErrors(errors);
+    } else {
+        const newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
+        if(newlyCreatedSpot) history.push(`/spots/${newlyCreatedSpot.id}`);
+    }
+
+    // console.log('newlycreatespotid: ',newlyCreatedSpot.id)
+        // .then(history.push('/'))
+    // return spotSelector
+    //     .catch(async res => {
+    //         res = await res.json();
+    //         console.log('res in catch: ', res);
+    //         if(res && res.errors) {
+    //             setErrors(res.errors)
+    //         }
+    //         console.log('errors once set in catch: ', errors)
+    //     })
     };
-  
+    console.log(errors)
     const submitButton = "spot-submit-button";
   
 
@@ -64,53 +92,49 @@ const CreateSpot = () => {
         <form onSubmit={handleSubmit} className="new-spot-form">
           {/* {console.log(errors)} */}
           <label>
-            Country
+            Country {errors.country && <span className='errors'>{errors.country}</span>}
             <input
               type="text"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              required
+            //   required
               placeholder="Country"
               className="inputs"
             />
           </label>
-          {errors.country && <p>{errors.country}</p>}
           <label>
-            Street Address
+            Street Address {errors.streetAddress && <span className='errors'>{errors.streetAddress}</span>}
             <input
               type="text"
               value={streetAddress}
               onChange={(e) => setStreetAddress(e.target.value)}
-              required
+            //   required
               placeholder="Address"
               className="inputs"
             />
           </label>
-          {errors.streetAddress && <p>{errors.streetAddress}</p>}
           <label>
-            City
+            City {errors.city && <span className='errors' >{errors.city}</span>}
             <input
               type="text"
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              required
+            //   required
               placeholder="City"
               className="inputs"
             />
           </label>
-          {errors.city && <p>{errors.city}</p>}
           <label>
-            State
+            State {errors.state && <span className='errors' >{errors.state}</span>}
             <input
               type="text"
               value={state}
               onChange={(e) => setState(e.target.value)}
-              required
+            //   required
               placeholder="STATE"
               className="inputs"
             />
           </label>
-          {errors.state && <p>{errors.state}</p>}
           <div>
             <div>
                 <h4>Describe your place to guests</h4>
@@ -126,7 +150,7 @@ const CreateSpot = () => {
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              required
+            //   required
               placeholder="Please write at least 30 characters"
               className="inputs"
               rows='7'
@@ -134,7 +158,7 @@ const CreateSpot = () => {
               minLength='30'
             />
           </label>
-          {errors.description && <p>{errors.description}</p>}
+          {errors.description && <p className='errors' >{errors.description}</p>}
           <div>
             <div>
                 <h4>Create a title for your spot</h4>
@@ -150,12 +174,12 @@ const CreateSpot = () => {
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              required
+            //   required
               placeholder="Name of your spot"
               className="inputs"
             />
           </label>
-          {errors.title && <p>{errors.title}</p>}
+          {errors.title && <p className='errors' >{errors.title}</p>}
           <div>
             <div>
                 <h4>Set a base price for your spot</h4>
@@ -171,13 +195,13 @@ const CreateSpot = () => {
               type="number"
               value={price}
               onChange={(e) => setPrice(Number(e.target.value))}
-              required
+            //   required
               placeholder="Price per night (USD)"
               className="inputs"
               min='1.00'
             />
           </label>
-          {errors.price && <p>{errors.price}</p>}
+          {errors.price && <p className='errors' >{errors.price}</p>}
           <div>
             <div>
                 <h4>Liven up your spot with photos</h4>
@@ -193,12 +217,12 @@ const CreateSpot = () => {
               type="url"
               value={previewImage}
               onChange={(e) => setPreviewImage(e.target.value)}
-              required
+            //   required
               placeholder="Preview Image URL"
               className="inputs"
             />
           </label>
-          {errors.previewImage && <p>{errors.previewImage}</p>}
+          {errors.previewImage && <p className='errors' >{errors.previewImage}</p>}
           <label>
             <input
               type="url"
@@ -208,7 +232,7 @@ const CreateSpot = () => {
               className="inputs"
             />
           </label>
-          {errors.imageURL1 && <p>{errors.imageURL1}</p>}
+          {errors.imageURL1 && <p className='errors' >{errors.imageURL1}</p>}
           <label>
             <input
               type="url"
@@ -218,7 +242,7 @@ const CreateSpot = () => {
               className="inputs"
             />
           </label>
-          {errors.imageURL2 && <p>{errors.imageURL2}</p>}
+          {errors.imageURL2 && <p className='errors' >{errors.imageURL2}</p>}
           <label>
             <input
               type="url"
@@ -228,7 +252,7 @@ const CreateSpot = () => {
               className="inputs"
             />
           </label>
-          {errors.imageURL3 && <p>{errors.imageURL3}</p>}
+          {errors.imageURL3 && <p className='errors' >{errors.imageURL3}</p>}
           <label>
             <input
               type="url"
@@ -238,7 +262,7 @@ const CreateSpot = () => {
               className="inputs"
             />
           </label>
-          {errors.imageURL4 && <p>{errors.imageURL4}</p>}
+          {errors.imageURL4 && <p className='errors' >{errors.imageURL4}</p>}
           <button type="submit" className={submitButton} >Create Spot</button>
         </form>
       </div>
