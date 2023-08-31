@@ -66,7 +66,7 @@ const CreateSpot = () => {
     if(imageURL2 && !imageURL2.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL2 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL3 && !imageURL3.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL3 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL4 && !imageURL4.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL4 = 'Image URL must end in .png, .jpg or .jpeg';
-
+ 
     if(Object.keys(errors).length) {
         setErrors(errors);
     } else {
