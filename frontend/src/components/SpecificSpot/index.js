@@ -13,13 +13,15 @@ const SpecificSpot = () => {
 
     const spot = useSelector(state => state.spots.singleSpot);
     // console.log(spot);
-    if(!spot.SpotImages.length) return null;
+    if(!spot.SpotImages.length) console.log('no images available in SpotImages on singleSpot');
+    // if(!spot.SpotImages.length) return null;
     const fiveImages = [];
     for(let ele of spot.SpotImages) {
         if(fiveImages.length <= 5) fiveImages.push(ele);
         else return;
     };
-    const fourImages = fiveImages.slice(1);
+    let fourImages;
+    if(fiveImages.length) fourImages = fiveImages.slice(1);
     return (
         <div className='root'>
             <div className='topHeadings' >
@@ -28,10 +30,10 @@ const SpecificSpot = () => {
             </div>
             <div className='imagesContainer'>
                 <div className='firstImage'>
-                    <img alt='' src={`${fiveImages[0].url}`}></img>
+                {fiveImages[0]? <img alt='' src={`${fiveImages[0]?.url}`}></img>  : <h4>Images coming soon...</h4>}
                 </div>
                 <div className='fourImages'> 
-                {fourImages.map(spot => (
+                {fourImages?.map(spot => (
                     <div className={`image${spot.id}`} key={`${spot.id}`}>
                         <img alt='' src={`${spot.url}`} id={`img${spot.id}`}></img>
                     </div>
