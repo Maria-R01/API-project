@@ -4,6 +4,8 @@ import { loadUserSpotsThunk } from '../../store/spots';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom';
+import OpenModalButton from '../OpenModalButton';
+import DeleteSpot from '../DeleteSpot';
 
 const UserSpots = () => {
     const userSpots = [];
@@ -17,9 +19,6 @@ const UserSpots = () => {
         dispatch(loadUserSpotsThunk());
     }, [dispatch])
 
-    const createNewSpot = () => {
-
-    }
     
     return (
         // <>
@@ -70,7 +69,7 @@ const UserSpots = () => {
                             </button>
                         </div>
                         <div>
-                            <button className='manage-spots-buttons'>Delete</button>
+                            <OpenModalButton buttonText={`Delete`} modalComponent={<DeleteSpot spotId={spot.id} />} />
                         </div>
                     </div>
                 </div>

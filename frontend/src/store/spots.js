@@ -1,7 +1,11 @@
+import { csrfFetch } from "./csrf";
+
 //ACTION TYPES
 export const LOAD_SPOTS = 'spots/LOAD_SPOTS';
 export const LOAD_SPECIFIC_SPOT = 'spots/LOAD_SPECIFIC_SPOT';
 export const LOAD_USER_SPOTS = 'spots/LOAD_USER_SPOTS';
+export const CREATE_SPOT = 'spots/CREATE_SPOT';
+export const DELETE_SPOT = 'spots/DELETE_SPOT';
 
 //ACTIONS
 export const actionLoadSpots = (spots) => {
@@ -18,6 +22,19 @@ export const actionLoadSpecificSpot = (spot) => {
     }
 };
 
+export const actionCreateNewSpot = (spot) => {
+    return {
+        type: CREATE_SPOT,
+        spot
+    }
+}
+
+export const actionDeleteSpot = (spot) => {
+    return {
+        type: DELETE_SPOT,
+        spot
+    }
+}
 
 //THUNKS
 export const loadSpotsThunk = (data) => async (dispatch, getState) => {
@@ -31,6 +48,27 @@ export const loadSpotsThunk = (data) => async (dispatch, getState) => {
         const errors = response.json();
         return errors;
     }
+};
+
+export const createSpotThunk = (data) => async (dispatch, getState) => {
+    console.log('thunk: data: ', data);
+    // const { address, city, state, country, name, description, price, SpotImages, Owner, ownerId } = data;
+    const res = await csrfFetch('/api/spots', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data),
+    });
+    console.log('res: ', res)
+    if(res.ok) {
+        const spot = await res.json();
+        console.log('spot response from thunk: ', spot);
+        dispatch(actionCreateNewSpot(spot));
+        return spot;
+    } else {
+        const errors = res.json();
+        return errors; 
+    }
+
 };
 
 export const loadSpecificSpotThunk = (data) => async (dispatch, getState) => {
@@ -58,6 +96,19 @@ export const loadUserSpotsThunk = (data) => async (dispatch, getState) => {
     }
 };
 
+export const deleteSpotThunk = data => async (dispatch, getState) => {
+    const res = await csrfFetch(`/api/spots/${data.id}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'}
+    });
+
+    if(res.ok) {
+        dispatch(actionDeleteSpot(data))
+    } else {
+        const errors = res.json();
+        return errors;
+    }
+}
 
 //REDUCER
 const initialState = {
@@ -83,6 +134,19 @@ const spotsReducer = (state = initialState, action) => {
             };
             // console.log('newState: ', newState);
             return newState;
+        case CREATE_SPOT:
+            const newSpotState = {
+                ...state,
+                allSpots: [action.spot.id] = action.spot
+            }
+            console.log(newSpotState);
+            return newSpotState;
+        case DELETE_SPOT:
+            const deleteSpotState = {
+                ...state, 
+            }
+            delete deleteSpotState.allSpots[action.spot.id];
+            return deleteSpotState;
         default:
             return state;
     }
