@@ -1,7 +1,6 @@
 import './CreateSpot.css';
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import * as sessionActions from "../../store/session";
 import { createSpotThunk } from '../../store/spots';
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
