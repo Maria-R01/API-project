@@ -29,10 +29,10 @@ export const actionCreateNewSpot = (spot) => {
     }
 }
 
-export const actionDeleteSpot = (spot) => {
+export const actionDeleteSpot = (spotId) => {
     return {
         type: DELETE_SPOT,
-        spot
+        spotId
     }
 }
 
@@ -97,7 +97,7 @@ export const loadUserSpotsThunk = (data) => async (dispatch, getState) => {
 };
 
 export const deleteSpotThunk = data => async (dispatch, getState) => {
-    const res = await csrfFetch(`/api/spots/${data.id}`, {
+    const res = await csrfFetch(`/api/spots/${data}`, {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'}
     });
@@ -137,7 +137,10 @@ const spotsReducer = (state = initialState, action) => {
         case CREATE_SPOT:
             const newSpotState = {
                 ...state,
-                allSpots: [action.spot.id] = action.spot
+                allSpots: {
+                    ...state.allSpots,
+                    [action.spot.id]: action.spot
+                }
             }
             console.log(newSpotState);
             return newSpotState;
@@ -145,7 +148,7 @@ const spotsReducer = (state = initialState, action) => {
             const deleteSpotState = {
                 ...state, 
             }
-            delete deleteSpotState.allSpots[action.spot.id];
+            delete deleteSpotState.allSpots[action.spotId];
             return deleteSpotState;
         default:
             return state;

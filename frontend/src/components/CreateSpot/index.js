@@ -44,7 +44,7 @@ const CreateSpot = () => {
     };
     
     const spotSelector = useSelector(state => state.spots);
-    console.log(spotSelector)
+    // console.log(spotSelector)
     const handleSubmit = (e) => {
     e.preventDefault();
     create();
@@ -128,8 +128,11 @@ const CreateSpot = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
-              placeholder="Description"
+              placeholder="Please write at least 30 characters"
               className="inputs"
+              rows='7'
+              cols='40'
+              minLength='30'
             />
           </label>
           {errors.description && <p>{errors.description}</p>}
@@ -172,6 +175,7 @@ const CreateSpot = () => {
               required
               placeholder="Price per night (USD)"
               className="inputs"
+              min='1.00'
             />
           </label>
           {errors.price && <p>{errors.price}</p>}

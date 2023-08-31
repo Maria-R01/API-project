@@ -1,17 +1,27 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { deleteSpotThunk } from "../../store/spots";
+import { deleteSpotThunk, loadUserSpotsThunk } from "../../store/spots";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const DeleteSpot = ({ spotId }) => {
-    const { closeModal } = useModal;
-    const dispatch = useDispatch;
+    // console.log('{spotId}: ', spotId)
+    const { closeModal } = useModal();
+    const dispatch = useDispatch();
     const history = useHistory();
+    // const userSpots = useSelector(state => state.spots.allSpots);
+
     const handleDelete = e => {
         e.preventDefault();
-        dispatch(deleteSpotThunk(spotId));
-        history.push('/spots/current');
-        closeModal();
+        return dispatch(deleteSpotThunk(spotId))
+        .then(history.push('/spots/current'))
+        .then(closeModal())
+        .catch(async (res) => {
+            const data = await res.json();
+            if (data && data.errors) {
+              return data.errors;
+            }
+        }
+        )
     };
 
 
