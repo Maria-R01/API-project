@@ -47,7 +47,7 @@
 .buttonDropDown {
     background-color: white;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     border: 3px solid black;
     width: 82px;
     max-width: fit-content;

@@ -33,7 +33,7 @@
 
 .avgRating {
     display: flex;
-    gap: 5px;
+    gap: 1px;
     justify-content: end;
     /* border: 1px dashed blue; */
     width: 150px;

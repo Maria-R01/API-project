@@ -30,6 +30,8 @@ function LoginFormModal() {
     setIsDisabled(credential.length < 4 || password.length < 6 )
   }, [credential, password])
 
+  const submitButton = "signup-submit-button" + (isDisabled ? ' disabled' : '')
+
   return (
     <div className="modal">
       <h1 className="form-title">Log In</h1>
@@ -57,7 +59,7 @@ function LoginFormModal() {
             className="login-input-fields"
           />
         </label>
-        <button type="submit" disabled={isDisabled} className='login-submit-button'>Log In</button>
+        <button type="submit" disabled={isDisabled} className={submitButton}>Log In</button>
       </form>
       <div className="demo-user">
         <NavLink to='/' onClick={() => alert('Feature Coming Soon...')}>Demo User</NavLink>
