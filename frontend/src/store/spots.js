@@ -66,6 +66,7 @@ export const createSpotThunk = (data) => async (dispatch, getState) => {
         return spot;
     } else {
         const errors = res.json();
+        console.log(errors)
         return errors; 
     }
 
@@ -147,6 +148,9 @@ const spotsReducer = (state = initialState, action) => {
         case DELETE_SPOT:
             const deleteSpotState = {
                 ...state, 
+                allSpots: {
+                    ...state.allSpots
+                }
             }
             delete deleteSpotState.allSpots[action.spotId];
             return deleteSpotState;

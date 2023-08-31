@@ -68,7 +68,7 @@ const UserSpots = () => {
                                 <NavLink to={`/spots/${spot.id}/edit`}>Update</NavLink>
                             </button>
                         </div>
-                        <div>
+                        <div className='delete-modal-container'>
                             <OpenModalButton buttonText={`Delete`} modalComponent={<DeleteSpot spotId={spot.id} />} />
                         </div>
                     </div>

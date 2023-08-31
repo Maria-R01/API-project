@@ -7,13 +7,13 @@ const DeleteSpot = ({ spotId }) => {
     // console.log('{spotId}: ', spotId)
     const { closeModal } = useModal();
     const dispatch = useDispatch();
-    const history = useHistory();
+    // const history = useHistory();
     // const userSpots = useSelector(state => state.spots.allSpots);
 
     const handleDelete = e => {
         e.preventDefault();
         return dispatch(deleteSpotThunk(spotId))
-        .then(history.push('/spots/current'))
+        // .then(history.push('/spots/current'))
         .then(closeModal())
         .catch(async (res) => {
             const data = await res.json();

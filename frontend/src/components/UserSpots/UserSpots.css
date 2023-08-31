@@ -28,7 +28,7 @@
     padding-left: 35px;
 }
 
-.delete {
+.delete-modal-container > * {
     height: 25px;
     background-color: rgb(64, 63, 63);
     color: white;
