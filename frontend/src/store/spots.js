@@ -6,6 +6,7 @@ export const LOAD_SPECIFIC_SPOT = 'spots/LOAD_SPECIFIC_SPOT';
 export const LOAD_USER_SPOTS = 'spots/LOAD_USER_SPOTS';
 export const CREATE_SPOT = 'spots/CREATE_SPOT';
 export const DELETE_SPOT = 'spots/DELETE_SPOT';
+export const CREATE_SPOT_IMAGE = 'spots/CREATE_SPOT_IMAGE';
 
 //ACTIONS
 export const actionLoadSpots = (spots) => {
@@ -36,6 +37,13 @@ export const actionDeleteSpot = (spotId) => {
     }
 }
 
+export const actionCreateSpotImage = (spotImage) => {
+    return {
+        type: CREATE_SPOT_IMAGE,
+        spotImage
+    }
+}
+
 //THUNKS
 export const loadSpotsThunk = (data) => async (dispatch, getState) => {
     const response = await fetch("/api/spots");
@@ -45,7 +53,7 @@ export const loadSpotsThunk = (data) => async (dispatch, getState) => {
         dispatch(actionLoadSpots(spots));
         return spots;
     } else {
-        const errors = response.json();
+        const errors = await response.json();
         return errors;
     }
 };
@@ -63,12 +71,34 @@ export const createSpotThunk = (data) => async (dispatch, getState) => {
         dispatch(actionCreateNewSpot(spot));
         return spot;
     } else {
-        const errors = res.json();
+        const errors = await res.json();
         console.log(errors.errors)
         return errors.errors; 
     }
 
 };
+
+export const createSpotImageThunk = payload  => async (dispatch, getState) => {
+    const { spotId, url, preview } = payload;
+    const data = { url, preview };
+    const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if(res.ok) {
+        const spotImage = await res.json();
+        dispatch(actionCreateSpotImage(spotImage));
+        return spotImage;
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+
+}
 
 export const loadSpecificSpotThunk = (data) => async (dispatch, getState) => {
     const res = await fetch(`/api/spots/${data}`);
@@ -77,7 +107,7 @@ export const loadSpecificSpotThunk = (data) => async (dispatch, getState) => {
         dispatch(actionLoadSpecificSpot(spot));
         return spot;
     } else {
-        const errors = res.json();
+        const errors = await res.json();
         return errors;
     }
 
@@ -104,7 +134,7 @@ export const deleteSpotThunk = data => async (dispatch, getState) => {
     if(res.ok) {
         dispatch(actionDeleteSpot(data))
     } else {
-        const errors = res.json();
+        const errors = await res.json();
         return errors;
     }
 }
@@ -147,6 +177,17 @@ const spotsReducer = (state = initialState, action) => {
             newSpotState.singleSpot = action.spot;
             // console.log(newSpotState);
             return newSpotState;
+
+        case CREATE_SPOT_IMAGE:
+            const spotImagesState = {
+                ...state, 
+                singleSpot: {
+                    ...state.singleSpot,
+                    SpotImages: []
+                }
+            };
+            spotImagesState.singleSpot.SpotImages.push(action.spotImage);
+            return spotImagesState;
         case DELETE_SPOT:
             const deleteSpotState = {
                 ...state, 

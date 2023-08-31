@@ -1,7 +1,7 @@
 import './CreateSpot.css';
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createSpotThunk } from '../../store/spots';
+import { createSpotImageThunk, createSpotThunk } from '../../store/spots';
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const CreateSpot = () => {
@@ -22,15 +22,7 @@ const CreateSpot = () => {
     // const [isDisabled, setIsDisabled] = useState(true);
     const history = useHistory();
     const owner = useSelector(state => state.session.user);
-    // console.log(owner)
-    const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
-    const spotImagesArr = [];
-    for(let spotImage of SpotImages) {
-        if(spotImage) spotImagesArr.push({
-            url: spotImage,
-            preview: true 
-        })
-    };
+    console.log(owner)
     // console.log(spotImagesArr)
     // console.log(SpotImages)
     const newSpot = {
@@ -40,7 +32,6 @@ const CreateSpot = () => {
         country,
         name: title,
         description, 
-        SpotImages: spotImagesArr,
         price,
         Owner: owner,
         ownerId: owner?.id,
@@ -48,7 +39,7 @@ const CreateSpot = () => {
         lng: (Math.random()* 100).toFixed(2)
     }
     
-    const spotSelector = useSelector(state => state.spots.allSpots);
+    const spotSelector = useSelector(state => state.spots.singleSpot);
     // console.log(spotSelector)
     const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,6 +62,18 @@ const CreateSpot = () => {
         setErrors(errors);
     } else {
         const newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
+        console.log('newlycreatedspot: ', newlyCreatedSpot)
+        const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
+        for(let spotImage of SpotImages) {
+            if(spotImage) {
+                const payload = {
+                    spotId: newlyCreatedSpot.id,
+                    url: spotImage,
+                    preview: true
+                };
+                await dispatch(createSpotImageThunk(payload));
+            }
+        };
         if(newlyCreatedSpot) history.push(`/spots/${newlyCreatedSpot.id}`);
     }
 }
