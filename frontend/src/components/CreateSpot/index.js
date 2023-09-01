@@ -1,7 +1,7 @@
 import './CreateSpot.css';
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createSpotImageThunk, createSpotThunk } from '../../store/spots';
+import { createSpotImageThunk, createSpotThunk, loadSpecificSpotThunk } from '../../store/spots';
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const CreateSpot = () => {
@@ -19,12 +19,9 @@ const CreateSpot = () => {
     const [imageURL3, setImageURL3] = useState("");
     const [imageURL4, setImageURL4] = useState("");
     const [errors, setErrors] = useState({});
-    // const [isDisabled, setIsDisabled] = useState(true);
     const history = useHistory();
     const owner = useSelector(state => state.session.user);
-    console.log(owner)
-    // console.log(spotImagesArr)
-    // console.log(SpotImages)
+    const spotSelector = useSelector(state => state.spots.singleSpot);
     const newSpot = {
         address: streetAddress,
         city,
@@ -33,14 +30,10 @@ const CreateSpot = () => {
         name: title,
         description, 
         price,
-        Owner: owner,
-        ownerId: owner?.id,
         lat: (Math.random() * 100).toFixed(2),
         lng: (Math.random()* 100).toFixed(2)
     }
     
-    const spotSelector = useSelector(state => state.spots.singleSpot);
-    // console.log(spotSelector)
     const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
@@ -62,7 +55,6 @@ const CreateSpot = () => {
         setErrors(errors);
     } else {
         const newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
-        console.log('newlycreatedspot: ', newlyCreatedSpot)
         const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
         for(let spotImage of SpotImages) {
             if(spotImage) {
@@ -74,6 +66,7 @@ const CreateSpot = () => {
                 await dispatch(createSpotImageThunk(payload));
             }
         };
+        await dispatch(loadSpecificSpotThunk(newlyCreatedSpot.id));
         if(newlyCreatedSpot) history.push(`/spots/${newlyCreatedSpot.id}`);
     }
 }
