@@ -37,6 +37,10 @@ function LoginFormModal() {
       credential: 'DemoUserLogin',
       password: 'demoUser',
     };
+    // const user = {
+    //   credential: 'demo@user.io',
+    //   password: 'password',
+    // };
     return await dispatch(sessionActions.login(user))
       .then(closeModal)
       .catch(async (res) => {

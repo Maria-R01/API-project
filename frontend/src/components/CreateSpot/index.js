@@ -1,24 +1,25 @@
 import './CreateSpot.css';
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createSpotImageThunk, createSpotThunk, loadSpecificSpotThunk } from '../../store/spots';
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { createSpotImageThunk, createSpotThunk, loadSpecificSpotThunk, updateSpotThunk } from '../../store/spots';
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom";
 
-const CreateSpot = () => {
+const CreateSpot = ({ spot }) => {
     const dispatch = useDispatch();
-    const [country, setCountry] = useState("");
-    const [streetAddress, setStreetAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [description, setDescription] = useState("");
-    const [title, setTitle] = useState("");
-    const [price, setPrice] = useState("");
+    const [country, setCountry] = useState(spot? spot.country : '');
+    const [streetAddress, setStreetAddress] = useState(spot? spot.address : "");
+    const [city, setCity] = useState(spot? spot.city : "");
+    const [state, setState] = useState(spot? spot.state : "");
+    const [description, setDescription] = useState(spot? spot.description : "");
+    const [title, setTitle] = useState(spot? spot.name : "");
+    const [price, setPrice] = useState(spot? spot.price : "");
     const [previewImage, setPreviewImage] = useState("");
     const [imageURL1, setImageURL1] = useState("");
     const [imageURL2, setImageURL2] = useState("");
     const [imageURL3, setImageURL3] = useState("");
     const [imageURL4, setImageURL4] = useState("");
     const [errors, setErrors] = useState({});
+    const [create, setCreate] = useState(spot? false : true);
     const history = useHistory();
     const owner = useSelector(state => state.session.user);
     const spotSelector = useSelector(state => state.spots.singleSpot);
@@ -44,18 +45,20 @@ const CreateSpot = () => {
     if(description.length < 30) errors.description = 'Description needs a minimum of 30 characters';
     if(!title) errors.title = 'Name is required';
     if(!price) errors.price = 'Price is required';
-    if(!previewImage) errors.previewImage = 'Preview image required';
+    if(create && !previewImage) errors.previewImage = 'Preview image required';
     if(previewImage && !previewImage.match(/\.(jpg|jpeg|png)$/i)) errors.previewImage = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL1 && !imageURL1.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL1 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL2 && !imageURL2.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL2 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL3 && !imageURL3.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL3 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL4 && !imageURL4.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL4 = 'Image URL must end in .png, .jpg or .jpeg';
- 
+    
+    const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
     if(Object.keys(errors).length) {
         setErrors(errors);
     } else {
+      if(create) {
+        console.log('CREATE SPOT IS BEING CLICKED')
         const newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
-        const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
         for(let spotImage of SpotImages) {
             if(spotImage) {
                 const payload = {
@@ -68,13 +71,21 @@ const CreateSpot = () => {
         };
         await dispatch(loadSpecificSpotThunk(newlyCreatedSpot.id));
         if(newlyCreatedSpot) history.push(`/spots/${newlyCreatedSpot.id}`);
+      } else {
+        console.log("UPDATE SPOT IS BEING CLICKED")
+        newSpot.SpotImages = spot.SpotImages;
+        newSpot.id = spot.id;
+        const updatedSpot = await dispatch(updateSpotThunk(newSpot)); //CHANGE THUNK FOR UPDATE AFTER WORKING ON ACTION/THUNK/REDUCER
+        // await dispatch(loadSpecificSpotThunk(newlyCreatedSpot.id));
+        if(updatedSpot) history.push(`/spots/${spot.id}`);
+      }
     }
 }
   
 
     return (
         <div id="new-spot-form">
-        <h2 className="new-spot-heading">Create a new Spot</h2>
+        {create ? <h2 className="new-spot-heading">Create a new Spot</h2> : <h2 className="new-spot-heading">Update your Spot</h2>}
         <h4>Where's your place located?</h4>
         <p>
             Guest will only get your exact address once they book a reservation.
@@ -181,6 +192,7 @@ const CreateSpot = () => {
             </div>
           </div>
           <label>
+            <span>$</span>
             <input
               type="number"
               value={price}
@@ -189,71 +201,74 @@ const CreateSpot = () => {
               placeholder="Price per night (USD)"
               className="inputs"
               min='1.00'
+              step="0.01"
             />
           </label>
           {errors.price && <p className='errors' >{errors.price}</p>}
           <div>
             <div>
-                <h4>Liven up your spot with photos</h4>
+              <div>
+                  <h4>Liven up your spot with photos</h4>
+              </div>
+              <div>
+                  <p>
+                      Submit a link to at least one photo to publish your spot.
+                  </p>
+              </div>
             </div>
-            <div>
-                <p>
-                    Submit a link to at least one photo to publish your spot.
-                </p>
+            <label>
+              <input
+                type="url"
+                value={previewImage}
+                onChange={(e) => setPreviewImage(e.target.value)}
+              //   required
+                placeholder="Preview Image URL"
+                className="inputs"
+              />
+            </label>
+            {errors.previewImage && <p className='errors' >{errors.previewImage}</p>}
+            <label>
+              <input
+                type="url"
+                value={imageURL1}
+                onChange={(e) => setImageURL1(e.target.value)}
+                placeholder="Image URL"
+                className="inputs"
+              />
+            </label>
+            {errors.imageURL1 && <p className='errors' >{errors.imageURL1}</p>}
+            <label>
+              <input
+                type="url"
+                value={imageURL2}
+                onChange={(e) => setImageURL2(e.target.value)}
+                placeholder="Image URL"
+                className="inputs"
+              />
+            </label>
+            {errors.imageURL2 && <p className='errors' >{errors.imageURL2}</p>}
+            <label>
+              <input
+                type="url"
+                value={imageURL3}
+                onChange={(e) => setImageURL3(e.target.value)}
+                placeholder="Image URL"
+                className="inputs"
+              />
+            </label>
+            {errors.imageURL3 && <p className='errors' >{errors.imageURL3}</p>}
+            <label>
+              <input
+                type="url"
+                value={imageURL4}
+                onChange={(e) => setImageURL4(e.target.value)}
+                placeholder="Image URL"
+                className="inputs"
+              />
+            </label>
+            {errors.imageURL4 && <p className='errors' >{errors.imageURL4}</p>}
             </div>
-          </div>
-          <label>
-            <input
-              type="url"
-              value={previewImage}
-              onChange={(e) => setPreviewImage(e.target.value)}
-            //   required
-              placeholder="Preview Image URL"
-              className="inputs"
-            />
-          </label>
-          {errors.previewImage && <p className='errors' >{errors.previewImage}</p>}
-          <label>
-            <input
-              type="url"
-              value={imageURL1}
-              onChange={(e) => setImageURL1(e.target.value)}
-              placeholder="Image URL"
-              className="inputs"
-            />
-          </label>
-          {errors.imageURL1 && <p className='errors' >{errors.imageURL1}</p>}
-          <label>
-            <input
-              type="url"
-              value={imageURL2}
-              onChange={(e) => setImageURL2(e.target.value)}
-              placeholder="Image URL"
-              className="inputs"
-            />
-          </label>
-          {errors.imageURL2 && <p className='errors' >{errors.imageURL2}</p>}
-          <label>
-            <input
-              type="url"
-              value={imageURL3}
-              onChange={(e) => setImageURL3(e.target.value)}
-              placeholder="Image URL"
-              className="inputs"
-            />
-          </label>
-          {errors.imageURL3 && <p className='errors' >{errors.imageURL3}</p>}
-          <label>
-            <input
-              type="url"
-              value={imageURL4}
-              onChange={(e) => setImageURL4(e.target.value)}
-              placeholder="Image URL"
-              className="inputs"
-            />
-          </label>
-          {errors.imageURL4 && <p className='errors' >{errors.imageURL4}</p>}
-          <button type="submit" className="spot-submit-button" >Create Spot</button>
+          {create ? <button type="submit" className="spot-submit-button" onClick={handleSubmit}>Create Spot</button> : <button type="submit" className="spot-submit-button" onClick={handleSubmit}>Update Spot</button>}
         </form>
       </div>
     );
