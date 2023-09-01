@@ -73,7 +73,6 @@ const CreateSpot = ({ spot }) => {
         if(newlyCreatedSpot) history.push(`/spots/${newlyCreatedSpot.id}`);
       } else {
         console.log("UPDATE SPOT IS BEING CLICKED")
-        await dispatch(loadSpecificSpotThunk(spot.id));
         newSpot.SpotImages = spot.SpotImages;
         newSpot.id = spot.id;
         newSpot.Owner = spot.Owner;
