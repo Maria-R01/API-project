@@ -13,6 +13,7 @@ const SpecificSpot = () => {
     }, [dispatch]);
     
     const spot = useSelector(state => state.spots.singleSpot);
+    const spotOwner = spot?.Owner
     // console.log('spot in specific spot: ', spot)
     // console.log(spot);
     // if(!spot.SpotImages.length) console.log('no images available in SpotImages on singleSpot');
@@ -80,7 +81,7 @@ const SpecificSpot = () => {
                 <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
                 <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
                 </div>
-                    <Reviews spotId={spotId}/>
+                    <Reviews spotId={spotId} owner={spotOwner}/>
             </div>
         </div>
         // <></>
