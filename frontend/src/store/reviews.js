@@ -68,6 +68,7 @@ export const deleteReviewThunk = data => async (dispatch, getState) => {
 
 //REDUCER
 const initialState = {
+    allReviews: {},
     spot: {
         User: {},
         ReviewImages: []
@@ -82,8 +83,9 @@ const reviewsReducer = (state = initialState, action) => {
     let stateCopy = {...state};
     switch(action.type) {
         case LOAD_REVIEWS:
+            stateCopy.allReviews = {};
             const reviewsDataArr = action.reviews.Reviews;
-            reviewsDataArr.map(review => stateCopy[review.id] = review); //adding to the state but might switch to be in state and then in a allReviews key.
+            reviewsDataArr.map(review => stateCopy.allReviews[review.id] = review); //adding to the state but might switch to be in state and then in a allReviews key.
             return stateCopy;
         case LOAD_SPECIFIC_REVIEW: 
             return;
