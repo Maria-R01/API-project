@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { loadSpecificSpotThunk } from '../../store/spots';
+import Reviews from '../Reviews';
 
 const SpecificSpot = () => {
     const { spotId } = useParams();
@@ -79,7 +80,7 @@ const SpecificSpot = () => {
                 <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
                 <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
                 </div>
-                    <h3>REVIEWS COMING SOON</h3>
+                    <Reviews />
             </div>
         </div>
         // <></>
