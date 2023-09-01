@@ -33,9 +33,13 @@ function LoginFormModal() {
   const submitButton = "signup-submit-button" + (isDisabled ? ' disabled' : '')
 
   const loginDemoUser = async () => {
+    // const user1 = {
+    //   credential: 'DemoUserLogin',
+    //   password: 'demoUser',
+    // };
     const user = {
-      credential: 'DemoUserLogin',
-      password: 'demoUser',
+      credential: 'demo@user.io',
+      password: 'password',
     };
     return await dispatch(sessionActions.login(user))
       .then(closeModal)

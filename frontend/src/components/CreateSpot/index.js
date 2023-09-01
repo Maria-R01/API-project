@@ -4,20 +4,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { createSpotImageThunk, createSpotThunk, loadSpecificSpotThunk } from '../../store/spots';
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
-const CreateSpot = () => {
+const CreateSpot = ({ spot }) => {
     const dispatch = useDispatch();
-    const [country, setCountry] = useState("");
-    const [streetAddress, setStreetAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [description, setDescription] = useState("");
-    const [title, setTitle] = useState("");
-    const [price, setPrice] = useState("");
-    const [previewImage, setPreviewImage] = useState("");
-    const [imageURL1, setImageURL1] = useState("");
-    const [imageURL2, setImageURL2] = useState("");
-    const [imageURL3, setImageURL3] = useState("");
-    const [imageURL4, setImageURL4] = useState("");
+    const [country, setCountry] = useState(spot? spot.country : '');
+    const [streetAddress, setStreetAddress] = useState(spot? spot.address : "");
+    const [city, setCity] = useState(spot? spot.city : "");
+    const [state, setState] = useState(spot? spot.state : "");
+    const [description, setDescription] = useState(spot? spot.description : "");
+    const [title, setTitle] = useState(spot? spot.name : "");
+    const [price, setPrice] = useState(spot? spot.price : "");
+    const [previewImage, setPreviewImage] = useState(spot? spot.SpotImages[0]?.url : "");
+    const [imageURL1, setImageURL1] = useState(spot? spot.SpotImages[1]?.url : "");
+    const [imageURL2, setImageURL2] = useState(spot? spot.SpotImages[2]?.url : "");
+    const [imageURL3, setImageURL3] = useState(spot? spot.SpotImages[3]?.url : "");
+    const [imageURL4, setImageURL4] = useState(spot? spot.SpotImages[4]?.url : "");
     const [errors, setErrors] = useState({});
     const history = useHistory();
     const owner = useSelector(state => state.session.user);
@@ -181,6 +181,7 @@ const CreateSpot = () => {
             </div>
           </div>
           <label>
+            <span>$</span>
             <input
               type="number"
               value={price}
@@ -189,6 +190,7 @@ const CreateSpot = () => {
               placeholder="Price per night (USD)"
               className="inputs"
               min='1.00'
+              step="0.01"
             />
           </label>
           {errors.price && <p className='errors' >{errors.price}</p>}
