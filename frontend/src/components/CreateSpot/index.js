@@ -1,7 +1,7 @@
 import './CreateSpot.css';
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createSpotThunk } from '../../store/spots';
+import { createSpotImageThunk, createSpotThunk, loadSpecificSpotThunk } from '../../store/spots';
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const CreateSpot = () => {
@@ -19,20 +19,9 @@ const CreateSpot = () => {
     const [imageURL3, setImageURL3] = useState("");
     const [imageURL4, setImageURL4] = useState("");
     const [errors, setErrors] = useState({});
-    // const [isDisabled, setIsDisabled] = useState(true);
     const history = useHistory();
     const owner = useSelector(state => state.session.user);
-    // console.log(owner)
-    const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
-    const spotImagesArr = [];
-    for(let spotImage of SpotImages) {
-        if(spotImage) spotImagesArr.push({
-            url: spotImage,
-            preview: true 
-        })
-    };
-    // console.log(spotImagesArr)
-    // console.log(SpotImages)
+    const spotSelector = useSelector(state => state.spots.singleSpot);
     const newSpot = {
         address: streetAddress,
         city,
@@ -40,16 +29,11 @@ const CreateSpot = () => {
         country,
         name: title,
         description, 
-        SpotImages: spotImagesArr,
         price,
-        Owner: owner,
-        ownerId: owner?.id,
         lat: (Math.random() * 100).toFixed(2),
         lng: (Math.random()* 100).toFixed(2)
     }
     
-    const spotSelector = useSelector(state => state.spots.allSpots);
-    // console.log(spotSelector)
     const handleSubmit = async (e) => {
     e.preventDefault();
     const errors = {};
@@ -66,11 +50,23 @@ const CreateSpot = () => {
     if(imageURL2 && !imageURL2.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL2 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL3 && !imageURL3.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL3 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL4 && !imageURL4.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL4 = 'Image URL must end in .png, .jpg or .jpeg';
-
+ 
     if(Object.keys(errors).length) {
         setErrors(errors);
     } else {
         const newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
+        const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
+        for(let spotImage of SpotImages) {
+            if(spotImage) {
+                const payload = {
+                    spotId: newlyCreatedSpot.id,
+                    url: spotImage,
+                    preview: true
+                };
+                await dispatch(createSpotImageThunk(payload));
+            }
+        };
+        await dispatch(loadSpecificSpotThunk(newlyCreatedSpot.id));
         if(newlyCreatedSpot) history.push(`/spots/${newlyCreatedSpot.id}`);
     }
 }

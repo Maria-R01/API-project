@@ -10,16 +10,18 @@ const SpecificSpot = () => {
     useEffect( () => {
         dispatch(loadSpecificSpotThunk(spotId))
     }, [dispatch]);
-
+    
     const spot = useSelector(state => state.spots.singleSpot);
     // console.log(spot);
-    if(!spot.SpotImages.length) return null;
+    // if(!spot.SpotImages.length) console.log('no images available in SpotImages on singleSpot');
+    // if(!spot.SpotImages.length) return null;
     const fiveImages = [];
     for(let ele of spot.SpotImages) {
         if(fiveImages.length <= 5) fiveImages.push(ele);
         else return;
     };
-    const fourImages = fiveImages.slice(1);
+    let fourImages;
+    if(fiveImages.length) fourImages = fiveImages.slice(1, 5);
     return (
         <div className='root'>
             <div className='topHeadings' >
@@ -28,10 +30,10 @@ const SpecificSpot = () => {
             </div>
             <div className='imagesContainer'>
                 <div className='firstImage'>
-                    <img alt='' src={`${fiveImages[0].url}`}></img>
+                {fiveImages[0]? <img alt='' src={`${fiveImages[0]?.url}`}></img>  : <h4>Images coming soon...</h4>}
                 </div>
                 <div className='fourImages'> 
-                {fourImages.map(spot => (
+                {fourImages?.map(spot => (
                     <div className={`image${spot.id}`} key={`${spot.id}`}>
                         <img alt='' src={`${spot.url}`} id={`img${spot.id}`}></img>
                     </div>
@@ -52,7 +54,7 @@ const SpecificSpot = () => {
                 <div className='details-box-container'>
                     <div className='details-box-top'>
                         <div className='price'>
-                            ${spot.price.toFixed(2)}
+                            ${spot.price?.toFixed(2)}
                         </div>
                         <span className='night'>night</span>
                         <div className='ratings-reviews'>
@@ -68,6 +70,11 @@ const SpecificSpot = () => {
             </div>
             <div className='bottom'></div>
             <div className='reviews-container'>
+                <div className='star-rating-container'>
+                <i className="fa-solid fa-star icon"></i> 
+                <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
+                <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
+                </div>
                     <h3>REVIEWS COMING SOON</h3>
             </div>
         </div>
