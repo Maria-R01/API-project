@@ -30,6 +30,27 @@ function LoginFormModal() {
     setIsDisabled(credential.length < 4 || password.length < 6 )
   }, [credential, password])
 
+  const submitButton = "signup-submit-button" + (isDisabled ? ' disabled' : '')
+
+  const loginDemoUser = async () => {
+    const user = {
+      credential: 'DemoUserLogin',
+      password: 'demoUser',
+    };
+    // const user = {
+    //   credential: 'demo@user.io',
+    //   password: 'password',
+    // };
+    return await dispatch(sessionActions.login(user))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
+  }
+
   return (
     <div className="modal">
       <h1 className="form-title">Log In</h1>
@@ -57,10 +78,10 @@ function LoginFormModal() {
             className="login-input-fields"
           />
         </label>
-        <button type="submit" disabled={isDisabled} className='login-submit-button'>Log In</button>
+        <button type="submit" disabled={isDisabled} className={submitButton}>Log In</button>
       </form>
       <div className="demo-user">
-        <NavLink to='/' onClick={() => alert('Feature Coming Soon...')}>Demo User</NavLink>
+        <NavLink to='/' onClick={loginDemoUser} className='demo-user-button' >Demo User</NavLink>
       </div>
     </div>
   );

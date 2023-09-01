@@ -1,0 +1,24 @@
+#new-spot-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 380px;
+}
+
+.inputs {
+    display: flex;
+    border: 2px black solid;
+}
+
+.spot-submit-button {
+    height: 20px;
+    background-color: #fe5a5e;
+    color: white;
+    box-shadow: 2px 2px 1px black;
+    border: 2px black solid;
+}
+
+.errors {
+    color: #fe5a5e;
+    font-weight: bold;
+    font-size: smaller;
+}
