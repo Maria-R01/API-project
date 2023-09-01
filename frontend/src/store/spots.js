@@ -155,6 +155,8 @@ export const updateSpotThunk = (data) => async (dispatch, getState) => {
     });
     if(res.ok) {
         const updatedSpot = await res.json();
+        updatedSpot.SpotImages = data.SpotImages;
+        updatedSpot.Owner = data.Owner;
         dispatch(actionUpdateSpot(updatedSpot));
         return updatedSpot;
     } else {
