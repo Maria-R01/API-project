@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { loadSpecificSpotThunk } from '../../store/spots';
+import Reviews from '../Reviews';
 
 const SpecificSpot = () => {
     const { spotId } = useParams();
@@ -12,12 +13,13 @@ const SpecificSpot = () => {
     }, [dispatch]);
     
     const spot = useSelector(state => state.spots.singleSpot);
-    console.log('spot in specific spot: ', spot)
+    const spotOwner = spot.Owner ? spot.Owner : null
+    // console.log('spot in specific spot: ', spot)
     // console.log(spot);
     // if(!spot.SpotImages.length) console.log('no images available in SpotImages on singleSpot');
     // if(!spot.SpotImages.length) return null;
     const fiveImages = [];
-    console.log(spot.SpotImages)
+    // console.log(spot.SpotImages)
     if(spot) {
         for(let ele of spot.SpotImages) {
             if(fiveImages.length <= 5) fiveImages.push(ele);
@@ -79,7 +81,7 @@ const SpecificSpot = () => {
                 <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
                 <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
                 </div>
-                    <h3>REVIEWS COMING SOON</h3>
+                    <Reviews spotId={spotId} owner={spotOwner}/>
             </div>
         </div>
         // <></>
