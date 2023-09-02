@@ -18,9 +18,13 @@ const Reviews = ({ spotId, owner }) => {
   const reviewsDataObj = useSelector((state) => state.reviews.allReviews);
   //   console.log(reviewsDataObj)
   const reviewsDataArr = Object.values(reviewsDataObj).sort(
-    (a, b) => a.updatedAt - b.updatedAt
+    (a, b) => {
+        const aTime = Date.parse(a.updatedAt);
+        const bTime = Date.parse(b.updatedAt);
+        return bTime - aTime
+    }
   );
-//   console.log('reviewDataArr: ', reviewsDataArr)
+  console.log('reviewDataArr: ', reviewsDataArr)
   //   console.log(reviewsDataArr)
 //   reviewsDataArr?.map((review) => allReviewsArr.push(review));
   //   console.log(allReviewsArr);
