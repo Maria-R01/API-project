@@ -45,8 +45,10 @@ export const loadReviewsThunk = (data) => async (dispatch, getState) => {
         dispatch(actionLoadReviews(reviews));
         return reviews;
     } else {
-        const errors = await res.json();
-        return errors;
+        const reviews = {Reviews: []};
+        dispatch(actionLoadReviews(reviews));
+        console.log("ERRORS: ",reviews)
+        return reviews;
     }
 };
 
@@ -86,7 +88,7 @@ const reviewsReducer = (state = initialState, action) => {
             stateCopy.allReviews = {};
             console.log(stateCopy)
             const reviewsDataArr = action.reviews.Reviews;
-            reviewsDataArr.map(review => stateCopy.allReviews[review.id] = review); //adding to the state but might switch to be in state and then in a allReviews key.
+            reviewsDataArr.map(review => stateCopy.allReviews[review.id] = review); 
             return stateCopy;
         case LOAD_SPECIFIC_REVIEW: 
             return;
