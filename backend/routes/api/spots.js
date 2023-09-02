@@ -307,7 +307,7 @@ router.get('/:spotId/reviews', async(req, res) =>{
       model: User,
     }]
   })
-  if(!reviews.length) return res.status(404).json({message: "Spot couldn't be found"});
+  if(!reviews.length) return res.status(200).json({Reviews: reviewsArr});
   for(let review of reviews) {
     review = review.toJSON();
     delete review.User.username
