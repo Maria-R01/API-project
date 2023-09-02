@@ -13,7 +13,7 @@ const SpecificSpot = () => {
     }, [dispatch]);
     
     const spot = useSelector(state => state.spots.singleSpot);
-    const spotOwner = spot?.Owner
+    const spotOwner = spot.Owner ? spot.Owner : null
     // console.log('spot in specific spot: ', spot)
     // console.log(spot);
     // if(!spot.SpotImages.length) console.log('no images available in SpotImages on singleSpot');

@@ -84,6 +84,7 @@ const reviewsReducer = (state = initialState, action) => {
     switch(action.type) {
         case LOAD_REVIEWS:
             stateCopy.allReviews = {};
+            console.log(stateCopy)
             const reviewsDataArr = action.reviews.Reviews;
             reviewsDataArr.map(review => stateCopy.allReviews[review.id] = review); //adding to the state but might switch to be in state and then in a allReviews key.
             return stateCopy;

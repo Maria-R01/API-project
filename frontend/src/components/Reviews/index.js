@@ -8,10 +8,10 @@ const Reviews = ({ spotId, owner }) => {
   // console.log('Inside Reviews Component');
   const spotIdNum = Number(spotId);
   const dispatch = useDispatch();
-  const allReviewsArr = [];
-  const [isSpotOwner, setIsSpotOwner] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
-  const [hasReview, setHasReview] = useState(false);
+//   const allReviewsArr = [];
+//   const [isSpotOwner, setIsSpotOwner] = useState(false);
+//   const [loggedIn, setLoggedIn] = useState(false);
+//   const [hasReview, setHasReview] = useState(false);
 
   const currentUser = useSelector((state) => state.session.user);
 
@@ -20,33 +20,36 @@ const Reviews = ({ spotId, owner }) => {
   const reviewsDataArr = Object.values(reviewsDataObj).sort(
     (a, b) => a.updatedAt - b.updatedAt
   );
+//   console.log('reviewDataArr: ', reviewsDataArr)
   //   console.log(reviewsDataArr)
-  reviewsDataArr?.map((review) => allReviewsArr.push(review));
+//   reviewsDataArr?.map((review) => allReviewsArr.push(review));
   //   console.log(allReviewsArr);
-
-  useEffect(() => {
-    //   console.log("isSpotOwner: ", isSpotOwner)
-    if (loggedIn && currentUser?.id === owner?.id)
-      currentUser?.id === owner?.id
-        ? setIsSpotOwner(true)
-        : setIsSpotOwner(false);
-  }, [isSpotOwner, owner.id]);
-
-  useEffect(() => {
-    //   console.log("loggedIn?: ", loggedIn)
-    if (currentUser)
-      Object.values(currentUser).length
-        ? setLoggedIn(true)
-        : setLoggedIn(false);
-  }, [loggedIn]);
-  console.log("hasReview? : ", hasReview)
-  useEffect(() => {
-    if(loggedIn && currentUser) reviewsDataArr?.filter( review => review.userId === currentUser?.id).length ? setHasReview(true) : setHasReview(false)
-  }, [hasReview]);
 
   useEffect(() => {
     dispatch(loadReviewsThunk(spotIdNum));
   }, [dispatch]);
+
+  const doesSpotHaveReviews = () => reviewsDataArr.length ? true : console.log("no reviews in doesSpotHaveReview()")
+  const isLoggedIn = () => currentUser?.id ? true : false;
+// ;  console.log(isLoggedIn())
+
+  const isSpotOwner = () => {
+    // console.log('Is this running? spotOwner')
+    // console.log("currentUser?: ", currentUser?.id);
+    // console.log("owner: ", owner);
+    // console.log("currentId : ", currentUser.id)
+    // console.log("owner.id: ", owner.id)
+    // console.log('boolean check for spotOwner: ', currentUser && owner && (currentUser.id === owner.id))
+    return currentUser && owner && (currentUser.id === owner.id);
+  }
+
+  const hasReview = () => reviewsDataArr.some(review  => {
+    // console.log('review: ', review);
+    // console.log('currentUser: ', currentUser)
+    //   console.log("boolean check : ", (review.userId === currentUser.id))
+      return (review.userId === currentUser.id);
+  })
+
 
   const formattedDate = (timeStamp) => {
     return new Date(timeStamp).toLocaleString("en-US", {
@@ -57,8 +60,8 @@ const Reviews = ({ spotId, owner }) => {
 
   return (
     <div className="all-reviews-Container">
-      {allReviewsArr.length ? (
-        allReviewsArr?.map((review) => (
+      {doesSpotHaveReviews() ? (
+        reviewsDataArr?.map((review) => (
           <div className="each-review-container" key={review.id}>
             <div>
               <div>{review.User.firstName}</div>
@@ -72,9 +75,13 @@ const Reviews = ({ spotId, owner }) => {
           </div>
         ))
       ) : (
-        // <div></div>
-        <div>Reviews coming soon</div>
+          <div>Reviews coming soon</div>
       )}
+      <div>
+            {(isLoggedIn() && (!isSpotOwner() && !hasReview())) ? (
+                <button>Post a review</button>
+            ) : <div>Cannot post a review</div>}
+    </div>
     </div>
   );
 };
