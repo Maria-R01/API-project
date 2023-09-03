@@ -1,24 +1,19 @@
 import "./Reviews.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { loadReviewsThunk } from "../../store/reviews";
 import OpenModalButton from '../OpenModalButton';
 import CreateReview from "../CreateReview";
 
 
 const Reviews = ({ spotId, owner }) => {
-  // console.log('Inside Reviews Component');
   const spotIdNum = Number(spotId);
   const dispatch = useDispatch();
-//   const allReviewsArr = [];
-//   const [isSpotOwner, setIsSpotOwner] = useState(false);
-//   const [loggedIn, setLoggedIn] = useState(false);
-//   const [hasReview, setHasReview] = useState(false);
 
   const currentUser = useSelector((state) => state.session.user);
 
   const reviewsDataObj = useSelector((state) => state.reviews.allReviews);
-  //   console.log(reviewsDataObj)
+
   const reviewsDataArr = Object.values(reviewsDataObj).sort(
     (a, b) => {
         const aTime = Date.parse(a.updatedAt);
@@ -26,10 +21,7 @@ const Reviews = ({ spotId, owner }) => {
         return bTime - aTime
     }
   );
-//   console.log('reviewDataArr: ', reviewsDataArr)
-  //   console.log(reviewsDataArr)
-//   reviewsDataArr?.map((review) => allReviewsArr.push(review));
-  //   console.log(allReviewsArr);
+
 
   useEffect(() => {
     dispatch(loadReviewsThunk(spotIdNum));
@@ -37,22 +29,13 @@ const Reviews = ({ spotId, owner }) => {
 
   const doesSpotHaveReviews = () => reviewsDataArr.length ? true : false;
   const isLoggedIn = () => currentUser?.id ? true : false;
-// ;  console.log(isLoggedIn())
+
 
   const isSpotOwner = () => {
-    // console.log('Is this running? spotOwner')
-    // console.log("currentUser?: ", currentUser?.id);
-    // console.log("owner: ", owner);
-    // console.log("currentId : ", currentUser.id)
-    // console.log("owner.id: ", owner.id)
-    // console.log('boolean check for spotOwner: ', currentUser && owner && (currentUser.id === owner.id))
     return currentUser && owner && (currentUser.id === owner.id);
   }
 
   const hasReview = () => reviewsDataArr.some(review  => {
-    // console.log('review: ', review);
-    // console.log('currentUser: ', currentUser)
-    //   console.log("boolean check : ", (review.userId === currentUser.id))
       return (review.userId === currentUser.id);
   })
 
@@ -66,8 +49,26 @@ const Reviews = ({ spotId, owner }) => {
 
   return (
     <div className="all-reviews-Container">
+    <div className="post-review-container">
+        {(isLoggedIn() && (!isSpotOwner() && !hasReview())) ? (
+            doesSpotHaveReviews() ? (
+            <div className="post-review-button">
+            <OpenModalButton buttonText={`Post Your Review`} modalComponent={<CreateReview spotIdNum={spotIdNum} />} />
+            </div>
+            ) : (
+                <>
+                <div className="post-review-button">
+                <OpenModalButton buttonText={`Post Your Review`} modalComponent={<CreateReview spotIdNum={spotIdNum} />} />
+                </div>
+                <div className="no-reviews-text">
+                    Be the first to post a review!
+                </div>
+                </>
+            )
+        ) : <div></div>}
+    </div>
       {doesSpotHaveReviews() ? (
-        reviewsDataArr.map((review) => ( //took ? off reviewsDataArr?.map
+        reviewsDataArr?.map((review) => ( 
           <div className="each-review-container" key={review.id}>
             <div>
               <div>{review.User.firstName}</div>
@@ -81,13 +82,8 @@ const Reviews = ({ spotId, owner }) => {
           </div>
         ))
       ) : (
-          <div>Reviews coming soon</div>
+          <div></div>
       )}
-      <div className="post-review-container">
-            {(isLoggedIn() && (!isSpotOwner() && !hasReview())) ? (
-                <OpenModalButton buttonText={`Post Your Review`} modalComponent={<CreateReview spotIdNum={spotIdNum} />} />
-            ) : <div>Cannot post a review</div>}
-    </div>
     </div>
   );
 };

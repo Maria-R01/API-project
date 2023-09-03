@@ -1,0 +1,7 @@
+.post-review-button > * {
+    height: 25px;
+    background-color: rgb(64, 63, 63);
+    color: white;
+    box-shadow: 2px 2px 1px black;
+    border: 2px black solid;
+}
