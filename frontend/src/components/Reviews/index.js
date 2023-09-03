@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { loadReviewsThunk } from "../../store/reviews";
 import OpenModalButton from '../OpenModalButton';
 import CreateReview from "../CreateReview";
-
+import DeleteReview from "../DeleteReview";
 
 const Reviews = ({ spotId, owner }) => {
   const spotIdNum = Number(spotId);
@@ -39,6 +39,7 @@ const Reviews = ({ spotId, owner }) => {
       return (review.userId === currentUser.id);
   })
 
+  const theirReviewId = () => reviewsDataArr?.find(review => review.userId === currentUser.id)
 
   const formattedDate = (timeStamp) => {
     return new Date(timeStamp).toLocaleString("en-US", {
@@ -79,6 +80,13 @@ const Reviews = ({ spotId, owner }) => {
             <div>
               <div>{review.review}</div>
             </div>
+            {(review.id === theirReviewId()?.id) ? (
+                <div>
+                    <div className="delete-review-container">
+                        <OpenModalButton buttonText={`Delete`} modalComponent={<DeleteReview reviewId={review.id} />} />
+                    </div>
+                </div>
+            ) : <></> }
           </div>
         ))
       ) : (

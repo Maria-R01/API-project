@@ -2,7 +2,6 @@ import { csrfFetch } from "./csrf";
 
 //ACTION TYPES
 export const LOAD_REVIEWS = 'reviews/LOAD_REVIEW';
-export const LOAD_SPECIFIC_REVIEW = 'reviews/LOAD_SPECIFIC_REVIEW';
 export const CREATE_REVIEW = 'reviews/CREATE_REVIEW';
 export const DELETE_REVIEW = 'reviews/DELETE_REVIEW';
 
@@ -14,15 +13,7 @@ export const actionLoadReviews = (reviews) => {
     }
 };
 
-export const actionLoadSpecificReview = (review) => {
-    return {
-        type: LOAD_SPECIFIC_REVIEW,
-        review
-    }
-};
-
 export const actionCreateNewReview = (review) => {
-    console.log("HELLO FROM ACTION CREATE NEW REVIEW")
     return {
         type: CREATE_REVIEW,
         review
@@ -50,14 +41,6 @@ export const loadReviewsThunk = (data) => async (dispatch, getState) => {
     }
 };
 
-// export const loadSpecificReviewThunk = (data) => async (dispatch, getState) => {
-
-// };
-
-// export const loadUserReviewsThunk = (data) => async (dispatch, getState) => {
-
-// };
-
 export const createReviewThunk = (data) => async (dispatch, getState) => {
     const { spotId, review, stars } = data;
     const newReview = { review, stars };
@@ -80,7 +63,17 @@ export const createReviewThunk = (data) => async (dispatch, getState) => {
 };
 
 export const deleteReviewThunk = data => async (dispatch, getState) => {
+    const res = await csrfFetch(`/api/reviews/${data}`, {
+        method: 'DELETE',
+        headers: {'Content-Type': 'application/json'}
+    });
 
+    if(res.ok) {
+        dispatch(actionDeleteReview(data))
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
 }
 
 //REDUCER
@@ -107,15 +100,19 @@ const reviewsReducer = (state = initialState, action) => {
         // case LOAD_SPECIFIC_REVIEW: 
         //     return;
         case CREATE_REVIEW:
-            console.log("HELLO FROM INSIDE THE CREATE REVIEW REDUCER CASE")
+            // console.log("HELLO FROM INSIDE THE CREATE REVIEW REDUCER CASE")
             // console.log("state copy before spreading in reviews: ", stateCopy)
             // stateCopy.allReviews = {...state.allReviews};
-            console.log("state copy before adding review: ", stateCopy)
+            // console.log("state copy before adding review: ", stateCopy)
             state.allReviews[action.review.id] = action.review
-            console.log("state copy after adding review: ", stateCopy)
+            // console.log("state copy after adding review: ", stateCopy)
             return stateCopy
         case DELETE_REVIEW:
-            return;
+            stateCopy.allReviews = {...state.allReviews};
+            // console.log("state before deleting review: ", stateCopy)
+            delete stateCopy.allReviews[action.reviewId];
+            // console.log("state after delete of review: ", stateCopy)
+            return stateCopy;
         default:
             return state;
     }
