@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { createReviewThunk } from "../../store/reviews";
-import { useState } from "react";
+import { createReviewThunk, loadReviewsThunk } from "../../store/reviews";
+import { useState, useEffect } from "react";
 import StarRating from "../StarRating";
 import './CreateReview.css';
+import { loadSpecificSpotThunk } from "../../store/spots";
 
 const CreateReview = ({spotIdNum}) => {
     const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const CreateReview = ({spotIdNum}) => {
     const [reviewText, setReviewText] = useState("")
     const [starsRating, setStarsRating] = useState(0)
     const [errors, setErrors] = useState({})
-    
+
     const validationForReview = () => {
         const validationErrors = {}
         if(reviewText.length < 10) validationErrors.reviewText = "review must be at least 30 characters";
@@ -39,7 +40,8 @@ const CreateReview = ({spotIdNum}) => {
             review: reviewText,
             stars: starsRating
         }
-        return await dispatch(createReviewThunk(newReview))
+        return dispatch(createReviewThunk(newReview))
+        .then(dispatch(loadSpecificSpotThunk(spotIdNum)))
         .then(closeModal())
         .catch(async (res) => {
             const data = await res.json();

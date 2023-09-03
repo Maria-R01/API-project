@@ -22,6 +22,7 @@ export const actionLoadSpecificReview = (review) => {
 };
 
 export const actionCreateNewReview = (review) => {
+    console.log("HELLO FROM ACTION CREATE NEW REVIEW")
     return {
         type: CREATE_REVIEW,
         review
@@ -106,8 +107,12 @@ const reviewsReducer = (state = initialState, action) => {
         // case LOAD_SPECIFIC_REVIEW: 
         //     return;
         case CREATE_REVIEW:
-            stateCopy.allReviews = {...state.allReviews};
+            console.log("HELLO FROM INSIDE THE CREATE REVIEW REDUCER CASE")
+            // console.log("state copy before spreading in reviews: ", stateCopy)
+            // stateCopy.allReviews = {...state.allReviews};
+            console.log("state copy before adding review: ", stateCopy)
             state.allReviews[action.review.id] = action.review
+            console.log("state copy after adding review: ", stateCopy)
             return stateCopy
         case DELETE_REVIEW:
             return;
