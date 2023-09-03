@@ -2,7 +2,9 @@ import "./Reviews.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { loadReviewsThunk } from "../../store/reviews";
-import { NavLink } from "react-router-dom/cjs/react-router-dom";
+import OpenModalButton from '../OpenModalButton';
+import CreateReview from "../CreateReview";
+
 
 const Reviews = ({ spotId, owner }) => {
   // console.log('Inside Reviews Component');
@@ -24,7 +26,7 @@ const Reviews = ({ spotId, owner }) => {
         return bTime - aTime
     }
   );
-  console.log('reviewDataArr: ', reviewsDataArr)
+//   console.log('reviewDataArr: ', reviewsDataArr)
   //   console.log(reviewsDataArr)
 //   reviewsDataArr?.map((review) => allReviewsArr.push(review));
   //   console.log(allReviewsArr);
@@ -33,7 +35,7 @@ const Reviews = ({ spotId, owner }) => {
     dispatch(loadReviewsThunk(spotIdNum));
   }, [dispatch]);
 
-  const doesSpotHaveReviews = () => reviewsDataArr.length ? true : console.log("no reviews in doesSpotHaveReview()")
+  const doesSpotHaveReviews = () => reviewsDataArr.length ? true : false;
   const isLoggedIn = () => currentUser?.id ? true : false;
 // ;  console.log(isLoggedIn())
 
@@ -65,7 +67,7 @@ const Reviews = ({ spotId, owner }) => {
   return (
     <div className="all-reviews-Container">
       {doesSpotHaveReviews() ? (
-        reviewsDataArr?.map((review) => (
+        reviewsDataArr.map((review) => ( //took ? off reviewsDataArr?.map
           <div className="each-review-container" key={review.id}>
             <div>
               <div>{review.User.firstName}</div>
@@ -81,9 +83,9 @@ const Reviews = ({ spotId, owner }) => {
       ) : (
           <div>Reviews coming soon</div>
       )}
-      <div>
+      <div className="post-review-container">
             {(isLoggedIn() && (!isSpotOwner() && !hasReview())) ? (
-                <button>Post a review</button>
+                <OpenModalButton buttonText={`Post Your Review`} modalComponent={<CreateReview spotIdNum={spotIdNum} />} />
             ) : <div>Cannot post a review</div>}
     </div>
     </div>

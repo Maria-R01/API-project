@@ -1,0 +1,34 @@
+.review-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stars-input-container {
+    display: flex;
+    gap: 5px;
+    margin-top: 15px;
+}
+
+.review-textarea {
+    background-color: rgb(202, 236, 252);
+    border: 2px black solid;
+}
+
+.review-submit-button {
+    height: 35px;
+    background-color: #fe5a5e;
+    color: white;
+    box-shadow: 2px 2px 1px black;
+    border: 2px black solid;
+    width: 280px;
+}
+
+.disabled {
+    background-color: rgb(223, 221, 221);
+    box-shadow: 2px 2px 1px rgb(182, 181, 181);
+    border: 2px rgb(182, 181, 181) solid;
+    color: rgb(182, 181, 181);
+    width: 280px;
+    margin-top: 15px;
+}

@@ -1,0 +1,11 @@
+.filled {
+    color: black;
+}
+
+.empty {
+    color: rgb(204, 202, 202);
+}
+
+.starsRating-container {
+    display: flex;
+}

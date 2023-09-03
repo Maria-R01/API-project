@@ -38,7 +38,6 @@ export const actionDeleteReview = (reviewId) => {
 //THUNKS
 export const loadReviewsThunk = (data) => async (dispatch, getState) => {
     //data being passed in is the spots ID 
-    console.log('data before passing into fetch req: ', data)
     const res = await fetch(`/api/spots/${data}/reviews`);
     if(res.ok){
         const reviews = await res.json();
@@ -50,16 +49,33 @@ export const loadReviewsThunk = (data) => async (dispatch, getState) => {
     }
 };
 
-export const loadSpecificReviewThunk = (data) => async (dispatch, getState) => {
+// export const loadSpecificReviewThunk = (data) => async (dispatch, getState) => {
 
-};
+// };
 
-export const loadUserReviewsThunk = (data) => async (dispatch, getState) => {
+// export const loadUserReviewsThunk = (data) => async (dispatch, getState) => {
 
-};
+// };
 
 export const createReviewThunk = (data) => async (dispatch, getState) => {
+    const { spotId, review, stars } = data;
+    const newReview = { review, stars };
+    const res = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newReview)
+    });
 
+    if(res.ok) {
+        const reviewCreated = await res.json();
+        dispatch(actionCreateNewReview(reviewCreated));
+        return reviewCreated;
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
 };
 
 export const deleteReviewThunk = data => async (dispatch, getState) => {
@@ -84,14 +100,15 @@ const reviewsReducer = (state = initialState, action) => {
     switch(action.type) {
         case LOAD_REVIEWS:
             stateCopy.allReviews = {};
-            console.log(stateCopy)
             const reviewsDataArr = action.reviews.Reviews;
             reviewsDataArr.map(review => stateCopy.allReviews[review.id] = review); 
             return stateCopy;
-        case LOAD_SPECIFIC_REVIEW: 
-            return;
+        // case LOAD_SPECIFIC_REVIEW: 
+        //     return;
         case CREATE_REVIEW:
-            return;
+            stateCopy.allReviews = {...state.allReviews};
+            state.allReviews[action.review.id] = action.review
+            return stateCopy
         case DELETE_REVIEW:
             return;
         default:
