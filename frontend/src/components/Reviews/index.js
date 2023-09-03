@@ -39,7 +39,7 @@ const Reviews = ({ spotId, owner }) => {
       return (review.userId === currentUser.id);
   })
 
-  const theirReviewId = () => reviewsDataArr?.find(review => review.userId === currentUser.id)
+  const theirReviewId = () => reviewsDataArr.find(review => review.userId === currentUser?.id)
 
   const formattedDate = (timeStamp) => {
     return new Date(timeStamp).toLocaleString("en-US", {
