@@ -45,10 +45,8 @@ export const loadReviewsThunk = (data) => async (dispatch, getState) => {
         dispatch(actionLoadReviews(reviews));
         return reviews;
     } else {
-        const reviews = {Reviews: []};
-        dispatch(actionLoadReviews(reviews));
-        console.log("ERRORS: ",reviews)
-        return reviews;
+        const errors = await res.json();
+        return errors;
     }
 };
 
