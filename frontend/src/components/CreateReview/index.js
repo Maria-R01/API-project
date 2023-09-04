@@ -43,6 +43,7 @@ const CreateReview = ({spotIdNum}) => {
         return dispatch(createReviewThunk(newReview))
         .then(dispatch(loadSpecificSpotThunk(spotIdNum)))
         .then(closeModal())
+        .then(window.location.reload())
         .catch(async (res) => {
             const data = await res.json();
             if (data && data.errors) {

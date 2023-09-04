@@ -62,7 +62,7 @@ const SpecificSpot = () => {
                         <div className='ratings-reviews'>
                             <i className="fa-solid fa-star icon"></i> 
                             <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
-                            <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
+                            <div className='numReviews'> {spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
                         </div>
                     </div>
                     <div className='details-box-bottom'>

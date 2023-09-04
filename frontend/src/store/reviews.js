@@ -97,21 +97,12 @@ const reviewsReducer = (state = initialState, action) => {
             const reviewsDataArr = action.reviews.Reviews;
             reviewsDataArr.map(review => stateCopy.allReviews[review.id] = review); 
             return stateCopy;
-        // case LOAD_SPECIFIC_REVIEW: 
-        //     return;
         case CREATE_REVIEW:
-            // console.log("HELLO FROM INSIDE THE CREATE REVIEW REDUCER CASE")
-            // console.log("state copy before spreading in reviews: ", stateCopy)
-            // stateCopy.allReviews = {...state.allReviews};
-            // console.log("state copy before adding review: ", stateCopy)
             state.allReviews[action.review.id] = action.review
-            // console.log("state copy after adding review: ", stateCopy)
             return stateCopy
         case DELETE_REVIEW:
             stateCopy.allReviews = {...state.allReviews};
-            // console.log("state before deleting review: ", stateCopy)
             delete stateCopy.allReviews[action.reviewId];
-            // console.log("state after delete of review: ", stateCopy)
             return stateCopy;
         default:
             return state;
