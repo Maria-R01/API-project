@@ -106,9 +106,7 @@ const reviewsReducer = (state = initialState, action) => {
         //     return stateCopy
         case DELETE_REVIEW:
             stateCopy.allReviews = {...state.allReviews};
-            console.log("state before deleting review: ", stateCopy)
             delete stateCopy.allReviews[action.reviewId];
-            console.log("state after deleting review: ", stateCopy)
             return stateCopy;
         default:
             return state;
