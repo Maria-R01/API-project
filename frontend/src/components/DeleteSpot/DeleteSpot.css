@@ -1,0 +1,42 @@
+.delete-spot-container { 
+    display: flex;
+    flex-direction: column;
+}
+
+.delete-spot-container > * {
+    display: flex;
+    margin-top: 10px;
+    justify-content: center;
+}
+
+.yes-no-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.yes {
+    height: 35px;
+    background-color: #fe5a5e;
+    color: white;
+    box-shadow: 2px 2px 1px black;
+    border: 2px black solid;
+}
+
+.no {
+    height: 35px;
+    background-color: rgb(86, 84, 84);
+    box-shadow: 2px 2px 1px black;
+    border: 2px black solid;
+    color: white
+}
+
+.confirmDelete {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.question {
+    width: 300px;
+}

@@ -27,7 +27,7 @@ function Navigation({ isLoaded }){
         </div>
       )} */}
       {isLoaded && (
-        <>
+        <div className='right'>
         <div className='profile-icon'>
         <div className='create-spot-container'>
           <NavLink to='/spots/new' className={hideCreateSpot}>Create a New Spot</NavLink>
@@ -36,7 +36,7 @@ function Navigation({ isLoaded }){
           <ProfileButton user={sessionUser} className='profile-button' />
         </div>   
         </div>
-        </>
+        </div>
       )}
     </div>
     <div className='bottomLine'></div>

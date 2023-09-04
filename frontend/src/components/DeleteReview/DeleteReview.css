@@ -1,0 +1,24 @@
+.deleteReviewButtonsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    /* border: 1px darkblue solid; */
+}
+
+.deleteReviewButtonsContainer > * {
+    width: 280px;
+}
+
+.deleteReviewContainer {
+    /* border: 2px dashed pink; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+}
+
+.ConfirmDeleteHeading > * {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}

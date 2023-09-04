@@ -1,5 +1,5 @@
 #root {
-    max-width: 1024px;
+    max-width: 1014px;
     margin: auto;
 }
 
@@ -9,7 +9,7 @@
     margin: 10px;
     width: 290px;
     height: 350px;
-    margin-left: 25px;
+    margin-left: 20px;
     justify-content: center;
     /* align-items: center; */
 }

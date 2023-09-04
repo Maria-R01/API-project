@@ -50,12 +50,22 @@ function SignupFormModal() {
   };
 
   const submitButton = "signup-submit-button" + (isDisabled ? ' disabled' : '')
-
+  
   return (
     <div className="signup-modal">
-      <h1 className="signup-heading">Sign Up</h1>
+      <h2 className="signup-heading">Sign Up</h2>
       <form onSubmit={handleSubmit} className="signup-form">
         {/* {console.log(errors)} */}
+        <div className="errors">
+        {errors.email && <p>{errors.email}</p>}
+        {errors.username && <p>{errors.username}</p>}
+        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.password && <p>{errors.password}</p>}
+        {errors.confirmPassword && (
+          <p>{errors.confirmPassword}</p>
+        )}
+        </div>
         <label>
           <input
             type="text"
@@ -66,7 +76,7 @@ function SignupFormModal() {
             className="input-fields"
           />
         </label>
-        {errors.email && <p>{errors.email}</p>}
+        {/* {errors.email && <p>{errors.email}</p>} */}
         <label>
           <input
             type="text"
@@ -77,7 +87,7 @@ function SignupFormModal() {
             className="input-fields"
           />
         </label>
-        {errors.username && <p>{errors.username}</p>}
+        {/* {errors.username && <p>{errors.username}</p>} */}
         <label>
           <input
             type="text"
@@ -88,7 +98,7 @@ function SignupFormModal() {
             className="input-fields"
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {/* {errors.firstName && <p>{errors.firstName}</p>} */}
         <label>
           <input
             type="text"
@@ -99,7 +109,7 @@ function SignupFormModal() {
             className="input-fields"
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {/* {errors.lastName && <p>{errors.lastName}</p>} */}
         <label>
           <input
             type="password"
@@ -110,7 +120,7 @@ function SignupFormModal() {
             className="input-fields"
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {/* {errors.password && <p>{errors.password}</p>} */}
         <label>
           <input
             type="password"
@@ -121,9 +131,9 @@ function SignupFormModal() {
             className="input-fields"
           />
         </label>
-        {errors.confirmPassword && (
+        {/* {errors.confirmPassword && (
           <p>{errors.confirmPassword}</p>
-        )}
+        )} */}
         <button type="submit" className={submitButton} disabled={isDisabled} >Sign Up</button>
       </form>
     </div>
