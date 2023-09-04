@@ -33,14 +33,14 @@ function LoginFormModal() {
   const submitButton = "signup-submit-button" + (isDisabled ? ' disabled' : '')
 
   const loginDemoUser = async () => {
-    const user = {
-      credential: 'DemoUserLogin',
-      password: 'demoUser',
-    };
     // const user = {
-    //   credential: 'demo@user.io',
-    //   password: 'password',
+    //   credential: 'DemoUserLogin',
+    //   password: 'demoUser',
     // };
+    const user = {
+      credential: 'demo@user.io',
+      password: 'password',
+    };
     return await dispatch(sessionActions.login(user))
       .then(closeModal)
       .catch(async (res) => {

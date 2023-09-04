@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         // isAlpha: true,
-        len: [4, 13],
+        // len: [4, 13],
       },
     },
     state: {
@@ -74,7 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         // isAlpha: true,
-        len: [2, 30],
+        // len: [2, 30],
       },
     },
     country: {
@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         // isAlpha: true,
-        len: [4, 35]
+        // len: [4, 35]
       }
     },
     lat: {
@@ -103,7 +103,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         // isAlpha: true,
-        len: [4, 49]
+        // len: [4, 49]
       }
     },
     description: {
@@ -114,7 +114,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
-        min: 1,
+        min: 0,
         // isNumeric: true
       }
     },
