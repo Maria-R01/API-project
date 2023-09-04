@@ -40,16 +40,17 @@ const CreateReview = ({spotIdNum}) => {
             review: reviewText,
             stars: starsRating
         }
-        return dispatch(createReviewThunk(newReview))
-        .then(dispatch(loadSpecificSpotThunk(spotIdNum)))
-        .then(closeModal())
-        .catch(async (res) => {
-            const data = await res.json();
-            if (data && data.errors) {
-              return data.errors;
-            }
-        }
-        )
+        await dispatch(createReviewThunk(newReview))
+        await (dispatch(loadSpecificSpotThunk(spotIdNum)))
+        return (closeModal())
+        // .then(window.location.reload())
+        // .catch(async (res) => {
+        //     const data = await res.json();
+        //     if (data && data.errors) {
+        //       return data.errors;
+        //     }
+        // }
+        // )
     };
     
     const submitButton = "review-submit-button" + (isDisabled() ? ' disabled' : '')

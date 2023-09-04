@@ -14,12 +14,8 @@ const SpecificSpot = () => {
     
     const spot = useSelector(state => state.spots.singleSpot);
     const spotOwner = spot.Owner ? spot.Owner : null
-    // console.log('spot in specific spot: ', spot)
-    // console.log(spot);
-    // if(!spot.SpotImages.length) console.log('no images available in SpotImages on singleSpot');
-    // if(!spot.SpotImages.length) return null;
     const fiveImages = [];
-    // console.log(spot.SpotImages)
+
     if(spot) {
         for(let ele of spot.SpotImages) {
             if(fiveImages.length <= 5) fiveImages.push(ele);
@@ -66,7 +62,8 @@ const SpecificSpot = () => {
                         <div className='ratings-reviews'>
                             <i className="fa-solid fa-star icon"></i> 
                             <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
-                            <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
+                            <div className='dot-in-box'>·</div>
+                            <div className='numReviews'> {spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
                         </div>
                     </div>
                     <div className='details-box-bottom'>
@@ -77,9 +74,14 @@ const SpecificSpot = () => {
             <div className='bottom'></div>
             <div className='reviews-container'>
                 <div className='star-rating-container'>
-                <i className="fa-solid fa-star icon"></i> 
-                <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
-                <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
+                <div className='star-rating'>
+                    <i className="fa-solid fa-star icon"></i> 
+                    <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
+                </div>
+                <div className='numReviews-container'>
+                    <div className='dot'>·</div>
+                    <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
+                </div>
                 </div>
                     <Reviews spotId={spotId} owner={spotOwner}/>
             </div>

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { loadReviewsThunk } from "../../store/reviews";
 import OpenModalButton from '../OpenModalButton';
 import CreateReview from "../CreateReview";
-
+import DeleteReview from "../DeleteReview";
 
 const Reviews = ({ spotId, owner }) => {
   const spotIdNum = Number(spotId);
@@ -39,6 +39,7 @@ const Reviews = ({ spotId, owner }) => {
       return (review.userId === currentUser.id);
   })
 
+  const theirReviewId = () => reviewsDataArr.find(review => review.userId === currentUser?.id)
 
   const formattedDate = (timeStamp) => {
     return new Date(timeStamp).toLocaleString("en-US", {
@@ -71,14 +72,21 @@ const Reviews = ({ spotId, owner }) => {
         reviewsDataArr?.map((review) => ( 
           <div className="each-review-container" key={review.id}>
             <div>
-              <div>{review.User.firstName}</div>
+              <div className="review-firstName">{review.User?.firstName}</div>
             </div>
             <div>
-              <div>{formattedDate(review.updatedAt)}</div>
+              <div className="review-date">{formattedDate(review.updatedAt)}</div>
             </div>
             <div>
-              <div>{review.review}</div>
+              <div className="review-text">{review.review}</div>
             </div>
+            {(review.id === theirReviewId()?.id) ? (
+                <div>
+                    <div className="delete-review-container">
+                        <OpenModalButton buttonText={`Delete`} modalComponent={<DeleteReview reviewId={review.id} spotId={spotIdNum} />} />
+                    </div>
+                </div>
+            ) : <></> }
           </div>
         ))
       ) : (
