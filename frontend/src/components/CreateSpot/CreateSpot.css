@@ -2,11 +2,15 @@
     display: flex;
     flex-direction: column;
     max-width: 380px;
+    position: relative;
+    left: 330px;
+    /* border: 1px solid red; */
 }
 
 .inputs {
     display: flex;
     border: 2px black solid;
+    background-color: rgb(202, 236, 252);
 }
 
 .spot-submit-button {
@@ -15,10 +19,61 @@
     color: white;
     box-shadow: 2px 2px 1px black;
     border: 2px black solid;
+    margin-top: 15px;
+}
+
+.submit-button-container{
+    display: flex;
+    justify-content: center;
 }
 
 .errors {
     color: #fe5a5e;
     font-weight: bold;
     font-size: smaller;
+    margin-top: 3px;
+}
+
+.input-container > * {
+    width: 370px;
+}
+
+.city-state {
+    display: flex;
+    gap: 10px
+}
+
+.comma {
+    display: flex;
+    align-items: end;
+    margin-left: -7px;
+}
+
+.city-container  > * {
+    width: 220px;
+}
+
+.state-container > * {
+    width: 125px;
+}
+
+.price-symbol {
+    display: flex;
+    gap: 5px;
+}
+
+.price-amount > * {
+    width: 357px;
+}
+
+.image-links-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.break-line {
+    border: 1px solid black;
+    margin-top: 20px;
+    width: 375px;
 }

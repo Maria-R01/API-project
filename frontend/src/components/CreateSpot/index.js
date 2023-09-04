@@ -85,14 +85,16 @@ const CreateSpot = ({ spot }) => {
 
     return (
         <div id="new-spot-form">
-        {create ? <h2 className="new-spot-heading">Create a new Spot</h2> : <h2 className="new-spot-heading">Update your Spot</h2>}
-        <h4>Where's your place located?</h4>
-        <p>
-            Guest will only get your exact address once they book a reservation.
-        </p>
+        <div className='top-form-container'>
+          {create ? <h2 className="new-spot-heading">Create a new Spot</h2> : <h2 className="new-spot-heading">Update your Spot</h2>}
+          <h4>Where's your place located?</h4>
+          <p>
+              Guest will only get your exact address once they book a reservation.
+          </p>
+        </div>
         <form onSubmit={handleSubmit} className="new-spot-form">
           {/* {console.log(errors)} */}
-          <label>
+          <label className='input-container'>
             Country {errors.country && <span className='errors'>{errors.country}</span>}
             <input
               type="text"
@@ -103,7 +105,7 @@ const CreateSpot = ({ spot }) => {
               className="inputs"
             />
           </label>
-          <label>
+          <label className='input-container'>
             Street Address {errors.streetAddress && <span className='errors'>{errors.streetAddress}</span>}
             <input
               type="text"
@@ -114,7 +116,8 @@ const CreateSpot = ({ spot }) => {
               className="inputs"
             />
           </label>
-          <label>
+          <div className='city-state'>
+          <label className='city-container'>
             City {errors.city && <span className='errors' >{errors.city}</span>}
             <input
               type="text"
@@ -124,8 +127,11 @@ const CreateSpot = ({ spot }) => {
               placeholder="City"
               className="inputs"
             />
-          </label>
-          <label>
+          </label> 
+          <div className='comma'>
+            ,
+          </div>
+          <label className='state-container'>
             State {errors.state && <span className='errors' >{errors.state}</span>}
             <input
               type="text"
@@ -136,6 +142,7 @@ const CreateSpot = ({ spot }) => {
               className="inputs"
             />
           </label>
+          </div>
           <div>
             <div>
                 <h4>Describe your place to guests</h4>
@@ -155,11 +162,12 @@ const CreateSpot = ({ spot }) => {
               placeholder="Please write at least 30 characters"
               className="inputs"
               rows='7'
-              cols='40'
+              cols='44'
               minLength='30'
             />
           </label>
           {errors.description && <p className='errors' >{errors.description}</p>}
+          <div className='break-line'></div>
           <div>
             <div>
                 <h4>Create a title for your spot</h4>
@@ -170,7 +178,7 @@ const CreateSpot = ({ spot }) => {
                 </p>
             </div>
           </div>
-          <label>
+          <label className='input-container'>
             <input
               type="text"
               value={title}
@@ -181,6 +189,7 @@ const CreateSpot = ({ spot }) => {
             />
           </label>
           {errors.title && <p className='errors' >{errors.title}</p>}
+          <div className='break-line'></div>
           <div>
             <div>
                 <h4>Set a base price for your spot</h4>
@@ -191,8 +200,9 @@ const CreateSpot = ({ spot }) => {
                 </p>
             </div>
           </div>
-          <label>
-            <span>$</span>
+          <div className='price-symbol'>
+          <span>$</span>
+          <label className='price-amount'>
             <input
               type="number"
               value={price}
@@ -200,11 +210,13 @@ const CreateSpot = ({ spot }) => {
             //   required
               placeholder="Price per night (USD)"
               className="inputs"
-              min='1.00'
+              // min='1.00'
               step="0.01"
             />
           </label>
+          </div>
           {errors.price && <p className='errors' >{errors.price}</p>}
+          <div className='break-line'></div>
           <div>
             <div>
               <div>
@@ -216,7 +228,9 @@ const CreateSpot = ({ spot }) => {
                   </p>
               </div>
             </div>
-            <label>
+          {/* <div className='break-line'></div> */}
+            <div className='image-links-container'>
+            <label className='input-container'>
               <input
                 type="url"
                 value={previewImage}
@@ -227,7 +241,7 @@ const CreateSpot = ({ spot }) => {
               />
             </label>
             {errors.previewImage && <p className='errors' >{errors.previewImage}</p>}
-            <label>
+            <label className='input-container'>
               <input
                 type="url"
                 value={imageURL1}
@@ -237,7 +251,7 @@ const CreateSpot = ({ spot }) => {
               />
             </label>
             {errors.imageURL1 && <p className='errors' >{errors.imageURL1}</p>}
-            <label>
+            <label className='input-container'>
               <input
                 type="url"
                 value={imageURL2}
@@ -247,7 +261,7 @@ const CreateSpot = ({ spot }) => {
               />
             </label>
             {errors.imageURL2 && <p className='errors' >{errors.imageURL2}</p>}
-            <label>
+            <label className='input-container'>
               <input
                 type="url"
                 value={imageURL3}
@@ -257,7 +271,7 @@ const CreateSpot = ({ spot }) => {
               />
             </label>
             {errors.imageURL3 && <p className='errors' >{errors.imageURL3}</p>}
-            <label>
+            <label className='input-container'>
               <input
                 type="url"
                 value={imageURL4}
@@ -266,9 +280,13 @@ const CreateSpot = ({ spot }) => {
                 className="inputs"
               />
             </label>
+            </div>
             {errors.imageURL4 && <p className='errors' >{errors.imageURL4}</p>}
             </div>
+          <div className='break-line'></div>
+          <div className='submit-button-container'>
           {create ? <button type="submit" className="spot-submit-button" onClick={handleSubmit}>Create Spot</button> : <button type="submit" className="spot-submit-button" onClick={handleSubmit}>Update Spot</button>}
+          </div>
         </form>
       </div>
     );

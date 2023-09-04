@@ -17,3 +17,28 @@
 .delete-review-container {
     margin-top: 15px;
 }
+
+.all-reviews-Container {
+    /* border: 1px solid green; */
+    width: 95%;
+}
+
+.all-reviews-Container > * {
+    /* border: 1px pink solid; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.review-firstName {
+    font-weight: bold;
+}
+
+.review-date {
+    color: gray;
+}
+
+.review-class {
+    text-align: left;
+}

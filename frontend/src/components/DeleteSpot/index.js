@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { deleteSpotThunk, loadUserSpotsThunk } from "../../store/spots";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { deleteSpotThunk } from "../../store/spots";
+import './DeleteSpot.css';
 
 const DeleteSpot = ({ spotId }) => {
     // console.log('{spotId}: ', spotId)
@@ -26,16 +26,16 @@ const DeleteSpot = ({ spotId }) => {
 
 
     return (
-        <div>
+        <div className="delete-spot-container">
             <div>
-                <h1>Confirm Delete</h1>
+                <h2 className="confirmDelete">Confirm Delete</h2>
             </div>
             <div>
-                <div>
+                <div className="question">
                     Are you sure you want to remove this spot from the listings? 
                 </div>
             </div>
-            <div>
+            <div className="yes-no-container">
                 <button className="yes" onClick={handleDelete}>Yes (Delete Spot)</button>
                 <button className="no" onClick={closeModal}>No (Keep Spot)</button>
             </div>

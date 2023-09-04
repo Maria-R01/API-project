@@ -72,13 +72,13 @@ const Reviews = ({ spotId, owner }) => {
         reviewsDataArr?.map((review) => ( 
           <div className="each-review-container" key={review.id}>
             <div>
-              <div>{review.User?.firstName}</div>
+              <div className="review-firstName">{review.User?.firstName}</div>
             </div>
             <div>
-              <div>{formattedDate(review.updatedAt)}</div>
+              <div className="review-date">{formattedDate(review.updatedAt)}</div>
             </div>
             <div>
-              <div>{review.review}</div>
+              <div className="review-text">{review.review}</div>
             </div>
             {(review.id === theirReviewId()?.id) ? (
                 <div>
