@@ -51,11 +51,13 @@ export const createReviewThunk = (data) => async (dispatch, getState) => {
         },
         body: JSON.stringify(newReview)
     });
+    const userRes = await csrfFetch(`/api/spots/${spotId}/reviews`);
 
-    if(res.ok) {
-        const reviewCreated = await res.json();
-        dispatch(actionCreateNewReview(reviewCreated));
-        return reviewCreated;
+    if(res.ok && userRes.ok) {
+        // const reviewCreated = await res.json();
+        const reviewsObj = await userRes.json();
+        dispatch(actionLoadReviews(reviewsObj));
+        return reviewsObj;
     } else {
         const errors = await res.json();
         return errors;
@@ -97,12 +99,16 @@ const reviewsReducer = (state = initialState, action) => {
             const reviewsDataArr = action.reviews.Reviews;
             reviewsDataArr.map(review => stateCopy.allReviews[review.id] = review); 
             return stateCopy;
-        case CREATE_REVIEW:
-            state.allReviews[action.review.id] = action.review
-            return stateCopy
+        // case CREATE_REVIEW:
+        //     console.log("state before creating review: ", stateCopy)
+        //     state.allReviews[action.review.id] = action.review
+        //     console.log("state after creating review: ", stateCopy)
+        //     return stateCopy
         case DELETE_REVIEW:
             stateCopy.allReviews = {...state.allReviews};
+            console.log("state before deleting review: ", stateCopy)
             delete stateCopy.allReviews[action.reviewId];
+            console.log("state after deleting review: ", stateCopy)
             return stateCopy;
         default:
             return state;

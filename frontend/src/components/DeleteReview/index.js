@@ -1,23 +1,17 @@
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { deleteReviewThunk } from "../../store/reviews";
+import { loadSpecificSpotThunk } from "../../store/spots";
 
-const DeleteReview = ({ reviewId }) => {
+const DeleteReview = ({ reviewId, spotId }) => {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
 
-    const handleDelete = e => {
+    const handleDelete = async e => {
         e.preventDefault();
-        return dispatch(deleteReviewThunk(reviewId))
-        .then(closeModal())
-        .then(window.location.reload())
-        .catch(async (res) => {
-            const data = await res.json();
-            if (data && data.errors) {
-              return data.errors;
-            }
-        }
-        )
+        await dispatch(deleteReviewThunk(reviewId))
+        await (dispatch(loadSpecificSpotThunk(spotId)))
+        return (closeModal())
     };
 
 

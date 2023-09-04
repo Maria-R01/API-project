@@ -72,7 +72,7 @@ const Reviews = ({ spotId, owner }) => {
         reviewsDataArr?.map((review) => ( 
           <div className="each-review-container" key={review.id}>
             <div>
-              <div>{review.User.firstName}</div>
+              <div>{review.User?.firstName}</div>
             </div>
             <div>
               <div>{formattedDate(review.updatedAt)}</div>
@@ -83,7 +83,7 @@ const Reviews = ({ spotId, owner }) => {
             {(review.id === theirReviewId()?.id) ? (
                 <div>
                     <div className="delete-review-container">
-                        <OpenModalButton buttonText={`Delete`} modalComponent={<DeleteReview reviewId={review.id} />} />
+                        <OpenModalButton buttonText={`Delete`} modalComponent={<DeleteReview reviewId={review.id} spotId={spotIdNum} />} />
                     </div>
                 </div>
             ) : <></> }
