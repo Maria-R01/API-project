@@ -62,6 +62,7 @@ const SpecificSpot = () => {
                         <div className='ratings-reviews'>
                             <i className="fa-solid fa-star icon"></i> 
                             <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
+                            <div className='dot-in-box'>·</div>
                             <div className='numReviews'> {spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
                         </div>
                     </div>
@@ -73,9 +74,14 @@ const SpecificSpot = () => {
             <div className='bottom'></div>
             <div className='reviews-container'>
                 <div className='star-rating-container'>
-                <i className="fa-solid fa-star icon"></i> 
-                <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
-                <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
+                <div className='star-rating'>
+                    <i className="fa-solid fa-star icon"></i> 
+                    <span className='avgStarRating'>{spot.avgStarRating? spot.avgStarRating.toFixed(1) : `New`}</span>
+                </div>
+                <div className='numReviews-container'>
+                    <div className='dot'>·</div>
+                    <div className='numReviews'>{spot.numReviews === 1 ? `${spot.numReviews} review` : `${spot.numReviews} reviews`}</div>
+                </div>
                 </div>
                     <Reviews spotId={spotId} owner={spotOwner}/>
             </div>
