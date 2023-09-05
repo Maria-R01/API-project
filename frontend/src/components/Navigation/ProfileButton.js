@@ -52,7 +52,7 @@ function ProfileButton({ user }) {
       <div className={ulClassName} ref={ulRef}>
         {user ? (
           <div className="profile-dropdown-box">
-            <div>Hello, {user.username}</div>
+            <div>Hello, {user.firstName}</div>
             {/* <div>{user.firstName} {user.lastName}</div> */}
             <div>{user.email}</div>
             <div className="manage-spots-container">
@@ -63,7 +63,7 @@ function ProfileButton({ user }) {
             <div className="logout-user-button-container">
               <button onClick={logout} className="logout-user-button">Log Out</button>
             </div>
-          </div>
+          </div> 
         ) : (
           <div className="buttonDropDown">
             <div>
