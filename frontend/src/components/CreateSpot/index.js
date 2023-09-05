@@ -57,7 +57,7 @@ const CreateSpot = ({ spot }) => {
         setErrors(errors);
     } else {
       if(create) {
-        console.log('CREATE SPOT IS BEING CLICKED')
+        // console.log('CREATE SPOT IS BEING CLICKED')
         const newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
         for(let spotImage of SpotImages) {
             if(spotImage) {
@@ -72,7 +72,7 @@ const CreateSpot = ({ spot }) => {
         await dispatch(loadSpecificSpotThunk(newlyCreatedSpot.id));
         if(newlyCreatedSpot) history.push(`/spots/${newlyCreatedSpot.id}`);
       } else {
-        console.log("UPDATE SPOT IS BEING CLICKED")
+        // console.log("UPDATE SPOT IS BEING CLICKED")
         newSpot.SpotImages = spot.SpotImages;
         newSpot.id = spot.id;
         newSpot.Owner = spot.Owner;
