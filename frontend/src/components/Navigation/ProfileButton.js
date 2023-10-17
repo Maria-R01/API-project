@@ -57,7 +57,7 @@ function ProfileButton({ user }) {
             <div>{user.email}</div>
             <div className="manage-spots-container">
               <div className="line"></div>
-              <Link to='/spots/current' className='manage-spots-link' >Manage Spots</Link>
+              <Link to='/spots/current' className='manage-spots-link' onClick={()=> setShowMenu(false)} >Manage Spots</Link>
               <div className="line"></div>
             </div>
             <div className="logout-user-button-container">
