@@ -5,6 +5,8 @@ import { createSpotImageThunk, createSpotThunk, loadSpecificSpotThunk, updateSpo
 import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom";
 
 const CreateSpot = ({ spot }) => {
+    const AWS = require('aws-sdk');
+    const s3 = new AWS.S3();
     const dispatch = useDispatch();
     const [country, setCountry] = useState(spot? spot.country : '');
     const [streetAddress, setStreetAddress] = useState(spot? spot.address : "");
@@ -13,11 +15,18 @@ const CreateSpot = ({ spot }) => {
     const [description, setDescription] = useState(spot? spot.description : "");
     const [title, setTitle] = useState(spot? spot.name : "");
     const [price, setPrice] = useState(spot? spot.price : "");
-    const [previewImage, setPreviewImage] = useState("");
+    const [previewImageSelected, setPreviewImageSelected] = useState(false);
     const [imageURL1, setImageURL1] = useState("");
     const [imageURL2, setImageURL2] = useState("");
     const [imageURL3, setImageURL3] = useState("");
     const [imageURL4, setImageURL4] = useState("");
+    const [imageFiles, setImageFiles] = useState({
+      previewImage: null,
+      imageURL1: null,
+      imageURL2: null,
+      imageURL3: null,
+      imageURL4: null,
+    });
     const [errors, setErrors] = useState({});
     const [create, setCreate] = useState(spot? false : true);
     const history = useHistory();
@@ -68,7 +77,9 @@ const CreateSpot = ({ spot }) => {
     if(imageURL2 && !imageURL2.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL2 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL3 && !imageURL3.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL3 = 'Image URL must end in .png, .jpg or .jpeg';
     if(imageURL4 && !imageURL4.match(/\.(jpg|jpeg|png)$/i)) errors.imageURL4 = 'Image URL must end in .png, .jpg or .jpeg';
-    
+    if (!previewImageSelected) {
+      errors.previewImage = 'Preview image is required';
+    }
     const SpotImages = [previewImage, imageURL1, imageURL2, imageURL3, imageURL4]
     if(Object.keys(errors).length) {
         setErrors(errors);
@@ -78,12 +89,14 @@ const CreateSpot = ({ spot }) => {
         const newlyCreatedSpot = await dispatch(createSpotThunk(newSpot));
         for(let spotImage of SpotImages) {
             if(spotImage) {
-                const payload = {
-                    spotId: newlyCreatedSpot.id,
-                    url: spotImage,
-                    preview: true
-                };
-                await dispatch(createSpotImageThunk(payload));
+              const imageS3Url = await uploadImageToS3(spotImage);
+
+              const payload = {
+                  spotId: newlyCreatedSpot.id,
+                  url: imageS3Url,
+                  preview: true,
+              };
+              await dispatch(createSpotImageThunk(payload));
             }
         };
         await dispatch(loadSpecificSpotThunk(newlyCreatedSpot.id));
@@ -98,7 +111,17 @@ const CreateSpot = ({ spot }) => {
       }
     }
 }
-  
+
+    const handleFileChange = (e, fieldName) => {
+      const file = e.target.files[0];
+      setImageFiles((prevFiles) => ({
+        ...prevFiles,
+        [fieldName]: file,
+      }));
+      if (fieldName === 'previewImage') {
+        setPreviewImageSelected(true);
+      }
+    };
 
     return (
         <div id="new-spot-form">
@@ -247,54 +270,48 @@ const CreateSpot = ({ spot }) => {
             </div>
           {/* <div className='break-line'></div> */}
             <div className='image-links-container'>
-            <label className='input-container'>
+            <label className="input-container">
+              Upload Image:
               <input
-                type="url"
-                value={previewImage}
-                onChange={(e) => setPreviewImage(e.target.value)}
-              //   required
-                placeholder="Preview Image URL"
-                className="inputs"
+                type="file"
+                onChange={(e) => handleFileChange(e, 'previewImage')}
+                accept="image/*"
               />
             </label>
             {errors.previewImage && <p className='errors' >{errors.previewImage}</p>}
-            <label className='input-container'>
+            <label className="input-container">
+              Upload Image:
               <input
-                type="url"
-                value={imageURL1}
-                onChange={(e) => setImageURL1(e.target.value)}
-                placeholder="Image URL"
-                className="inputs"
+                type="file"
+                onChange={(e) => handleFileChange(e, 'previewImage')}
+                accept="image/*"
               />
             </label>
             {errors.imageURL1 && <p className='errors' >{errors.imageURL1}</p>}
-            <label className='input-container'>
+            <label className="input-container">
+              Upload Image:
               <input
-                type="url"
-                value={imageURL2}
-                onChange={(e) => setImageURL2(e.target.value)}
-                placeholder="Image URL"
-                className="inputs"
+                type="file"
+                onChange={(e) => handleFileChange(e, 'previewImage')}
+                accept="image/*"
               />
             </label>
             {errors.imageURL2 && <p className='errors' >{errors.imageURL2}</p>}
-            <label className='input-container'>
+            <label className="input-container">
+              Upload Image:
               <input
-                type="url"
-                value={imageURL3}
-                onChange={(e) => setImageURL3(e.target.value)}
-                placeholder="Image URL"
-                className="inputs"
+                type="file"
+                onChange={(e) => handleFileChange(e, 'previewImage')}
+                accept="image/*"
               />
             </label>
             {errors.imageURL3 && <p className='errors' >{errors.imageURL3}</p>}
-            <label className='input-container'>
+            <label className="input-container">
+              Upload Image:
               <input
-                type="url"
-                value={imageURL4}
-                onChange={(e) => setImageURL4(e.target.value)}
-                placeholder="Image URL"
-                className="inputs"
+                type="file"
+                onChange={(e) => handleFileChange(e, 'previewImage')}
+                accept="image/*"
               />
             </label>
             </div>
