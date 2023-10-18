@@ -37,7 +37,7 @@ const Spots = () => {
                                     </div>
                                     <div className='spotPrice-container'>
                                         <div className='spotPrice'>
-                                        ${spot.price} 
+                                        ${spot.price.toFixed(2)} 
                                         </div>
                                         <span>night</span>
                                     </div>

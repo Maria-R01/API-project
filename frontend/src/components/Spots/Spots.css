@@ -55,6 +55,7 @@ img {
     height: 230px;
     width: 300px;
     border-radius: 15px;
+    object-fit: cover;
 }
 
 .locationAndPrice  {
@@ -70,4 +71,8 @@ img {
 .spotPrice-container {
     display: inline-flex;
     gap: 5px;
+}
+
+a:visited {
+    color: inherit;
 }

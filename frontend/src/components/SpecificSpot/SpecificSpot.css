@@ -28,6 +28,7 @@
     margin-left: 1px;
     margin-right: 1px;
     margin-bottom: .5px;
+    object-fit: cover;
 }
 
 .firstImage > img {
@@ -35,6 +36,7 @@
     width: 480px;
     height: 460px;
     border-radius: 0;
+    object-fit: cover;
 }
 
 .bottom {

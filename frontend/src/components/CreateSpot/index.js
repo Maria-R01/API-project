@@ -34,6 +34,23 @@ const CreateSpot = ({ spot }) => {
         lat: (Math.random() * 100).toFixed(2),
         lng: (Math.random()* 100).toFixed(2)
     }
+
+    useEffect(() => {
+      if (spot) {
+          setCountry(spot.country || "");
+          setStreetAddress(spot.address || "");
+          setCity(spot.city || "");
+          setState(spot.state || "");
+          setDescription(spot.description || "");
+          setTitle(spot.name || "");
+          setPrice(spot.price || "");
+      }
+      // You can add more fields here as needed
+
+      // Update 'create' flag based on the presence of 'spot'
+      setCreate(!spot);
+    }, [spot]);
+
     
     const handleSubmit = async (e) => {
     e.preventDefault();

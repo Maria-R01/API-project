@@ -4,9 +4,11 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
 import { NavLink } from 'react-router-dom';
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function LoginFormModal() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
@@ -43,6 +45,7 @@ function LoginFormModal() {
     };
     return await dispatch(sessionActions.login(user))
       .then(closeModal)
+      .then(history.push('/'))
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
@@ -81,7 +84,7 @@ function LoginFormModal() {
         <button type="submit" disabled={isDisabled} className={submitButton}>Log In</button>
       </form>
       <div className="demo-user">
-        <NavLink to='/' onClick={loginDemoUser} className='demo-user-button' >Demo User</NavLink>
+        <button onClick={loginDemoUser} className='demo-user-button' >Demo User</button>
       </div>
     </div>
   );
