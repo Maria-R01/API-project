@@ -81,7 +81,10 @@ const Reviews = ({ spotId, owner }) => {
               <div className="review-text">{review.review}</div>
             </div>
             {(review.id === theirReviewId()?.id) ? (
-                <div>
+                <div className="review-update-delete-buttons">
+                    <div className="update-review-container">
+                        <OpenModalButton buttonText={`Update`} modalComponent={<CreateReview review={review} spotId={spotIdNum} />} />
+                    </div>
                     <div className="delete-review-container">
                         <OpenModalButton buttonText={`Delete`} modalComponent={<DeleteReview reviewId={review.id} spotId={spotIdNum} />} />
                     </div>
