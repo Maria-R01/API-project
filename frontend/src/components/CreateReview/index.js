@@ -13,7 +13,8 @@ const CreateReview = ({review, spotId, spotIdNum}) => {
     const [reviewText, setReviewText] = useState(updatingReview ? review.review : "")
     const [starsRating, setStarsRating] = useState(updatingReview ? review.stars : 0)
     const [errors, setErrors] = useState({})
-    
+    // const spotData = useSelector((state) => state.spots.singleSpot);
+
 
     const validationForReview = () => {
         const validationErrors = {}
@@ -56,7 +57,7 @@ const CreateReview = ({review, spotId, spotIdNum}) => {
                 review: reviewText,
               };
               await dispatch(updateReviewThunk(updatedReview));
-              await dispatch(loadSpecificSpotThunk(spotIdNum));
+              await dispatch(loadSpecificSpotThunk(updatedReview.spotId));
         }
         closeModal();
         // .then(window.location.reload())
@@ -71,6 +72,9 @@ const CreateReview = ({review, spotId, spotIdNum}) => {
     
     const submitButton = "review-submit-button" + (isDisabled() ? ' disabled' : '')
 
+    // useEffect(() => {
+    //     console.log('Spot data updated:', spotData);
+    //   }, [spotData]); 
 
     return (
         <div className="review-modal">
