@@ -1,17 +1,19 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { createReviewThunk, loadReviewsThunk } from "../../store/reviews";
+import { createReviewThunk, loadReviewsThunk, updateReviewThunk } from "../../store/reviews";
 import { useState, useEffect } from "react";
 import StarRating from "../StarRating";
 import './CreateReview.css';
 import { loadSpecificSpotThunk } from "../../store/spots";
 
-const CreateReview = ({spotIdNum}) => {
+const CreateReview = ({review, spotId, spotIdNum}) => {
+    const updatingReview = review?.id !== undefined;
     const dispatch = useDispatch();
     const { closeModal } = useModal();
-    const [reviewText, setReviewText] = useState("")
-    const [starsRating, setStarsRating] = useState(0)
+    const [reviewText, setReviewText] = useState(updatingReview ? review.review : "")
+    const [starsRating, setStarsRating] = useState(updatingReview ? review.stars : 0)
     const [errors, setErrors] = useState({})
+    
 
     const validationForReview = () => {
         const validationErrors = {}
@@ -29,20 +31,34 @@ const CreateReview = ({spotIdNum}) => {
         setStarsRating(starsClicked)
     };
 
+    const newReview = {
+        spotId: spotIdNum,
+        review: reviewText,
+        stars: starsRating
+    }
+
     const handleSubmit = async e => {
         e.preventDefault();
         setErrors({})
         const validationErrors = validationForReview();
-        if(Object.values(validationErrors).length) setErrors(validationErrors);
-
-        const newReview = {
-            spotId: spotIdNum,
-            review: reviewText,
-            stars: starsRating
+        if(Object.values(validationErrors).length) {
+            setErrors(validationErrors)
+            return;
         }
-        await dispatch(createReviewThunk(newReview))
-        await (dispatch(loadSpecificSpotThunk(spotIdNum)))
-        return (closeModal())
+        if(!updatingReview) {
+            await dispatch(createReviewThunk(newReview))
+            await (dispatch(loadSpecificSpotThunk(spotIdNum)))
+        } else {
+            const updatedReview = {
+                id: review.id,
+                spotId: review.spotId,
+                stars: Math.round(starsRating),
+                review: reviewText,
+              };
+              await dispatch(updateReviewThunk(updatedReview));
+              await dispatch(loadSpecificSpotThunk(spotIdNum));
+        }
+        closeModal();
         // .then(window.location.reload())
         // .catch(async (res) => {
         //     const data = await res.json();
