@@ -90,9 +90,11 @@ const CreateReview = ({review, spotId, spotIdNum}) => {
             <div className="stars-input-container">
                 <StarRating starsRating={starsRating} starInputClick={starInputClick} className="starRating-input"/> Stars
             </div>
-            <div>
+            {updatingReview ? <div>
+                <button className={submitButton} onClick={handleSubmit} disabled={isDisabled()} >Update Your Review</button>
+            </div> : <div>
                 <button className={submitButton} onClick={handleSubmit} disabled={isDisabled()} >Submit Your Review</button>
-            </div>
+            </div>}
         </div>
     )
 };
