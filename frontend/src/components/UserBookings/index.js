@@ -6,22 +6,29 @@ import { useModal } from "../../context/Modal";
 import OpenModalButton from '../OpenModalButton';
 import { getBookingsThunk, updateBookingThunk, deleteBookingThunk } from '../../store/bookings';
 import UpdateBookingModal from '../UpdateBooking';
+import { loadSpotsThunk } from '../../store/spots';
 
 const UserBookings = () => {
     const userBookings = [];
+    const allSpots = [];
     const dispatch = useDispatch();
     const { closeModal } = useModal();
-    const UserBookingsObj = useSelector(state => state.bookings.Bookings);
+    const UserBookingsObj = useSelector(state => state.bookings);
+    const spotsData = useSelector(state => state.spots.allSpots);
+    console.log('UserBookingsObj: ', UserBookingsObj);
     console.log('UserBookings Array: ', userBookings);
-    console.log(UserBookingsObj)
     if (UserBookingsObj) {
         Object.values(UserBookingsObj)?.map(booking => userBookings.push(booking));
     }
+    console.log('UserBookings Array AFTER POPULATING: ', userBookings);
     const [selectedBooking, setSelectedBooking] = useState(null);
     console.log('SELECTED BOOKING: ', selectedBooking)
+    Object.values(spotsData)?.map(spot => allSpots.push(spot));
+    console.log('ALL SPOTS: ', allSpots);
 
     const handleUpdateBooking = (updatedBooking) => {
-        dispatch(updateBookingThunk(updatedBooking));
+        console.log('UPDATED BOOKING: ', updatedBooking)
+        dispatch(updateBookingThunk(updatedBooking.id, [updatedBooking]));
         closeModal();
     };
       
@@ -49,6 +56,7 @@ const UserBookings = () => {
 
     useEffect(() => {
         dispatch(getBookingsThunk());
+        dispatch(loadSpotsThunk());
     }, [dispatch])
 
     
@@ -75,16 +83,16 @@ const UserBookings = () => {
                                     <div className='spotLocation'>
                                         {spot.Spot.city}, {spot.Spot.state}
                                     </div>
-                                    <div className='spotPrice-container'>
+                                    {/* <div className='spotPrice-container'>
                                         <div className='spotPrice'>
                                         ${spot.Spot.price.toFixed(2)} 
                                         </div>
                                         <span>night</span>
-                                    </div>
+                                    </div> */}
                                 </div>
-                                <div className='avgRating'>
-                                        <i className="fa-solid fa-star"></i> {spot.Spot.avgRating? spot.Spot.avgRating.toFixed(1) : `New`}
-                                </div>
+                                {/* <div className='avgRating'>
+                                        <i className="fa-solid fa-star"></i> {spot.Spot.avgRating ? spot.Spot.avgRating.toFixed(1) : `New`}
+                                </div> */}
                             </div>
                         </div>
                         </div>
@@ -93,7 +101,7 @@ const UserBookings = () => {
                     <div className='delete-modal-container' onClick={() => setSelectedBooking(spot)}>
                         <OpenModalButton
                         buttonText={`Update Booking`}
-                        modalComponent={<UpdateBookingModal startDate={selectedBooking?.startDate || ''} endDate={selectedBooking?.endDate || ''} bookingId={selectedBooking?.id || ''} onUpdate={handleUpdateBooking} />}
+                        modalComponent={<UpdateBookingModal startDate={selectedBooking?.startDate || ''} endDate={selectedBooking?.endDate || ''} bookingId={selectedBooking && selectedBooking.id || ''} onUpdate={handleUpdateBooking} />}
                         />
                     </div>
                     <div className='delete-modal-container'>

@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useSelector } from 'react-redux';
 
 const UpdateBookingModal = ({ startDate, endDate, bookingId, onUpdate }) => {
+  const user = useSelector(state => state.session.user);
+  console.log('USER', user)
+  console.log('BOOKING ID IN UPDATE BOOKING COMPONENT: ', bookingId)
   const isTodayOrLater = (date) => {
     const today = new Date().setHours(0, 0, 0, 0);
     return new Date(date).setHours(0, 0, 0, 0) >= today;
@@ -18,9 +22,10 @@ const UpdateBookingModal = ({ startDate, endDate, bookingId, onUpdate }) => {
 
   const handleUpdate = () => {
     onUpdate({
-      bookingId,
-      newStartDate,
-      newEndDate,
+      id: bookingId,
+      startDate: newStartDate?.toLocaleDateString('en-CA'),
+      endDate: newEndDate?.toLocaleDateString('en-CA'),
+      userId: user.id
     });
   };
 
