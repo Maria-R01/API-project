@@ -8,6 +8,7 @@ import SpecificSpot from "./components/SpecificSpot";
 import UserSpots from "./components/UserSpots";
 import CreateSpot from "./components/CreateSpot";
 import EditSpot from "./components/EditSpot";
+import UserBookings from "./components/UserBookings";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route exact path='/spots/current' component={UserSpots} />
         <Route exact path='/spots/:spotId' component={SpecificSpot} />
         <Route exact path='/spots/:spotId/edit' component={EditSpot} />
+        <Route exact path='/bookings/current' component={UserBookings} />
         <Route>
           <h1>We can't seem to find the page you're looking for...</h1>
           {/* <Redirect to='/' /> */}
