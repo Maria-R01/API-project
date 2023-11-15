@@ -4,6 +4,8 @@ import { csrfFetch } from "./csrf";
 export const LOAD_REVIEWS = 'reviews/LOAD_REVIEW';
 export const CREATE_REVIEW = 'reviews/CREATE_REVIEW';
 export const DELETE_REVIEW = 'reviews/DELETE_REVIEW';
+export const UPDATE_REVIEW = 'reviews/UPDATE_REVIEW';
+
 
 //ACTIONS
 export const actionLoadReviews = (reviews) => {
@@ -26,6 +28,14 @@ export const actionDeleteReview = (reviewId) => {
         reviewId
     }
 }
+
+export const actionUpdateReview = (review) => {
+    return {
+        type: UPDATE_REVIEW,
+        review
+    }
+}
+
 
 //THUNKS
 export const loadReviewsThunk = (data) => async (dispatch, getState) => {
@@ -63,6 +73,27 @@ export const createReviewThunk = (data) => async (dispatch, getState) => {
         return errors;
     }
 };
+
+export const updateReviewThunk = (data) => async (dispatch, getState) => {
+    const { id, review, spotId, stars } = data;
+    const updatedReviewData = { review, stars };
+    const res = await csrfFetch(`/api/reviews/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedReviewData)
+    });
+
+    if (res.ok) {
+        const updatedReview = await res.json();
+        dispatch(actionUpdateReview(updatedReview));
+        return updatedReview;
+    } else {
+        const errors = await res.json();
+        return errors;
+    }
+}
 
 export const deleteReviewThunk = data => async (dispatch, getState) => {
     const res = await csrfFetch(`/api/reviews/${data}`, {
@@ -104,6 +135,14 @@ const reviewsReducer = (state = initialState, action) => {
         //     state.allReviews[action.review.id] = action.review
         //     console.log("state after creating review: ", stateCopy)
         //     return stateCopy
+        case CREATE_REVIEW:
+            stateCopy.allReviews = {...state.allReviews};
+            stateCopy.allReviews[action.review.id] = action.review;
+            return stateCopy;
+        case UPDATE_REVIEW:
+            stateCopy.allReviews = {...state.allReviews};
+            stateCopy.allReviews[action.review.id] = action.review;
+            return stateCopy;
         case DELETE_REVIEW:
             stateCopy.allReviews = {...state.allReviews};
             delete stateCopy.allReviews[action.reviewId];
