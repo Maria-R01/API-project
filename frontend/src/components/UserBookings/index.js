@@ -36,8 +36,11 @@ const UserBookings = () => {
     return (
         <div>
         <p>Are you sure you want to delete this booking?</p>
+        <button className='delete-booking-modal-button' onClick={closeModal}>
+            No, Go Back.
+        </button>
         <button className='delete-booking-modal-button' onClick={handleDelete}>
-            Confirm Delete
+            Yes, Delete Booking.
         </button>
         </div>
     );
