@@ -1,4 +1,6 @@
-// bookings.js
+import { csrfFetch } from './csrf';
+
+// Action types
 const LOAD_BOOKINGS = 'bookings/LOAD_BOOKINGS';
 const ADD_BOOKING = 'bookings/ADD_BOOKING';
 const UPDATE_BOOKING = 'bookings/UPDATE_BOOKING';
@@ -24,6 +26,57 @@ export const deleteBooking = (bookingId) => ({
   type: DELETE_BOOKING,
   payload: bookingId,
 });
+
+// Thunks
+export const getBookingsThunk = () => async (dispatch) => {
+    const response = await csrfFetch('/api/bookings/current');
+    if (response.ok) {
+      const bookings = await response.json();
+      dispatch(loadBookings(bookings));
+    }
+  };
+  
+  export const createBookingThunk = (spotId, bookingData) => async (dispatch) => {
+    const response = await csrfFetch(`/api/spots/${spotId}/bookings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookingData),
+    });
+  
+    if (response.ok) {
+      const newBooking = await response.json();
+      dispatch(addBooking(newBooking));
+      return newBooking;
+    }
+  };
+  
+  export const updateBookingThunk = (bookingId, bookingData) => async (dispatch) => {
+    const response = await csrfFetch(`/api/bookings/${bookingId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookingData),
+    });
+  
+    if (response.ok) {
+      const updatedBooking = await response.json();
+      dispatch(updateBooking(updatedBooking));
+      return updatedBooking;
+    }
+  };
+  
+  export const deleteBookingThunk = (bookingId) => async (dispatch) => {
+    const response = await csrfFetch(`/api/bookings/${bookingId}`, {
+      method: 'DELETE',
+    });
+  
+    if (response.ok) {
+      dispatch(deleteBooking(bookingId));
+    }
+  };
 
 // Reducer
 const initialState = [];
