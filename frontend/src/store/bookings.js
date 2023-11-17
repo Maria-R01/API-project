@@ -69,6 +69,8 @@ export const getBookingsThunk = () => async (dispatch) => {
   };
   
   export const deleteBookingThunk = (bookingId) => async (dispatch) => {
+    console.log('BOOKING ID: ', bookingId)
+    console.log('BOOKING ID TYPE: ', typeof bookingId)
     const response = await csrfFetch(`/api/bookings/${bookingId}`, {
       method: 'DELETE',
     });
@@ -82,6 +84,7 @@ export const getBookingsThunk = () => async (dispatch) => {
 const initialState = [];
 
 const bookingsReducer = (state = initialState, action) => {
+    console.log('STATE: ', state)
   switch (action.type) {
     case LOAD_BOOKINGS:
       return action.payload;
@@ -92,7 +95,8 @@ const bookingsReducer = (state = initialState, action) => {
         booking.id === action.payload.id ? action.payload : booking
       );
     case DELETE_BOOKING:
-      return state.filter((booking) => booking.id !== action.payload);
+        console.log('ACTION PAYLOAD: ', action.payload)
+      return state.Bookings.filter((booking) => booking.id !== action.payload);
     default:
       return state;
   }

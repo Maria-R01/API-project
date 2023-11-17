@@ -27,7 +27,8 @@ const UserBookings = () => {
       
     const DeleteBookingModal = () => {    
         const handleDelete = () => {
-            if (selectedBooking) {
+            console.log('SELECTED BOOKING INSIDE DELETE BOOKING MODAL: ', selectedBooking)
+            if (selectedBooking?.id) {
             dispatch(deleteBookingThunk(selectedBooking.id));
             closeModal();
             }
@@ -62,6 +63,11 @@ const UserBookings = () => {
                     <h2>Manage Your Bookings</h2>
                 </div>
             </div>
+            {userBookings?.length === 0 && (
+                <div className='noBookings'>
+                    <h3>You have no bookings yet.</h3>
+                </div>
+            )}
             {userBookings?.map(spot => (
                 <div className='tile' key={spot.Spot.id} title={spot.Spot.name} >
                     <NavLink to={`/spots/${spot.id}`} className='spotTile' data-tip={`${spot.Spot.name}`} >
@@ -96,7 +102,7 @@ const UserBookings = () => {
                         modalComponent={<UpdateBookingModal startDate={selectedBooking?.startDate || ''} endDate={selectedBooking?.endDate || ''} bookingId={selectedBooking?.id || ''} onUpdate={handleUpdateBooking} />}
                         />
                     </div>
-                    <div className='delete-modal-container'>
+                    <div className='delete-modal-container' onClick={() => setSelectedBooking(spot)}>
                         <OpenModalButton
                         buttonText={`Delete Booking`}
                         modalComponent={<DeleteBookingModal />}
