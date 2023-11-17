@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/Maria-R01/API-project/issues"
   },
-  "homepage": "https://github.com/Maria-R01/API-project#readme"
+  "homepage": "https://github.com/Maria-R01/API-project#readme",
+  "dependencies": {
+    "react-datepicker": "^4.21.0"
+  }
 }
